@@ -1,3 +1,8 @@
+/**
+ * メインウインドウクラスの定義.
+ * @file mainwindow.h.
+ * @author yatagai.
+ */
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -7,6 +12,10 @@ namespace Ui {
 class MainWindow;
 }
 
+/**
+ *  メインウインドウクラス.
+ *  @author yatagai.
+ */
 class MainWindow : public QWidget
 {
     Q_OBJECT

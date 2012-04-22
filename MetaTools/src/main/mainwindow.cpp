@@ -1,9 +1,15 @@
+/**
+ * メインウインドウクラスの実装.
+ * @file mainwindow.cpp.
+ * @author yatagai.
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 /**
  * コンストラクタ.
- * param in parent 親ウィジェット.
+ * @param in parent 親ウィジェット.
  */
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
