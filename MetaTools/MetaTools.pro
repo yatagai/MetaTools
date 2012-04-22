@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-TARGET = 無題
+TARGET = MetaTools
 TEMPLATE = app
 
 
