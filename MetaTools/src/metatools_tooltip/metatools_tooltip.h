@@ -1,5 +1,5 @@
 /**
- * tooltip繧ｯ繝ｩ繧ｹ縺ｮ螳夂ｾｩ.
+ * tooltipクラスの定義.
  * @file metatools_tooltip..
  * @author yatagai.
  */
@@ -14,7 +14,7 @@ class MetaToolsToolTip;
 }
 
 /**
- *  繝�繝ｼ繝ｫ繝√ャ繝励け繝ｩ繧ｹ.
+ *  ツールチップクラス.
  *  @author yatagai.
  */
 class MetaToolsToolTip : public QWidget

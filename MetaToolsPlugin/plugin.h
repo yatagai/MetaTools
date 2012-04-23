@@ -1,5 +1,5 @@
 /**
- * 繝励Λ繧ｰ繧､繝ｳ縺ｮ繧､繝ｳ繧ｿ繝ｼ繝輔ぉ繝ｼ繧ｹ縺ｮ螳夂ｾｩ.
+ *  プラグインのインターフェースの定義.
  * @file plugin.h.
  * @author yatagai.
  */
@@ -49,7 +49,7 @@ public:
     }
 
 protected:
-    virtual bool ReceiveMessage(const IPlugin */*sender*/, const std::string &/*message_type*/, void */*param*/)
+    virtual bool ReceiveMessage(const IPlugin * /*sender*/, const std::string &/*message_type*/, void * /*param*/)
     {
         return true;
     }

@@ -1,5 +1,5 @@
 /**
- * 繝｡繧､繝ｳ繧ｦ繧､繝ｳ繝峨え繧ｯ繝ｩ繧ｹ縺ｮ螳夂ｾｩ.
+ * メインウインドウクラスの定義.
  * @file mainwindow.h.
  * @author yatagai.
  */
@@ -13,7 +13,7 @@ class MainWindow;
 }
 
 /**
- *  繝｡繧､繝ｳ繧ｦ繧､繝ｳ繝峨え繧ｯ繝ｩ繧ｹ.
+ *  メインウインドウクラス.
  *  @author yatagai.
  */
 class MainWindow : public QWidget

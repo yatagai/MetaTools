@@ -10,15 +10,15 @@
 
 /**
  *  entroy point.
- *  @param in  argc ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°ã®æ•°.
- *  @param in  argv ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°.
+ *  @param in  argc ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚Ì”.
+ *  @param in  argv ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”.
  *  @return 0
  */
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // styleè¨­å®š.
+    // styleİ’è.
     QApplication::setStyle(QStyleFactory::create("Plastique"));
 
     MainWindow w;
