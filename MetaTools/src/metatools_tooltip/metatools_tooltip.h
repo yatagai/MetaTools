@@ -1,5 +1,5 @@
-/**
- * tooltipƒNƒ‰ƒX‚Ì’è‹`.
+ï»¿/**
+ * tooltipã‚¯ãƒ©ã‚¹ã®å®šç¾©.
  * @file metatools_tooltip..
  * @author yatagai.
  */
@@ -14,7 +14,7 @@ class MetaToolsToolTip;
 }
 
 /**
- *  ƒc[ƒ‹ƒ`ƒbƒvƒNƒ‰ƒX.
+ *  ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚¯ãƒ©ã‚¹.
  *  @author yatagai.
  */
 class MetaToolsToolTip : public QWidget

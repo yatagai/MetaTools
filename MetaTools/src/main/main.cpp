@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  * main.
  * @file main.cpp.
  * @author yatagai.
@@ -10,15 +10,15 @@
 
 /**
  *  entroy point.
- *  @param in  argc ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚Ì”.
- *  @param in  argv ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”.
+ *  @param in  argc ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°ã®æ•°.
+ *  @param in  argv ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°.
  *  @return 0
  */
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // styleİ’è.
+    // styleè¨­å®š.
     QApplication::setStyle(QStyleFactory::create("Plastique"));
 
     MainWindow w;

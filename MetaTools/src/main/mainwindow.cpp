@@ -1,5 +1,5 @@
-/**
- * ƒƒCƒ“ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚ÌÀ‘•.
+ï»¿/**
+ * ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®å®Ÿè£….
  * @file mainwindow.cpp.
  * @author yatagai.
  */
@@ -8,8 +8,8 @@
 #include "ui_mainwindow.h"
 
 /**
- * ƒRƒ“ƒXƒgƒ‰ƒNƒ^.
- * @param in parent eƒEƒBƒWƒFƒbƒg.
+ * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿.
+ * @param in parent è¦ªã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆ.
  */
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 /**
- * ƒfƒXƒgƒ‰ƒNƒ^.
+ * ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿.
  */
 MainWindow::~MainWindow()
 {

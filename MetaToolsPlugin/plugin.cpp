@@ -1,5 +1,5 @@
-/**
- * ƒvƒ‰ƒOƒCƒ“‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚ÌÀ‘•.
+ï»¿/**
+ * ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ã®å®Ÿè£….
  * @file plugin.cpp.
  * @author yatagai.
  */
@@ -15,7 +15,7 @@ extern void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, c
 extern void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget);
 
 /**
- * ƒRƒ“ƒXƒgƒ‰ƒNƒ^.
+ * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿.
  */
 IPlugin::IPlugin()
     : m_is_execute(false)
@@ -23,15 +23,15 @@ IPlugin::IPlugin()
 }
 
 /**
- * ƒfƒXƒgƒ‰ƒNƒ^.
+ * ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿.
  */
 IPlugin::~IPlugin()
 {
 }
 
 /**
- *  ƒvƒ‰ƒOƒCƒ“‚ÌŠJn.
- *  @return true‚Å¬Œ÷ false‚Å¸”s.
+ *  ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®é–‹å§‹.
+ *  @return trueã§æˆåŠŸ falseã§å¤±æ•—.
  */
 bool IPlugin::Start()
 {
@@ -43,8 +43,8 @@ bool IPlugin::Start()
 }
 
 /**
- *  ƒvƒ‰ƒOƒCƒ“‚ÌI—¹‚µ‚Ä‚à‚æ‚¢‚©.
- *  @return true‚ÅI—¹‚µ‚Ä‚à‚æ‚¢ false‚ÅI—¹‚µ‚½‚çƒ_ƒ.
+ *  ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®çµ‚äº†ã—ã¦ã‚‚ã‚ˆã„ã‹.
+ *  @return trueã§çµ‚äº†ã—ã¦ã‚‚ã‚ˆã„ falseã§çµ‚äº†ã—ãŸã‚‰ãƒ€ãƒ¡.
  */
 bool IPlugin::Closing()
 {
@@ -52,8 +52,8 @@ bool IPlugin::Closing()
 }
 
 /**
- *  ƒvƒ‰ƒOƒCƒ“‚ÌI—¹.
- *  @return true‚Å¬Œ÷ false‚Å¸”s.
+ *  ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®çµ‚äº†.
+ *  @return trueã§æˆåŠŸ falseã§å¤±æ•—.
  */
 bool IPlugin::Close()
 {
@@ -66,10 +66,10 @@ bool IPlugin::Close()
 }
 
 /**
- *  ƒvƒ‰ƒOƒCƒ“‚ÉƒƒbƒZ[ƒW‘—M.
- *  @param in target_plugin_name ‘—Mæ‚Ìƒvƒ‰ƒOƒCƒ“–¼.
- *  @param in message_type ƒƒbƒZ[ƒWƒ^ƒCƒv.
- *  @param in param ƒpƒ‰ƒ[ƒ^.
+ *  ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ä¿¡.
+ *  @param in target_plugin_name é€ä¿¡å…ˆã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³å.
+ *  @param in message_type ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¿ã‚¤ãƒ—.
+ *  @param in param ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿.
  */
 bool IPlugin::SendMessage(const std::string &target_plugin_name, const std::string &message_type, void *param) const
 {
@@ -77,8 +77,8 @@ bool IPlugin::SendMessage(const std::string &target_plugin_name, const std::stri
 }
 
 /**
- *  ƒƒO‚Éo—Í.
- *  @param in message o—Í‚·‚éƒƒbƒZ[ƒW.
+ *  ãƒ­ã‚°ã«å‡ºåŠ›.
+ *  @param in message å‡ºåŠ›ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸.
  */
 void IPlugin::LogWrite(const std::string &message) const
 {
@@ -86,8 +86,8 @@ void IPlugin::LogWrite(const std::string &message) const
 }
 
 /**
- *  ƒƒO‚É1so—Í.
- *  @param message o—Í‚·‚éƒƒbƒZ[ƒW.
+ *  ãƒ­ã‚°ã«1è¡Œå‡ºåŠ›.
+ *  @param message å‡ºåŠ›ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸.
  */
 void IPlugin::LogWriteLine(const std::string &message) const
 {
@@ -95,8 +95,8 @@ void IPlugin::LogWriteLine(const std::string &message) const
 }
 
 /**
- *  ƒfƒoƒbƒO—pƒƒO‚Éo—Í.
- *  @param in message o—Í‚·‚éƒƒbƒZ[ƒW.
+ *  ãƒ‡ãƒãƒƒã‚°ç”¨ãƒ­ã‚°ã«å‡ºåŠ›.
+ *  @param in message å‡ºåŠ›ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸.
  */
 void IPlugin::DebugLogWrite(const std::string &message) const
 {
@@ -104,8 +104,8 @@ void IPlugin::DebugLogWrite(const std::string &message) const
 }
 
 /**
- *  ƒfƒoƒbƒO—pƒƒO‚É1so—Í.
- *  @param in message o—Í‚·‚éƒƒbƒZ[ƒW.
+ *  ãƒ‡ãƒãƒƒã‚°ç”¨ãƒ­ã‚°ã«1è¡Œå‡ºåŠ›.
+ *  @param in message å‡ºåŠ›ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸.
  */
 void IPlugin::DebugLogWriteLine(const std::string &message) const
 {
@@ -113,9 +113,9 @@ void IPlugin::DebugLogWriteLine(const std::string &message) const
 }
 
 /**
- *  ƒƒjƒ…[—pWidget’Ç‰Á.
- *  @param in add_widget ’Ç‰Á‚·‚éWidget.
- *  @param in add_tab_name ’Ç‰Á‚·‚éƒ^ƒu.
+ *  ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç”¨Widgetè¿½åŠ .
+ *  @param in add_widget è¿½åŠ ã™ã‚‹Widget.
+ *  @param in add_tab_name è¿½åŠ ã™ã‚‹ã‚¿ãƒ–.
  */
 void IPlugin::AddMenuWidget(QWidget *add_widget, const std::string &add_tab_name)
 {
@@ -123,8 +123,8 @@ void IPlugin::AddMenuWidget(QWidget *add_widget, const std::string &add_tab_name
 }
 
 /**
- *  ƒc[ƒ‹—pWidget’Ç‰Á.
- *  @param in add_widget ’Ç‰Á‚·‚éWidget.
+ *  ãƒ„ãƒ¼ãƒ«ç”¨Widgetè¿½åŠ .
+ *  @param in add_widget è¿½åŠ ã™ã‚‹Widget.
  */
 void IPlugin::AddToolWidget(QWidget *add_widget)
 {

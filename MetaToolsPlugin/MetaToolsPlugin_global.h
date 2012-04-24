@@ -1,4 +1,4 @@
-#ifndef METATOOLSPLUGIN_GLOBAL_H
+﻿#ifndef METATOOLSPLUGIN_GLOBAL_H
 #define METATOOLSPLUGIN_GLOBAL_H
 
 #include <QtCore/qglobal.h>

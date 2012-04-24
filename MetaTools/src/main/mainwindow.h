@@ -1,5 +1,5 @@
-/**
- * ƒƒCƒ“ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì’è‹`.
+ï»¿/**
+ * ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®å®šç¾©.
  * @file mainwindow.h.
  * @author yatagai.
  */
@@ -13,7 +13,7 @@ class MainWindow;
 }
 
 /**
- *  ƒƒCƒ“ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX.
+ *  ãƒ¡ã‚¤ãƒ³ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹.
  *  @author yatagai.
  */
 class MainWindow : public QWidget

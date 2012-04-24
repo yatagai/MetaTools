@@ -1,5 +1,5 @@
-/**
- * tooltipƒNƒ‰ƒX‚ÌÀ‘•.
+ï»¿/**
+ * tooltipã‚¯ãƒ©ã‚¹ã®å®Ÿè£….
  * @file metatools_tooltip.cpp.
  * @author yatagai.
  */
@@ -9,8 +9,8 @@
 
 
 /**
- * ƒRƒ“ƒXƒgƒ‰ƒNƒ^.
- * @param in parent eƒEƒBƒWƒFƒbƒg.
+ * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿.
+ * @param in parent è¦ªã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆ.
  */
 MetaToolsToolTip::MetaToolsToolTip(QWidget *parent) :
     QWidget(parent),
@@ -20,7 +20,7 @@ MetaToolsToolTip::MetaToolsToolTip(QWidget *parent) :
 }
 
 /**
- * ƒfƒXƒgƒ‰ƒNƒ^.
+ * ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿.
  */
 MetaToolsToolTip::~MetaToolsToolTip()
 {

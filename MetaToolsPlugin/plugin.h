@@ -1,5 +1,5 @@
-/**
- *  �v���O�C���̃C���^�[�t�F�[�X�̒�`.
+﻿/**
+ *  プラグインのインターフェースの定義.
  * @file plugin.h.
  * @author yatagai.
  */
