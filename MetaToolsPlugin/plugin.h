@@ -8,8 +8,11 @@
 #define METATOOLSPLUGIN_H
 
 #include "MetaToolsPlugin_global.h"
-#include <QtGui>
 #include <string>
+#include <map>
+#include <functional>
+
+class QWidget;
 
 namespace meta_tools
 {
@@ -20,19 +23,39 @@ public:
     IPlugin();
     ~IPlugin();
 
+public:
     bool Start();
     bool Closing();
     bool Close();
 
+    // message関係.
+public:
     bool SendMessage(const std::string &target_puligin_name, const std::string &message_type, void *param) const;
+protected:
+    template<class F>
+    void AddMessageFunc(const std::string &message_type, bool (F::*func)(const IPlugin*, void*))
+    {
+        F* cast_this = static_cast<F*>(this);
+        m_message_functions.insert(std::make_pair(message_type, std::bind(func, cast_this, std::placeholders::_1, std::placeholders::_2)));
+    }
+private:
+    bool ReceiveMessage(const IPlugin *sender, const std::string &message_type, void *param);
+private:
+    typedef std::map<const std::string, std::function<bool (const IPlugin * sender, void *param)> > MessageFunctionMap;
+    MessageFunctionMap m_message_functions;
+
+
+public:
     void LogWrite(const std::string &message) const;
     void LogWriteLine(const std::string &message) const;
     void DebugLogWrite(const std::string &message) const;
     void DebugLogWriteLine(const std::string &message) const;
 
+public:
     void AddMenuWidget(QWidget *add_widget, const std::string &add_tab_name);
     void AddToolWidget(QWidget *add_widget);
 
+public:
     bool IsExecute() const
     {
         return m_is_execute;
@@ -48,11 +71,7 @@ public:
         return false;
     }
 
-protected:
-    virtual bool ReceiveMessage(const IPlugin * /*sender*/, const std::string &/*message_type*/, void * /*param*/)
-    {
-        return true;
-    }
+private:
     virtual bool OnStart() = 0;
     virtual bool OnClosing()
     {

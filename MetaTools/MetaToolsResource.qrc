@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/metatools_resource">
+        <file>img/arrow_two_head_v.png</file>
+        <file>img/home.png</file>
+        <file>img/app_window.png</file>
+    </qresource>
+</RCC>

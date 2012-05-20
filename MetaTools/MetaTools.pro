@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+QMAKE_CXXFLAGS += -std=c++0x
+
 TARGET = MetaTools
 TEMPLATE = app
 
@@ -14,11 +16,15 @@ SOURCES += src/main/main.cpp \
     src/main/mainwindow.cpp \
     src/metatools_tooltip/metatools_tooltip.cpp \
     src/plugin/plugin_manager/plugin_manager.cpp \
-    src/plugin/plugin_connect_func.cpp
+    src/plugin/plugin_connect_func.cpp \
+    src/plugin/build_in_plugin/home_menu_plugin.cpp \
+    src/plugin/build_in_plugin/log_plugin.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/metatools_tooltip/metatools_tooltip.h \
-    src/plugin/plugin_manager/plugin_manager.h
+    src/plugin/plugin_manager/plugin_manager.h \
+    src/plugin/build_in_plugin/home_menu_plugin.h \
+    src/plugin/build_in_plugin/log_plugin.h
 
 FORMS    += src/metatools_tooltip/metatools_tooltip.ui \
     src/main/mainwindow.ui
@@ -34,3 +40,6 @@ DEPENDPATH += $$PWD/../MetaToolsPlugin
 win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../MetaToolsPlugin-MSVC2010/release/MetaToolsPlugin.lib
 else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../MetaToolsPlugin-MSVC2010/debug/MetaToolsPlugin.lib
 else:unix:!symbian: PRE_TARGETDEPS += $$PWD/../MetaToolsPlugin-GCC-Release/libMetaToolsPlugin.a
+
+RESOURCES += \
+    MetaToolsResource.qrc

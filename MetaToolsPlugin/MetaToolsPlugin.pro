@@ -9,6 +9,8 @@ TEMPLATE = lib
 
 DEFINES += METATOOLSPLUGIN_LIBRARY
 
+QMAKE_CXXFLAGS += -std=c++0x
+
 SOURCES += \
     plugin.cpp
 

@@ -5,6 +5,7 @@
  */
 
 #include "plugin.h"
+#include <QtGui>
 
 namespace meta_tools
 {
@@ -74,6 +75,23 @@ bool IPlugin::Close()
 bool IPlugin::SendMessage(const std::string &target_plugin_name, const std::string &message_type, void *param) const
 {
     return AppSendMessage(this, target_plugin_name, message_type, param);
+}
+
+/**
+ *  ログプラグイン.
+ *  @param sender 送り主プラグイン.
+ *  @param message_type メッセージタイプ.
+ *  @param param パラメータ.
+ *  @return trueで処理した falseで処理していない.
+ */
+bool IPlugin::ReceiveMessage(const IPlugin *sender, const std::string &message_type, void *param)
+{
+    auto it = m_message_functions.find(message_type);
+    if (it != m_message_functions.end())
+    {
+        return it->second(sender, param);
+    }
+    return false;
 }
 
 /**

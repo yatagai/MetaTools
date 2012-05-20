@@ -9,9 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1072</width>
-    <height>520</height>
+    <width>720</width>
+    <height>417</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="palette">
    <palette>
@@ -512,17 +518,26 @@
   <property name="windowTitle">
    <string>MetaTools</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
    <property name="spacing">
     <number>2</number>
    </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetDefaultConstraint</enum>
+   </property>
    <property name="margin">
-    <number>1</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QTabWidget" name="menu">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -533,11 +548,34 @@
        <height>70</height>
       </size>
      </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
      <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
+      <enum>QTabWidget::Triangular</enum>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+     <property name="elideMode">
+      <enum>Qt::ElideRight</enum>
+     </property>
+     <property name="usesScrollButtons">
+      <bool>true</bool>
      </property>
      <property name="documentMode">
       <bool>false</bool>
@@ -549,12 +587,33 @@
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="home_menu">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <kerning>true</kerning>
+       </font>
+      </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="contextMenuPolicy">
        <enum>Qt::DefaultContextMenu</enum>
       </property>
+      <attribute name="icon">
+       <iconset resource="../../MetaToolsResource.qrc">
+        <normaloff>:/metatools_resource/img/home.png</normaloff>:/metatools_resource/img/home.png</iconset>
+      </attribute>
       <attribute name="title">
        <string>ホーム</string>
       </attribute>
@@ -563,8 +622,17 @@
    </item>
    <item>
     <widget class="QTabWidget" name="main_view">
+     <property name="tabShape">
+      <enum>QTabWidget::Triangular</enum>
+     </property>
      <property name="currentIndex">
       <number>0</number>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
      </property>
      <property name="tabsClosable">
       <bool>true</bool>
@@ -573,6 +641,10 @@
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="app_widget">
+      <attribute name="icon">
+       <iconset resource="../../MetaToolsResource.qrc">
+        <normaloff>:/metatools_resource/img/app_window.png</normaloff>:/metatools_resource/img/app_window.png</iconset>
+      </attribute>
       <attribute name="title">
        <string>Log</string>
       </attribute>
@@ -600,6 +672,8 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../../MetaToolsResource.qrc"/>
+ </resources>
  <connections/>
 </ui>
