@@ -13,6 +13,10 @@ namespace Ui {
 class MainWindow;
 }
 
+namespace meta_tools {
+class PluginManager;
+}
+
 /**
  *  メインウインドウクラス.
  *  @author yatagai.
@@ -47,6 +51,13 @@ private slots:
 private:
     QTimer m_menu_animate_timer;
     float m_is_menu_minization;
+
+    // プラグイン関係.
+private:
+    void InitializePlugins();
+    void FinalizePlugins();
+private:
+    meta_tools::PluginManager* m_plugin_manager;
 };
 
 #endif // MAINWINDOW_H

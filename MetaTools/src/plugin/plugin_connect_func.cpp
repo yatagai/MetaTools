@@ -40,7 +40,7 @@ void AppLogWriteRow(const std::string &message)
  */
 void AppLogWrite(const IPlugin *writer, const std::string &message)
 {
-    AppLogWriteRow(std::string("[") + writer->GetName() + std::string("]") + message);
+    AppLogWriteRow(std::string("[") + writer->GetName() + std::string("] ") + message);
 }
 
 /**
@@ -50,7 +50,7 @@ void AppLogWrite(const IPlugin *writer, const std::string &message)
  */
 void AppDebugLogWrite(const IPlugin *writer, const std::string &message)
 {
-    AppLogWriteRow(std::string("[") + writer->GetName() + std::string("/DebugLog]") + message);
+    AppLogWriteRow(std::string("[") + writer->GetName() + std::string("/DebugLog] ") + message);
 }
 
 /**
@@ -59,9 +59,9 @@ void AppDebugLogWrite(const IPlugin *writer, const std::string &message)
  *  @param in add_widget 追加するウジェット.
  *  @param in add_tab_name 追加先タブ名.
  */
-void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &add_tab_name)
+void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name)
 {
-    PluginManager::Order()->AddMenuWidget(entry_plugin, add_widget, add_tab_name);
+    PluginManager::Order()->AddMenuWidget(entry_plugin, add_widget, label, add_tab_name);
 }
 
 /**
@@ -69,9 +69,9 @@ void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const st
  *  @param in entry_plugin 登録したプラグイン.
  *  @param in add_widget 追加するウジェット.
  */
-void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget)
+void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label)
 {
-    PluginManager::Order()->AddToolWidget(entry_plugin, add_widget);
+    PluginManager::Order()->AddToolWidget(entry_plugin, add_widget, label);
 }
 
 }   // end namespace meta_tools

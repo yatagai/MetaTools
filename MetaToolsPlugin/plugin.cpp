@@ -12,8 +12,8 @@ namespace meta_tools
 extern bool AppSendMessage(const IPlugin *sender, const std::string &target_plugin_name, const std::string &message_type, void *param);
 extern void AppLogWrite(const IPlugin *writer, const std::string &message);
 extern void AppDebugLogWrite(const IPlugin *writer, const std::string &message);
-extern void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &add_tab_name);
-extern void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget);
+extern void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
+extern void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label);
 
 /**
  * コンストラクタ.
@@ -133,20 +133,22 @@ void IPlugin::DebugLogWriteLine(const std::string &message) const
 /**
  *  メニュー用Widget追加.
  *  @param in add_widget 追加するWidget.
+ *  @param in label 追加するWidgetのラベル.
  *  @param in add_tab_name 追加するタブ.
  */
-void IPlugin::AddMenuWidget(QWidget *add_widget, const std::string &add_tab_name)
+void IPlugin::AddMenuWidget(QWidget *add_widget, const std::string &label, const std::string &add_tab_name)
 {
-    AppAddMenuWidget(this, add_widget, add_tab_name);
+    AppAddMenuWidget(this, add_widget, label, add_tab_name);
 }
 
 /**
  *  ツール用Widget追加.
  *  @param in add_widget 追加するWidget.
+ *  @param in label 追加するWigetのラベル.
  */
-void IPlugin::AddToolWidget(QWidget *add_widget)
+void IPlugin::AddToolWidget(QWidget *add_widget, const std::string &label)
 {
-    AppAddToolWidget(this, add_widget);
+    AppAddToolWidget(this, add_widget, label);
 }
 
 }   // end namesapce meta_tools

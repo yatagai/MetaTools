@@ -5,15 +5,19 @@
  */
 
 #include "home_menu_plugin.h"
+#include "ui_home_menu.h"
+#include <QtGui>
 
 namespace meta_tools
 {
 /**
  *  コンストラクタ.
  */
-HomeMenuPlugin::HomeMenuPlugin()
+HomeMenuPlugin::HomeMenuPlugin() :
+    m_home_menu(new QWidget()),
+    m_home_menu_ui(new Ui::HomeMenu())
 {
-
+    m_home_menu_ui->setupUi(m_home_menu);
 }
 
 /**
@@ -21,7 +25,10 @@ HomeMenuPlugin::HomeMenuPlugin()
  */
 HomeMenuPlugin::~HomeMenuPlugin()
 {
-
+    delete m_home_menu_ui;
+    m_home_menu_ui = nullptr;
+    delete m_home_menu;
+    m_home_menu = nullptr;
 }
 
 /**
@@ -30,7 +37,7 @@ HomeMenuPlugin::~HomeMenuPlugin()
  */
 bool HomeMenuPlugin::OnStart()
 {
-
+    AddMenuWidget(m_home_menu, "MetaTools", "ホーム");
     return true;
 }
 
@@ -40,7 +47,7 @@ bool HomeMenuPlugin::OnStart()
  */
 bool HomeMenuPlugin::OnClose()
 {
-
+    // RemoveMenuWidget(m_home_menu);
     return true;
 }
 

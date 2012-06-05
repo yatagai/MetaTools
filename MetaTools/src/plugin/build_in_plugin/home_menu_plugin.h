@@ -9,6 +9,11 @@
 
 #include<plugin.h>
 
+class QWidget;
+namespace Ui {
+class HomeMenu;
+}
+
 namespace meta_tools
 {
 /**
@@ -45,6 +50,10 @@ public:
 protected:
     virtual bool OnStart();
     virtual bool OnClose();
+
+private:
+    QWidget *m_home_menu;
+    Ui::HomeMenu *m_home_menu_ui;
 };
 
 }       // end namespace meta_tools

@@ -8,12 +8,14 @@
 #include "ui_mainwindow.h"
 #include <QToolButton>
 
+#include "../plugin/plugin_manager/plugin_manager.h"
+
 namespace
 {
 
 const float MENU_MINIZATION_SWITCH_SIZE(15.0f);
 const float MENU_MINIMUM_HEIGHT(22.0f);
-const float MENU_MAXIMUM_HEIGHT(70.0f);
+const float MENU_MAXIMUM_HEIGHT(80.0f);
 
 const int MENU_ANIMATE_DELTA(10);                   // animate delta
 const float MENU_ANIMATE_SPEED(10.0);               // animate speed MENU_ANIMATE_DELTA/ms.
@@ -28,13 +30,17 @@ MainWindow* MainWindow::sm_this = NULL;
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow),
-    m_is_menu_minization(false)
+    m_is_menu_minization(false),
+    m_plugin_manager(nullptr)
 {
     sm_this = this;
     ui->setupUi(this);
 
     // add menu_minimization_switch.
     CreateMenuMinimizationSwitch();
+
+    // initialize plugins.
+    InitializePlugins();
 }
 
 /**
@@ -42,6 +48,10 @@ MainWindow::MainWindow(QWidget *parent) :
  */
 MainWindow::~MainWindow()
 {
+    // finalize plugins.
+    FinalizePlugins();
+
+    // delete ui.
     sm_this = nullptr;
     delete ui;
 }
@@ -113,5 +123,27 @@ void MainWindow::MenuMinimizationSwitchAnimation()
     {
         // アニメーション終了.
         m_menu_animate_timer.stop();
+    }
+}
+
+/**
+ *  プラグインの初期化.
+ */
+void MainWindow::InitializePlugins()
+{
+    m_plugin_manager = new meta_tools::PluginManager(ui->menu, ui->main_view);
+    m_plugin_manager->Init();
+}
+
+/**
+ *  プラグインの破棄.
+ */
+void MainWindow::FinalizePlugins()
+{
+    if (m_plugin_manager)
+    {
+        m_plugin_manager->Final();
+        delete m_plugin_manager;
+        m_plugin_manager = nullptr;
     }
 }

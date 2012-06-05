@@ -9,6 +9,11 @@
 
 #include<plugin.h>
 
+class QWidget;
+namespace Ui {
+class LogWindow;
+}
+
 namespace meta_tools
 {
 /**
@@ -20,6 +25,11 @@ class LogPlugin : public IPlugin
 public:
     LogPlugin();
     ~LogPlugin();
+
+private:
+    QWidget *m_log_window;
+    Ui::LogWindow *m_log_window_ui;
+    std::string m_text;
 
 public:
     virtual const char* GetName() const

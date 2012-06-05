@@ -17,7 +17,7 @@ class QWidget;
 namespace meta_tools
 {
 
-class METATOOLSPLUGINSHARED_EXPORT IPlugin
+class IPlugin
 {
 public:
     IPlugin();
@@ -52,8 +52,8 @@ public:
     void DebugLogWriteLine(const std::string &message) const;
 
 public:
-    void AddMenuWidget(QWidget *add_widget, const std::string &add_tab_name);
-    void AddToolWidget(QWidget *add_widget);
+    void AddMenuWidget(QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
+    void AddToolWidget(QWidget *add_widget, const std::string &label);
 
 public:
     bool IsExecute() const
@@ -84,6 +84,9 @@ private:
 
 private:
     bool m_is_execute;
+
+
+    friend class PluginManager;
 };
 
 }  // end namespace meta_tools

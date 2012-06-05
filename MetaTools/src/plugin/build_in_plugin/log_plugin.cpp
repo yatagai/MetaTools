@@ -5,14 +5,19 @@
  */
 
 #include "log_plugin.h"
+#include "ui_log_window.h"
+#include <QtGui>
 
 namespace meta_tools
 {
 /**
  *  コンストラクタ.
  */
-LogPlugin::LogPlugin()
+LogPlugin::LogPlugin() :
+    m_log_window(new QWidget()),
+    m_log_window_ui(new Ui::LogWindow())
 {
+    m_log_window_ui->setupUi(m_log_window);
     AddMessageFunc("LOG_PRINT", &LogPlugin::OnReceiveLogPrint);
 }
 
@@ -21,7 +26,10 @@ LogPlugin::LogPlugin()
  */
 LogPlugin::~LogPlugin()
 {
-
+    delete m_log_window_ui;
+    m_log_window_ui = nullptr;
+    delete m_log_window;
+    m_log_window = nullptr;
 }
 
 /**
@@ -32,6 +40,10 @@ LogPlugin::~LogPlugin()
  */
 bool LogPlugin::OnReceiveLogPrint(const IPlugin *sender, void *param)
 {
+    const char* add_text = static_cast<const char*>(param);
+    m_text += add_text;
+    m_log_window_ui->Text->setText(m_text.c_str());
+    qDebug() << static_cast<const char*>(add_text);
     return true;
 }
 
@@ -41,7 +53,7 @@ bool LogPlugin::OnReceiveLogPrint(const IPlugin *sender, void *param)
  */
 bool LogPlugin::OnStart()
 {
-
+    AddToolWidget(m_log_window, "Log");
     return true;
 }
 
@@ -51,7 +63,7 @@ bool LogPlugin::OnStart()
  */
 bool LogPlugin::OnClose()
 {
-
+    // RemoveToolWidget(log_window);
     return true;
 }
 

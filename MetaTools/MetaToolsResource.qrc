@@ -3,5 +3,7 @@
         <file>img/arrow_two_head_v.png</file>
         <file>img/home.png</file>
         <file>img/app_window.png</file>
+        <file>img/close.png</file>
+        <file>img/plugin.png</file>
     </qresource>
 </RCC>

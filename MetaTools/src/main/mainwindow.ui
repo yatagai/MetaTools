@@ -523,7 +523,7 @@
   </property>
   <layout class="QVBoxLayout" name="mainLayout">
    <property name="spacing">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetDefaultConstraint</enum>
@@ -545,19 +545,22 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>70</height>
+       <height>80</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>70</height>
+       <height>80</height>
       </size>
      </property>
      <property name="font">
       <font>
        <pointsize>10</pointsize>
       </font>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
      </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
@@ -622,11 +625,14 @@
    </item>
    <item>
     <widget class="QTabWidget" name="main_view">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="tabShape">
       <enum>QTabWidget::Triangular</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>-1</number>
      </property>
      <property name="iconSize">
       <size>
@@ -640,33 +646,6 @@
      <property name="movable">
       <bool>true</bool>
      </property>
-     <widget class="QWidget" name="app_widget">
-      <attribute name="icon">
-       <iconset resource="../../MetaToolsResource.qrc">
-        <normaloff>:/metatools_resource/img/app_window.png</normaloff>:/metatools_resource/img/app_window.png</iconset>
-      </attribute>
-      <attribute name="title">
-       <string>Log</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <property name="spacing">
-        <number>2</number>
-       </property>
-       <property name="margin">
-        <number>2</number>
-       </property>
-       <item>
-        <widget class="QTextEdit" name="log_window">
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
     </widget>
    </item>
   </layout>
