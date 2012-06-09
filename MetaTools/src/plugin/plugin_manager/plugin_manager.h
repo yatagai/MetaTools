@@ -43,20 +43,11 @@ private:
     bool LoadPlugins();
     bool ReleasePlugins();
 
-    // プラグイン関係.
-public:
-    struct PluginWidgetInfo
-    {
-        QWidget* wiget;
-        IPlugin* owner;
-    };
-
 public:    
     // widgetの追加&削除.
     void AddMenuWidget(const IPlugin* entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
-    void RemoveMenuWidget(QWidget *remove_widget);
     void AddToolWidget(const IPlugin* entry_plugin, QWidget* add_widget, const std::string &label);
-    void RemoveToolWidget(QWidget* add_widget);
+    void RemoveWidget(const IPlugin* entry_plugin, QWidget *remove_widget);
 
     // メッセージの送信.
     bool SendMessage(const IPlugin *sender, const std::string &target_plugin_name, const std::string &message_type, void *param);
@@ -64,18 +55,17 @@ public:
     // ログの書き込み.
     void LogWrite(const std::string &message);
 
-private:
     // オープン&クローズ.
     void OpenPlugin(IPlugin* open_plugin);
     void ClosePlugin(IPlugin* close_plugin);
 
+private:
     // プラグインの検索.
     IPlugin* Find(const std::string &plugin_name);
 
 private:
     std::vector<IPlugin*> m_plugins;
-    std::vector<PluginWidgetInfo> m_menu_widget;
-    std::vector<PluginWidgetInfo> m_tool_widget;
+    IPlugin* m_home_menu_plugin;
     IPlugin* m_log_plugin;
     QTabWidget* m_menu_tab;
     QTabWidget* m_main_view;

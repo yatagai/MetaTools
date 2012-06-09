@@ -6,6 +6,7 @@
 
 #include "plugin.h"
 #include <QtGui>
+#include <QIcon>
 
 namespace meta_tools
 {
@@ -14,26 +15,36 @@ extern void AppLogWrite(const IPlugin *writer, const std::string &message);
 extern void AppDebugLogWrite(const IPlugin *writer, const std::string &message);
 extern void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
 extern void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label);
+extern void AppRemoveWidget(const IPlugin *entry_plugin, QWidget *add_widget);
 
 /**
- * コンストラクタ.
- */
-IPlugin::IPlugin()
-    : m_is_execute(false)
+ *  @brief		コンストラクタ.
+ *  @author		yatagaik.
+ */ 
+IPlugin::IPlugin() :
+    m_widget_icon(new QIcon()),
+    m_is_execute(false)
 {
 }
 
 /**
- * デストラクタ.
- */
+ *  @brief		デストラクタ.
+ *  @author		yatagaik.
+ */ 
 IPlugin::~IPlugin()
 {
+    if (m_widget_icon)
+    {
+        delete m_widget_icon;
+        m_widget_icon = nullptr;
+    }
 }
 
 /**
- *  プラグインの開始.
- *  @return trueで成功 falseで失敗.
- */
+ *  @brief		プラグインの開始.
+ *  @author		yatagaik.
+ *  @return		trueで成功 falseで失敗.
+ */ 
 bool IPlugin::Start()
 {
     if (OnStart())
@@ -44,8 +55,9 @@ bool IPlugin::Start()
 }
 
 /**
- *  プラグインの終了してもよいか.
- *  @return trueで終了してもよい falseで終了したらダメ.
+ *  @brief		プラグインの終了してもよいか.
+ *  @author		yatagaik.
+ *  @return     trueで終了してもよい falseで終了したらダメ.
  */
 bool IPlugin::Closing()
 {
@@ -53,8 +65,9 @@ bool IPlugin::Closing()
 }
 
 /**
- *  プラグインの終了.
- *  @return trueで成功 falseで失敗.
+ *  @brief		プラグインの終了.
+ *  @author		yatagaik.
+ *  @return     trueで成功 falseで失敗.
  */
 bool IPlugin::Close()
 {
@@ -67,10 +80,11 @@ bool IPlugin::Close()
 }
 
 /**
- *  プラグインにメッセージ送信.
- *  @param in target_plugin_name 送信先のプラグイン名.
- *  @param in message_type メッセージタイプ.
- *  @param in param パラメータ.
+ *  @brief		プラグインにメッセージ送信.
+ *  @author		yatagaik.
+ *  @param  in  target_plugin_name 送信先のプラグイン名.
+ *  @param  in  message_type メッセージタイプ.
+ *  @param  in  param パラメータ.
  */
 bool IPlugin::SendMessage(const std::string &target_plugin_name, const std::string &message_type, void *param) const
 {
@@ -78,11 +92,12 @@ bool IPlugin::SendMessage(const std::string &target_plugin_name, const std::stri
 }
 
 /**
- *  ログプラグイン.
- *  @param sender 送り主プラグイン.
- *  @param message_type メッセージタイプ.
- *  @param param パラメータ.
- *  @return trueで処理した falseで処理していない.
+ *  @brief		ログプラグイン.
+ *  @author		yatagaik.
+ *  @param  in  sender 送り主プラグイン.
+ *  @param  in  message_type メッセージタイプ.
+ *  @param  in  param パラメータ.
+ *  @return     trueで処理した falseで処理していない.
  */
 bool IPlugin::ReceiveMessage(const IPlugin *sender, const std::string &message_type, void *param)
 {
@@ -95,8 +110,9 @@ bool IPlugin::ReceiveMessage(const IPlugin *sender, const std::string &message_t
 }
 
 /**
- *  ログに出力.
- *  @param in message 出力するメッセージ.
+ *  @brief		ログに出力.
+ *  @author		yatagaik.
+ *  @param  in  message 出力するメッセージ.
  */
 void IPlugin::LogWrite(const std::string &message) const
 {
@@ -104,8 +120,9 @@ void IPlugin::LogWrite(const std::string &message) const
 }
 
 /**
- *  ログに1行出力.
- *  @param message 出力するメッセージ.
+ *  @brief		ログに1行出力.
+ *  @author		yatagaik.
+ *  @param  in  message 出力するメッセージ.
  */
 void IPlugin::LogWriteLine(const std::string &message) const
 {
@@ -113,8 +130,9 @@ void IPlugin::LogWriteLine(const std::string &message) const
 }
 
 /**
- *  デバッグ用ログに出力.
- *  @param in message 出力するメッセージ.
+ *  @brief		デバッグ用ログに出力.
+ *  @author		yatagaik.
+ *  @param  in  message 出力するメッセージ.
  */
 void IPlugin::DebugLogWrite(const std::string &message) const
 {
@@ -122,8 +140,9 @@ void IPlugin::DebugLogWrite(const std::string &message) const
 }
 
 /**
- *  デバッグ用ログに1行出力.
- *  @param in message 出力するメッセージ.
+ *  @brief		デバッグ用ログに1行出力.
+ *  @author		yatagaik.
+ *  @param  in  message 出力するメッセージ.
  */
 void IPlugin::DebugLogWriteLine(const std::string &message) const
 {
@@ -131,10 +150,11 @@ void IPlugin::DebugLogWriteLine(const std::string &message) const
 }
 
 /**
- *  メニュー用Widget追加.
- *  @param in add_widget 追加するWidget.
- *  @param in label 追加するWidgetのラベル.
- *  @param in add_tab_name 追加するタブ.
+ *  @brief		メニュー用Widget追加.
+ *  @author		yatagaik.
+ *  @param  in  add_widget 追加するWidget.
+ *  @param  in  label 追加するWidgetのラベル.
+ *  @param  in  add_tab_name 追加するタブ.
  */
 void IPlugin::AddMenuWidget(QWidget *add_widget, const std::string &label, const std::string &add_tab_name)
 {
@@ -142,13 +162,24 @@ void IPlugin::AddMenuWidget(QWidget *add_widget, const std::string &label, const
 }
 
 /**
- *  ツール用Widget追加.
- *  @param in add_widget 追加するWidget.
- *  @param in label 追加するWigetのラベル.
+ *  @brief		ツール用Widget追加.
+ *  @author		yatagaik.
+ *  @param  in  add_widget 追加するWidget.
+ *  @param  in  label 追加するWigetのラベル.
  */
 void IPlugin::AddToolWidget(QWidget *add_widget, const std::string &label)
 {
     AppAddToolWidget(this, add_widget, label);
+}
+
+/**
+ *  @brief		ウィジェットの削除.
+ *  @author		yatagaik.
+ *  @param  in	remove_widget	削除するウィジェット.
+ */ 
+void IPlugin::RemoveWidget(QWidget *remove_widget)
+{
+    AppRemoveWidget(this, remove_widget);
 }
 
 }   // end namesapce meta_tools

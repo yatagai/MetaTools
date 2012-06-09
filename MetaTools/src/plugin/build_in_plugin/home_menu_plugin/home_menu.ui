@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>HomeMenu</class>
  <widget class="QWidget" name="HomeMenu">
@@ -50,7 +50,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QToolButton" name="toolButton">
+  <widget class="QToolButton" name="AppCloseButton">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -124,7 +124,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QToolButton" name="toolButton_2">
+  <widget class="QToolButton" name="ShowPluginManagerButton">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -167,7 +167,7 @@
     <enum>Qt::NoArrow</enum>
    </property>
   </widget>
-  <widget class="QToolButton" name="toolButton_3">
+  <widget class="QToolButton" name="ShowLogButton">
    <property name="geometry">
     <rect>
      <x>90</x>

@@ -58,6 +58,8 @@ private:
     void FinalizePlugins();
 private:
     meta_tools::PluginManager* m_plugin_manager;
+private slots:
+    void OnClickToolWidgetCloseButton(int index);
 };
 
 #endif // MAINWINDOW_H

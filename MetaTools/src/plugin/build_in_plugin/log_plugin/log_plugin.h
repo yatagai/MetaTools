@@ -6,8 +6,7 @@
 #ifndef LOG_PLUGIN_H
 #define LOG_PLUGIN_H
 
-
-#include<plugin.h>
+#include <plugin.h>
 
 class QWidget;
 namespace Ui {
@@ -30,19 +29,19 @@ private:
     QWidget *m_log_window;
     Ui::LogWindow *m_log_window_ui;
     std::string m_text;
-
+    bool m_ishide;
 public:
     virtual const char* GetName() const
     {
-        return "LogPlugin";
+        return "Log";
     }
-    virtual const char* GetExt() const
+    virtual const char* GetExp() const
     {
-        return "Log出力プラグイン.";
+        return "Log出力プラグイン";
     }
     virtual const char* GetAuthor() const
     {
-        return "yatagai.";
+        return "yatagai";
     }
     virtual const char* GetVersion() const
     {
@@ -55,7 +54,10 @@ public:
 
 private:
     bool OnReceiveLogPrint(const IPlugin *sender, void *param);
+    bool OnReceiveLogShow(const IPlugin *sender, void *param);
 
+public:
+    virtual void OnClickCloseButton(QWidget *clicked_widget);
 protected:
     virtual bool OnStart();
     virtual bool OnClose();

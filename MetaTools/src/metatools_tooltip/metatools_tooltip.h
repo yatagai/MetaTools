@@ -13,6 +13,9 @@ namespace Ui {
 class MetaToolsToolTip;
 }
 
+namespace meta_tools
+{
+class IPlugin;
 /**
  *  ツールチップクラス.
  *  @author yatagai.
@@ -22,15 +25,31 @@ class MetaToolsToolTip : public QWidget
     Q_OBJECT
     
 public:
-    explicit MetaToolsToolTip(QWidget *parent = 0);
+    explicit MetaToolsToolTip(QWidget *paren, const IPlugin *plugin);
     ~MetaToolsToolTip();
-    
+
 public:
+    const IPlugin* GetPlugin() const
+    {
+        return m_plugin;
+    }
+private:
+    const IPlugin *m_plugin;
+
+public:
+    QWidget* GetChildWidget() const
+    {
+        return m_child;
+    }
     void SetChildWidget(QWidget *child);
     void SetLabel(const char* label);
 private:
-    Ui::MetaToolsToolTip *ui;
+    Ui::MetaToolsToolTip *m_ui;
     QWidget* m_child;
+
+private slots:
+    void OnClickCloseButton();
 };
 
-#endif // METATOOLS_TOOLTIP_H
+}       // end namespace meta_tools.
+#endif // METATOOLS_TOOLTIP_H.

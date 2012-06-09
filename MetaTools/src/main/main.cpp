@@ -9,10 +9,10 @@
 #include "mainwindow.h"
 
 /**
- *  entroy point.
- *  @param in  argc コマンドライン引数の数.
- *  @param in  argv コマンドライン引数.
- *  @return 0
+ *  @brief      entroy point.
+ *  @param  in  argc コマンドライン引数の数.
+ *  @param  in  argv コマンドライン引数.
+ *  @return     0
  */
 int main(int argc, char *argv[])
 {

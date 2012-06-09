@@ -7,18 +7,24 @@
 #include "plugin_manager.h"
 
 #include <QTableWidget>
+#include <plugin.h>
 #include "../../metatools_tooltip/metatools_tooltip.h"
-#include "../build_in_plugin/home_menu_plugin.h"
-#include "../build_in_plugin/log_plugin.h"
+#include "../../tool_widget_form/tool_widget_form.h"
+#include "../build_in_plugin/home_menu_plugin/home_menu_plugin.h"
+#include "../build_in_plugin/log_plugin/log_plugin.h"
 
 namespace meta_tools
 {
 PluginManager* PluginManager::sm_this = NULL;
 
 /**
- *  コンストラクタ.
- */
+ *  @brief		コンストラクタ.		
+ *  @author		yatagaik.
+ *  @param	in	menu_tab	タブメニューウィジェット.
+ *  @param	in	main_view	メインタブビュー.
+ */ 
 PluginManager::PluginManager(QTabWidget *menu_tab, QTabWidget *main_view) :
+    m_home_menu_plugin(nullptr),
     m_log_plugin(nullptr),
     m_menu_tab(menu_tab),
     m_main_view(main_view)
@@ -27,7 +33,8 @@ PluginManager::PluginManager(QTabWidget *menu_tab, QTabWidget *main_view) :
 }
 
 /**
- *  デストラクタ.
+ *  @brief		デストラクタ.
+ *  @author     yatagaik.
  */
 PluginManager::~PluginManager()
 {
@@ -35,8 +42,9 @@ PluginManager::~PluginManager()
 }
 
 /**
- *  初期化.
- *  @return trueで初期化成功 falseで失敗.
+ *  @brief		初期化.
+ *  @author     yatagaik.
+ *  @return     trueで初期化成功 falseで失敗.
  */
 bool PluginManager::Init()
 {
@@ -45,8 +53,9 @@ bool PluginManager::Init()
 }
 
 /**
- *  ファイナライズ.
- *  @return trueでファイナライズ成功 falseで失敗.
+ *  @brief		ファイナライズ.
+ *  @author     yatagaik.
+ *  @return     trueでファイナライズ成功 falseで失敗.
  */
 bool PluginManager::Final()
 {
@@ -55,22 +64,24 @@ bool PluginManager::Final()
 }
 
 /**
- *  プラグインの読み込み.
- *  @return trueで読み込み完了 falseで失敗.
+ *  @brief		プラグインの読み込み.
+ *  @author     yatagaik.
+ *  @return     trueで読み込み完了 falseで失敗.
  */
 bool PluginManager::LoadPlugins()
 {
     // build in pluygin.
-    m_plugins.push_back(new HomeMenuPlugin());
+    m_plugins.push_back(m_home_menu_plugin = new HomeMenuPlugin());
     m_plugins.push_back(m_log_plugin = new LogPlugin());
 
     // add dynamic plugins.
 
 
-    // load plugins print.
+    // load log print & regist plugin manager widget.
     for(auto it = m_plugins.begin(); it != m_plugins.end(); ++it)
     {
-        LogWrite("[PluginManager] load plugin " + std::string((*it)->GetName()) + "\n");
+        LogWrite("[PluginManager] load plugin " + std::string((*it)->GetName()) + "\n");        // load log print.
+        SendMessage(nullptr, m_home_menu_plugin->GetName(), "LOADED_PLUGIN", *it);              // regist plugin manager widget.
     }
 
     // open start up.
@@ -86,8 +97,9 @@ bool PluginManager::LoadPlugins()
 }
 
 /**
- *  プラグインの開放.
- *  @return trueで読み込み完了 falseで失敗.
+ *  @brief		プラグインの開放.
+ *  @author     yatagaik.
+ *  @return     trueで読み込み完了 falseで失敗.
  */
 bool PluginManager::ReleasePlugins()
 {
@@ -101,84 +113,122 @@ bool PluginManager::ReleasePlugins()
         delete (*it);
     }
     m_plugins.empty();
+    m_home_menu_plugin = nullptr;
     m_log_plugin = nullptr;
     return true;
 }
 
 /**
- *  プラグインオープン.
- *  @param in open_plugin オープンするプラグイン.
+ *  @brief		プラグインオープン.
+ *  @author     yatagaik.
+ *  @param  in  open_plugin オープンするプラグイン.
  */
-void PluginManager::OpenPlugin(IPlugin* open_plugin)
+void PluginManager::OpenPlugin(IPlugin *open_plugin)
 {
-    open_plugin->OnStart();
+    open_plugin->Start();
 }
 
 /**
- *  プラグインクローズ.
- *  @param in open_plugin クローズするプラグイン.
+ *  @brief		プラグインクローズ.
+ *  @author     yatagaik.
+ *  @param  in  open_plugin クローズするプラグイン.
  */
-void PluginManager::ClosePlugin(IPlugin* close_plugin)
+void PluginManager::ClosePlugin(IPlugin *close_plugin)
 {
-    if (close_plugin->OnClosing())
+    if (close_plugin->Closing())
     {
         close_plugin->Close();
     }
 }
 
 /**
- *  メニューウィジェットの追加.
- *  @param in entry_plugin エントリーするプラグイン.
- *  @param in add_widget　 追加するウィジェット.
- *  @param in label        追加するウィジェットのラベル.
- *  @param in add_tab_name 追加するタブ.
+ *  @brief		メニューウィジェットの追加.
+ *  @author     yatagaik.
+ *  @param  in  entry_plugin エントリーするプラグイン.
+ *  @param  in  add_widget　 追加するウィジェット.
+ *  @param  in  label        追加するウィジェットのラベル.
+ *  @param  in  add_tab_name 追加するタブ.
  */
-void PluginManager::AddMenuWidget(const IPlugin* entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name)
+void PluginManager::AddMenuWidget(const IPlugin * entry_plugin, QWidget *add_widget, const std::string &label, const std::string &/*add_tab_name*/)
 {
-    MetaToolsToolTip* new_tool_tip = new MetaToolsToolTip(static_cast<QWidget*>(m_menu_tab->children().at(0)));
+    MetaToolsToolTip* new_tool_tip = new MetaToolsToolTip(static_cast<QWidget*>(m_menu_tab->widget(0)), entry_plugin);
     new_tool_tip->SetChildWidget(add_widget);
     new_tool_tip->SetLabel(label.c_str());
 }
 
 /**
- *  ツールウィジェットの追加.
- *  @param in entry_plugin エントリーするプラグイン.
- *  @param in add_widget   追加するウィジェット.
- *  @param in label        追加するウィジェットのラベル.
+ *  @brief		ツールウィジェットの追加.
+ *  @author     yatagaik.
+ *  @param  in  entry_plugin エントリーするプラグイン.
+ *  @param  in  add_widget   追加するウィジェット.
+ *  @param  in  label        追加するウィジェットのラベル.
  */
-void PluginManager::AddToolWidget(const IPlugin* entry_plugin, QWidget* add_widget, const std::string &label)
+void PluginManager::AddToolWidget(const IPlugin * entry_plugin, QWidget* add_widget, const std::string &label)
 {
-    m_main_view->addTab(add_widget, label.c_str());
+    ToolWidgetForm *new_tool_widget = new ToolWidgetForm(entry_plugin);
+    new_tool_widget->SetChildWidget(add_widget);
+    m_main_view->addTab(new_tool_widget, label.c_str());
 }
 
 /**
- *  メニューウィジェットの削除.
- *  @param in remove_widget 削除するウィジェット.
+ *  @brief		ウィジェットの削除.
+ *  @author		yatagaik.
+ *  @param  in  remove_widget 削除するウィジェット.
  */
-void PluginManager::RemoveMenuWidget(QWidget *remove_widget)
+void PluginManager::RemoveWidget(const IPlugin * /*entry_plugin*/, QWidget *remove_widget)
 {
-
-}
-
-/**
- *  ツールウィジェットの削除.
- *  @param in remove_widget 削除するウィジェット.
- */
-void PluginManager::RemoveToolWidget(QWidget *remove_widget)
-{
-    int index = m_main_view->indexOf(remove_widget);
-    if (index >= 0)
+    // ツールウィジェットから検索.
+    for (int i = 0; i < m_main_view->count(); ++i)
     {
-        m_main_view->removeTab(index);
+        ToolWidgetForm *form = dynamic_cast<ToolWidgetForm*>(m_main_view->widget(i));
+        if (!form)
+        {
+            continue;
+        }
+        if (form && form->GetChildWidget() == remove_widget)
+        {
+            // ToolTipの削除.
+            form->SetChildWidget(nullptr);
+            m_main_view->removeTab(m_main_view->indexOf(form));
+            delete form;
+            return;
+        }
+    }
+
+    // メニューウィジェットから検索.
+    for (int i = 0; i < m_menu_tab->count(); ++i)
+    {
+        QWidget *tab = dynamic_cast<QWidget*>(m_menu_tab->widget(i));
+        if (!tab)
+        {
+            continue;
+        }
+        for (int j = 0; j < tab->children().count(); ++j)
+        {
+            MetaToolsToolTip *tool_tip = dynamic_cast<MetaToolsToolTip*>(tab->children().at(j));
+            if (tool_tip && tool_tip->GetChildWidget() == remove_widget)
+            {
+                // ToolTipの削除.
+                tool_tip->SetChildWidget(nullptr);
+                delete tool_tip;
+                // タブが空になったらタブごと削除(ホームは例外).
+                if (tab->children().count() == 0 && i != 0)
+                {
+                    delete tab;
+                }
+                return;
+            }
+        }
     }
 }
 
 /**
- *  メッセージの送信.
- *  @param in sender. 送信元プラグイン.
- *  @param in target_plugin_name ターゲットプラグイン名.
- *  @param in message_type メッセージタイプ.
- *  @param in param パラメーター.
+ *  @brief		メッセージの送信.
+ *  @author     yatagaik.
+ *  @param  in  sender. 送信元プラグイン.
+ *  @param  in  target_plugin_name ターゲットプラグイン名.
+ *  @param  in  message_type メッセージタイプ.
+ *  @param  in  param パラメーター.
  */
 bool PluginManager::SendMessage(const IPlugin *sender, const std::string &target_plugin_name, const std::string &message_type, void *param)
 {
@@ -202,9 +252,8 @@ bool PluginManager::SendMessage(const IPlugin *sender, const std::string &target
 }
 
 /**
- *  ログ書き込み.
- *  @param in writer 書き込みしたプラグイン.
- *  @param in message メッセージ.
+ *  @brief		ログ書き込み.
+ *  @param  in  message メッセージ.
  */
 void PluginManager::LogWrite(const std::string &message)
 {
@@ -216,9 +265,9 @@ void PluginManager::LogWrite(const std::string &message)
 }
 
 /**
- *  プラグインの検索.
- *  @param in plugin_name プラグイン名.
- *  @return 見つかればプラグインポインタ 見つからなければnullptr
+ *  @brief		プラグインの検索.
+ *  @param  in  plugin_name プラグイン名.
+ *  @return     見つかればプラグインポインタ 見つからなければnullptr
  */
 IPlugin* PluginManager::Find(const std::string &plugin_name)
 {

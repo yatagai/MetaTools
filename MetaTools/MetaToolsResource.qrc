@@ -5,5 +5,8 @@
         <file>img/app_window.png</file>
         <file>img/close.png</file>
         <file>img/plugin.png</file>
+        <file>img/plugin_default_icon.png</file>
+        <file>img/home_icon.png</file>
+        <file>img/log_icon.png</file>
     </qresource>
 </RCC>

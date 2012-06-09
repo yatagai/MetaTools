@@ -13,10 +13,14 @@
 #include <functional>
 
 class QWidget;
-
+class QIcon;
 namespace meta_tools
 {
 
+/**
+ *  @brief		プラグインのインターフェース.		
+ *  @author		yatagaik.
+ */ 
 class IPlugin
 {
 public:
@@ -54,6 +58,7 @@ public:
 public:
     void AddMenuWidget(QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
     void AddToolWidget(QWidget *add_widget, const std::string &label);
+    void RemoveWidget(QWidget *remove_widget);
 
 public:
     bool IsExecute() const
@@ -63,15 +68,25 @@ public:
 
 public:
     virtual const char* GetName() const = 0;
-    virtual const char* GetExt() const = 0;
+    virtual const char* GetExp() const = 0;
     virtual const char* GetAuthor() const = 0;
     virtual const char* GetVersion() const = 0;
     virtual bool IsStartUp() const
     {
         return false;
     }
+    virtual QIcon* GetWidgetIcon() const
+    {
+        return m_widget_icon;
+    }
+protected:
+    QIcon *m_widget_icon;
 
-private:
+public:
+    virtual void OnClickCloseButton(QWidget * /*clicked_widget*/)
+    {
+    }
+protected:
     virtual bool OnStart() = 0;
     virtual bool OnClosing()
     {
@@ -81,10 +96,8 @@ private:
     {
         return true;
     }
-
 private:
     bool m_is_execute;
-
 
     friend class PluginManager;
 };

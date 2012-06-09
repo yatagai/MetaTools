@@ -9,6 +9,7 @@
 #include <QToolButton>
 
 #include "../plugin/plugin_manager/plugin_manager.h"
+#include "../tool_widget_form/tool_widget_form.h"
 
 namespace
 {
@@ -24,8 +25,9 @@ const float MENU_ANIMATE_SPEED(10.0);               // animate speed MENU_ANIMAT
 MainWindow* MainWindow::sm_this = NULL;
 
 /**
- *  コンストラクタ.
- *  @param in parent 親ウィジェット.
+ *  @brief      コンストラクタ.
+ *  @author		yatagaik.
+ *  @param  in  parent 親ウィジェット.
  */
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
@@ -44,7 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 /**
- *  デストラクタ.
+ *  @brief      デストラクタ.
+ *  @author		yatagaik.
  */
 MainWindow::~MainWindow()
 {
@@ -57,7 +60,8 @@ MainWindow::~MainWindow()
 }
 
 /**
- *  メニュー最小化スイッチ作成.
+ *  @brief      メニュー最小化スイッチ作成.
+ *  @author		yatagaik.
  */
 void MainWindow::CreateMenuMinimizationSwitch()
 {
@@ -74,7 +78,8 @@ void MainWindow::CreateMenuMinimizationSwitch()
 }
 
 /**
- *  メニューの最小化スイッチの開始.
+ *  @brief      メニューの最小化スイッチの開始.
+ *  @author		yatagaik.
  */
 void MainWindow::OnMinimizationSwitch()
 {
@@ -88,7 +93,8 @@ void MainWindow::OnMinimizationSwitch()
 }
 
 /**
- *  メニュー最小化スイッチアニメーション.
+ *  @brief      メニュー最小化スイッチアニメーション.
+ *  @author		yatagaik.
  */
 void MainWindow::MenuMinimizationSwitchAnimation()
 {
@@ -127,16 +133,19 @@ void MainWindow::MenuMinimizationSwitchAnimation()
 }
 
 /**
- *  プラグインの初期化.
+ *  @brief      プラグインの初期化.
+ *  @author		yatagaik.
  */
 void MainWindow::InitializePlugins()
 {
+    connect(ui->main_view, SIGNAL(tabCloseRequested(int)), this, SLOT(OnClickToolWidgetCloseButton(int)));
     m_plugin_manager = new meta_tools::PluginManager(ui->menu, ui->main_view);
     m_plugin_manager->Init();
 }
 
 /**
- *  プラグインの破棄.
+ *  @brief      プラグインの破棄.
+ *  @author		yatagaik.
  */
 void MainWindow::FinalizePlugins()
 {
@@ -145,5 +154,19 @@ void MainWindow::FinalizePlugins()
         m_plugin_manager->Final();
         delete m_plugin_manager;
         m_plugin_manager = nullptr;
+    }
+}
+
+/**
+ *  @brief      ツールウィジェットの閉じるボタンが押された.
+ *  @author		yatagaik.
+ *  @param  in  index クリックされたウィジェットのインデックス.
+ */
+void MainWindow::OnClickToolWidgetCloseButton(int index)
+{
+    meta_tools::ToolWidgetForm *tool_widget_form = dynamic_cast<meta_tools::ToolWidgetForm*>(ui->main_view->widget(index));
+    if (tool_widget_form)
+    {
+        tool_widget_form->OnClickCloseButton();
     }
 }
