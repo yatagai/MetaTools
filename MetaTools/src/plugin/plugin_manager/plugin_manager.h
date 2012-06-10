@@ -65,10 +65,10 @@ private:
 
 private:
     std::vector<IPlugin*> m_plugins;
-    IPlugin* m_home_menu_plugin;
-    IPlugin* m_log_plugin;
-    QTabWidget* m_menu_tab;
-    QTabWidget* m_main_view;
+    IPlugin *m_home_menu_plugin;
+    IPlugin *m_log_plugin;
+    QTabWidget *m_menu_tab;
+    QTabWidget *m_main_view;
 };
 
 }       // namespace meta_tools.

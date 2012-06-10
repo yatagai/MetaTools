@@ -6,7 +6,7 @@
 #ifndef LOG_PLUGIN_H
 #define LOG_PLUGIN_H
 
-#include <plugin.h>
+#include "../../plugin.h"
 
 class QWidget;
 namespace Ui {
@@ -22,7 +22,7 @@ namespace meta_tools
 class LogPlugin : public IPlugin
 {
 public:
-    LogPlugin();
+    LogPlugin(const AppFunctions &app_functions);
     ~LogPlugin();
 
 private:

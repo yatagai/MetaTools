@@ -303,7 +303,7 @@
      </property>
      <property name="font">
       <font>
-       <pointsize>19</pointsize>
+       <pointsize>16</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>

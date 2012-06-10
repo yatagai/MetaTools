@@ -54,9 +54,8 @@ void PluginManagerWidget::Show()
 {
     // メインウインドウのあるモニタに最大化表示.
     show();
-    this->setGeometry(MainWindow::Order()->geometry());
-    setWindowState(windowState() | Qt::WindowMaximized);
-
+    setGeometry(MainWindow::Order()->geometry());
+    setWindowState(windowState() | Qt::WindowFullScreen);
     ChangePluginExplanationText("プラグインの概要:");
 }
 

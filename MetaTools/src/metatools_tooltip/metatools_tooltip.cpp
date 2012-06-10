@@ -6,7 +6,7 @@
 
 #include "metatools_tooltip.h"
 #include "ui_metatools_tooltip.h"
-#include <plugin.h>
+#include "../plugin/plugin.h"
 #include <assert.h>
 
 namespace meta_tools

@@ -16,7 +16,8 @@ namespace meta_tools
  *  @brief		コンストラクタ.		
  *  @author		yatagaik.
  */ 
-LogPlugin::LogPlugin() :
+LogPlugin::LogPlugin(const AppFunctions &app_functions) :
+    IPlugin(app_functions),
     m_log_window(new QWidget()),
     m_log_window_ui(new Ui::LogWindow()),
     m_ishide(true)

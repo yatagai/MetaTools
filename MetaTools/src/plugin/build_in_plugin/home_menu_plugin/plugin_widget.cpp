@@ -3,7 +3,7 @@
  * @file plugin_widget.cpp.
  * @author yatagai.
  */
-#include<plugin.h>
+#include "../../plugin.h"
 #include "plugin_widget.h"
 #include "ui_plugin_widget.h"
 #include "plugin_manager_widget.h"

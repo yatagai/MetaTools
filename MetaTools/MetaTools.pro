@@ -32,7 +32,8 @@ HEADERS  += src/main/mainwindow.h \
     src/plugin/build_in_plugin/home_menu_plugin/home_menu_plugin.h \
     src/plugin/build_in_plugin/home_menu_plugin/home_menu_plugin_widget.h \
     src/plugin/build_in_plugin/home_menu_plugin/plugin_manager_widget.h \
-    src/plugin/build_in_plugin/home_menu_plugin/plugin_widget.h
+    src/plugin/build_in_plugin/home_menu_plugin/plugin_widget.h \
+    src/plugin/plugin.h
 
 FORMS    += src/main/mainwindow.ui \
     src/metatools_tooltip/metatools_tooltip.ui \
@@ -41,18 +42,6 @@ FORMS    += src/main/mainwindow.ui \
     src/plugin/build_in_plugin/home_menu_plugin/home_menu.ui \
     src/plugin/build_in_plugin/home_menu_plugin/plugin_manager.ui \
     src/plugin/build_in_plugin/home_menu_plugin/plugin_widget.ui
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../MetaToolsPlugin-MSVC/release/ -lMetaToolsPlugin
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../MetaToolsPlugin-MSVC/debug/ -lMetaToolsPlugin
-else:symbian: LIBS += -lMetaToolsPlugin
-else:unix: LIBS += -L$$PWD/../MetaToolsPlugin-GCC-Release/ -lMetaToolsPlugin
-
-INCLUDEPATH += $$PWD/../MetaToolsPlugin
-DEPENDPATH += $$PWD/../MetaToolsPlugin
-
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../MetaToolsPlugin-MSVC/release/MetaToolsPlugin.lib
-else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../MetaToolsPlugin-MSVC/debug/MetaToolsPlugin.lib
-else:unix:!symbian: PRE_TARGETDEPS += $$PWD/../MetaToolsPlugin-GCC-Release/libMetaToolsPlugin.a
 
 RESOURCES += \
     MetaToolsResource.qrc

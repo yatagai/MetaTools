@@ -14,7 +14,8 @@ namespace meta_tools
  *  @brief      コンストラクタ.
  *  @author		yatagaik.
  */
-HomeMenuPlugin::HomeMenuPlugin() :
+HomeMenuPlugin::HomeMenuPlugin(const AppFunctions &app_functions) :
+    IPlugin(app_functions),
     m_home_menu_widget(new HomeMenuPluginWidget(this))
 {
     AddMessageFunc("LOADED_PLUGIN", &HomeMenuPlugin::OnLoadedPluginMessage);

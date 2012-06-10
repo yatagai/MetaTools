@@ -1,6 +1,6 @@
 ﻿#include "tool_widget_form.h"
 #include "ui_tool_widget_form.h"
-#include <plugin.h>
+#include "../plugin/plugin.h"
 #include <assert.h>
 
 namespace meta_tools

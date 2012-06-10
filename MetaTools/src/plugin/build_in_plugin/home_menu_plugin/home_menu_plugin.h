@@ -6,7 +6,7 @@
 #ifndef HOME_MENU_PLUGIN_H
 #define HOME_MENU_PLUGIN_H
 
-#include <plugin.h>
+#include "../../plugin.h"
 class QWidget;
 class QIcon;
 class HomeMenuPluginWidget;
@@ -21,7 +21,7 @@ class IPlugin;
 class HomeMenuPlugin : public IPlugin
 {
 public:
-    HomeMenuPlugin();
+    HomeMenuPlugin(const AppFunctions &app_functions);
     ~HomeMenuPlugin();
 public:
     virtual const char* GetName() const

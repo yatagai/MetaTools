@@ -7,7 +7,7 @@
 #include "plugin_manager.h"
 
 #include <QTableWidget>
-#include <plugin.h>
+#include "../plugin.h"
 #include "../../metatools_tooltip/metatools_tooltip.h"
 #include "../../tool_widget_form/tool_widget_form.h"
 #include "../build_in_plugin/home_menu_plugin/home_menu_plugin.h"
@@ -16,6 +16,23 @@
 namespace meta_tools
 {
 PluginManager* PluginManager::sm_this = NULL;
+
+extern bool AppSendMessage(const IPlugin *sender, const std::string &target_plugin_name, const std::string &message_type, void *param);
+extern void AppLogWriteRow(const std::string &message);
+extern void AppLogWrite(const IPlugin *writer, const std::string &message);
+extern void AppDebugLogWrite(const IPlugin *writer, const std::string &message);
+extern void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
+extern void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label);
+extern void AppRemoveWidget(const IPlugin *entry_plugin, QWidget *remove_widget);
+IPlugin::AppFunctions g_app_functions =
+{
+    &AppSendMessage,
+    &AppLogWrite,
+    &AppDebugLogWrite,
+    &AppAddMenuWidget,
+    &AppAddToolWidget,
+    &AppRemoveWidget
+};
 
 /**
  *  @brief		コンストラクタ.		
@@ -71,8 +88,8 @@ bool PluginManager::Final()
 bool PluginManager::LoadPlugins()
 {
     // build in pluygin.
-    m_plugins.push_back(m_home_menu_plugin = new HomeMenuPlugin());
-    m_plugins.push_back(m_log_plugin = new LogPlugin());
+    m_plugins.push_back(m_home_menu_plugin = new HomeMenuPlugin(g_app_functions));
+    m_plugins.push_back(m_log_plugin = new LogPlugin(g_app_functions));
 
     // add dynamic plugins.
 
