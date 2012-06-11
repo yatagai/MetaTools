@@ -7,11 +7,12 @@
 #define PLUGIN_MANAGER_H
 
 #include <vector>
+#include <map>
 #include <string>
 
 class QWidget;
 class QTabWidget;
-
+class QLibrary;
 namespace meta_tools
 {
 class IPlugin;
@@ -62,13 +63,17 @@ public:
 private:
     // プラグインの検索.
     IPlugin* Find(const std::string &plugin_name);
-
 private:
     std::vector<IPlugin*> m_plugins;
+    std::map<IPlugin*, QLibrary*> m_library_list;
     IPlugin *m_home_menu_plugin;
     IPlugin *m_log_plugin;
     QTabWidget *m_menu_tab;
     QTabWidget *m_main_view;
+
+    // プラグインディレクトリ.
+private:
+    std::string m_plugin_directory;
 };
 
 }       // namespace meta_tools.

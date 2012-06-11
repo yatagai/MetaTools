@@ -53,10 +53,10 @@ void PluginManagerWidget::AddPluginWidget(meta_tools::IPlugin *plugin)
 void PluginManagerWidget::Show()
 {
     // メインウインドウのあるモニタに最大化表示.
-    show();
     setGeometry(MainWindow::Order()->geometry());
     setWindowState(windowState() | Qt::WindowFullScreen);
     ChangePluginExplanationText("プラグインの概要:");
+    show();
 }
 
 /**

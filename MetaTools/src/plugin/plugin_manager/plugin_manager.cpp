@@ -13,12 +13,13 @@
 #include "../build_in_plugin/home_menu_plugin/home_menu_plugin.h"
 #include "../build_in_plugin/log_plugin/log_plugin.h"
 
+#include <assert.h>
+
 namespace meta_tools
 {
 PluginManager* PluginManager::sm_this = NULL;
 
 extern bool AppSendMessage(const IPlugin *sender, const std::string &target_plugin_name, const std::string &message_type, void *param);
-extern void AppLogWriteRow(const std::string &message);
 extern void AppLogWrite(const IPlugin *writer, const std::string &message);
 extern void AppDebugLogWrite(const IPlugin *writer, const std::string &message);
 extern void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
@@ -44,7 +45,8 @@ PluginManager::PluginManager(QTabWidget *menu_tab, QTabWidget *main_view) :
     m_home_menu_plugin(nullptr),
     m_log_plugin(nullptr),
     m_menu_tab(menu_tab),
-    m_main_view(main_view)
+    m_main_view(main_view),
+    m_plugin_directory((qApp->applicationDirPath() + QDir::separator() + "plugins").toStdString())
 {
     sm_this = this;
 }
@@ -92,7 +94,34 @@ bool PluginManager::LoadPlugins()
     m_plugins.push_back(m_log_plugin = new LogPlugin(g_app_functions));
 
     // add dynamic plugins.
-
+    typedef IPlugin* (*CreatePlugin)(const IPlugin::AppFunctions& app_functions);
+    QDir dynamic_plugin_dir(m_plugin_directory.c_str());
+    QStringList file_list = dynamic_plugin_dir.entryList();
+    for (int i = 0; i < file_list.count(); ++i)
+    {
+        if (QLibrary::isLibrary(file_list[i]))
+        {
+            std::string file_path = m_plugin_directory;
+            file_path += QDir::separator().toAscii();
+            file_path += file_list[i].toStdString();
+            QLibrary *dynamic_lib = new QLibrary(file_path.c_str());
+            dynamic_lib->load();
+            CreatePlugin create_func = reinterpret_cast<CreatePlugin>(dynamic_lib->resolve("CreatePlugin"));
+            if (create_func)
+            {
+                IPlugin* plugin = (*create_func)(g_app_functions);
+                assert(plugin);
+                std::pair<IPlugin*, QLibrary*> new_pair(plugin, dynamic_lib);
+                m_library_list.insert(new_pair);
+                m_plugins.push_back(plugin);
+            }
+            else
+            {
+                dynamic_lib->unload();
+                delete dynamic_lib;
+            }
+        }
+    }
 
     // load log print & regist plugin manager widget.
     for(auto it = m_plugins.begin(); it != m_plugins.end(); ++it)
@@ -127,9 +156,16 @@ bool PluginManager::ReleasePlugins()
         {
             ClosePlugin(*it);
         }
+        QLibrary *library = m_library_list[*it];
         delete (*it);
+        if (library)
+        {
+            library->unload();
+            delete library;
+        }
     }
     m_plugins.empty();
+    m_library_list.empty();
     m_home_menu_plugin = nullptr;
     m_log_plugin = nullptr;
     return true;
@@ -270,6 +306,7 @@ bool PluginManager::SendMessage(const IPlugin *sender, const std::string &target
 
 /**
  *  @brief		ログ書き込み.
+ *  @author     yatagaik.
  *  @param  in  message メッセージ.
  */
 void PluginManager::LogWrite(const std::string &message)
@@ -283,6 +320,7 @@ void PluginManager::LogWrite(const std::string &message)
 
 /**
  *  @brief		プラグインの検索.
+ *  @author     yatagaik.
  *  @param  in  plugin_name プラグイン名.
  *  @return     見つかればプラグインポインタ 見つからなければnullptr
  */

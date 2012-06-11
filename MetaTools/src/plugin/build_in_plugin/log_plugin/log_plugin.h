@@ -45,7 +45,7 @@ public:
     }
     virtual const char* GetVersion() const
     {
-        return "0.8b";
+        return "1.0";
     }
     virtual bool IsStartUp() const
     {
