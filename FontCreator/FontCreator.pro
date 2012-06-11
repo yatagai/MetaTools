@@ -34,3 +34,6 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+RESOURCES += \
+    FontCreator.qrc

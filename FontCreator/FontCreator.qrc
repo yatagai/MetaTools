@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/font_creator_resource">
+        <file>img/font_icon.png</file>
+    </qresource>
+</RCC>
