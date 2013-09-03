@@ -3,6 +3,7 @@
  * @file plugin_manager.h.
  * @author yatagai.
  */
+ 
 #ifndef PLUGIN_MANAGER_H
 #define PLUGIN_MANAGER_H
 
@@ -10,8 +11,11 @@
 #include <map>
 #include <string>
 
+#undef SendMessage
+
 class QWidget;
 class QTabWidget;
+class QMainWindow;
 class QLibrary;
 namespace meta_tools
 {
@@ -24,7 +28,7 @@ class IPlugin;
 class PluginManager
 {
 public:
-    explicit PluginManager(QTabWidget *menu_tab, QTabWidget *main_view);
+    explicit PluginManager(QTabWidget *menu_tab, QMainWindow *main_view);
     ~PluginManager();
 
     // シングルトン.
@@ -69,7 +73,8 @@ private:
     IPlugin *m_home_menu_plugin;
     IPlugin *m_log_plugin;
     QTabWidget *m_menu_tab;
-    QTabWidget *m_main_view;
+    QMainWindow *m_main_view;
+    std::vector<QWidget*> m_tool_windows;
 
     // プラグインディレクトリ.
 private:

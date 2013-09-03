@@ -10,9 +10,10 @@ namespace meta_tools
  *  @brief      コンストラクタ.
  *  @author		yatagaik.
  *  @param   in  plugin このウィジェットを持ったプラグイン.
+ *  @param   in  main_view メインビュー.
  */
-ToolWidgetForm::ToolWidgetForm(const IPlugin *plugin) :
-    QWidget(),
+ToolWidgetForm::ToolWidgetForm(const IPlugin *plugin, QWidget *main_view) :
+    QDockWidget("meta_tools", main_view),
     m_plugin(plugin),
     m_ui(new Ui::ToolWidgetForm),
     m_child(nullptr)
@@ -41,27 +42,13 @@ void ToolWidgetForm::SetChildWidget(QWidget *child)
     if (m_child)
     {
         m_child->setParent(nullptr);
-        m_ui->main_layout->removeWidget(m_child);
+        m_ui->main_layout->layout()->removeWidget(m_child);
     }
     m_child = child;
     if (m_child)
     {
-        resize(child->geometry().width() + 5, height());
-        child->setParent(this);
-        m_ui->main_layout->addWidget(child);
-    }
-}
-
-/**
- *  @brief      リサイズイベント.
- *  @author		yatagaik.
- *  @param  in  event イベント.
- */
-void ToolWidgetForm::resizeEvent(QResizeEvent * /*event*/)
-{
-    if (m_child)
-    {
-        m_child->setGeometry(geometry());
+        m_child->setParent(m_ui->main_layout);
+        m_ui->main_layout->layout()->addWidget(m_child);
     }
 }
 

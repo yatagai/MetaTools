@@ -1,0 +1,12 @@
+#ifndef ELVIEWER_GLOBAL_H
+#define ELVIEWER_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(ELVIEWER_LIBRARY)
+#  define ELVIEWERSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define ELVIEWERSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // ELVIEWER_GLOBAL_H

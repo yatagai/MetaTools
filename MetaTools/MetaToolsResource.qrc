@@ -8,5 +8,7 @@
         <file>img/plugin_default_icon.png</file>
         <file>img/home_icon.png</file>
         <file>img/log_icon.png</file>
+        <file>img/meta_tools_icon_small.png</file>
+        <file>img/meta_tools_splash.png</file>
     </qresource>
 </RCC>

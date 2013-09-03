@@ -21,6 +21,12 @@ PluginManagerWidget::PluginManagerWidget()
       m_ui(new Ui::PluginManager())
 {
      m_ui->setupUi(this);
+     setWindowFlags(Qt::Tool |
+                    Qt::FramelessWindowHint     |
+                    Qt::WindowSystemMenuHint    |
+                    Qt::WindowStaysOnTopHint    |
+                    Qt::WindowFullscreenButtonHint);
+     setWindowState(windowState() | Qt::WindowFullScreen);
 }
 
 /**
@@ -52,11 +58,17 @@ void PluginManagerWidget::AddPluginWidget(meta_tools::IPlugin *plugin)
  */
 void PluginManagerWidget::Show()
 {
+    ChangePluginExplanationText("プラグインの概要:");
+
+    setWindowOpacity(1.0f);
+
+    show();
+
+    setWindowOpacity(0.9f);
+
     // メインウインドウのあるモニタに最大化表示.
     setGeometry(MainWindow::Order()->geometry());
     setWindowState(windowState() | Qt::WindowFullScreen);
-    ChangePluginExplanationText("プラグインの概要:");
-    show();
 }
 
 /**
@@ -104,7 +116,7 @@ void PluginManagerWidget::resizeEvent(QResizeEvent *event)
     }
 
     const int COLUMN_COUNT((event->size().width() - 20.0f) / WIDGET_WIDTH);
-    const int ROW_COUNT((m_widget_list.size() / COLUMN_COUNT) + ((m_widget_list.size() % COLUMN_COUNT) == 0 ? 0 : 1));
+    const int ROW_COUNT((static_cast<int>(m_widget_list.size()) / COLUMN_COUNT) + ((static_cast<int>(m_widget_list.size()) % COLUMN_COUNT) == 0 ? 0 : 1));
 
     // resize
     m_ui->PluginList->setMinimumHeight(WIDGET_HEIGHT * ROW_COUNT);

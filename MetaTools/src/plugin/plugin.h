@@ -13,6 +13,8 @@
 #include <QtGui>
 #include <QIcon>
 
+#undef SendMessage
+
 namespace meta_tools
 {
 
@@ -79,7 +81,7 @@ public:
      *  @author		yatagaik.
      *  @return     trueで終了してもよい falseで終了したらダメ.
      */
-    bool IPlugin::Closing()
+    bool Closing()
     {
         return OnClosing();
     }
@@ -89,7 +91,7 @@ public:
      *  @author		yatagaik.
      *  @return     trueで成功 falseで失敗.
      */
-    bool IPlugin::Close()
+    bool Close()
     {
         if (OnClose())
         {
@@ -108,7 +110,7 @@ public:
      *  @param  in  message_type メッセージタイプ.
      *  @param  in  param パラメータ.
      */
-    bool IPlugin::SendMessage(const std::string &target_plugin_name, const std::string &message_type, void *param) const
+    bool SendMessage(const std::string &target_plugin_name, const std::string &message_type, void *param) const
     {
         return (*m_functions.AppSendMessage)(this, target_plugin_name, message_type, param);
     }
@@ -134,7 +136,7 @@ private:
      *  @param  in  param パラメータ.
      *  @return     trueで処理した falseで処理していない.
      */
-    bool IPlugin::ReceiveMessage(const IPlugin *sender, const std::string &message_type, void *param)
+    bool ReceiveMessage(const IPlugin *sender, const std::string &message_type, void *param)
     {
         auto it = m_message_functions.find(message_type);
         if (it != m_message_functions.end())
@@ -154,7 +156,7 @@ public:
      *  @author		yatagaik.
      *  @param  in  message 出力するメッセージ.
      */
-    void IPlugin::LogWrite(const std::string &message) const
+    void LogWrite(const std::string &message) const
     {
         (*m_functions.AppLogWrite)(this, message);
     }
@@ -164,7 +166,7 @@ public:
      *  @author		yatagaik.
      *  @param  in  message 出力するメッセージ.
      */
-    void IPlugin::LogWriteLine(const std::string &message) const
+    void LogWriteLine(const std::string &message) const
     {
         (*m_functions.AppLogWrite)(this, message + "\n");
     }
@@ -174,7 +176,7 @@ public:
      *  @author		yatagaik.
      *  @param  in  message 出力するメッセージ.
      */
-    void IPlugin::DebugLogWrite(const std::string &message) const
+    void DebugLogWrite(const std::string &message) const
     {
         (*m_functions.AppDebugLogWrite)(this, message);
     }
@@ -184,7 +186,7 @@ public:
      *  @author		yatagaik.
      *  @param  in  message 出力するメッセージ.
      */
-    void IPlugin::DebugLogWriteLine(const std::string &message) const
+    void DebugLogWriteLine(const std::string &message) const
     {
         (*m_functions.AppDebugLogWrite)(this, message + "\n");
     }
@@ -198,7 +200,7 @@ public:
      *  @param  in  label 追加するWidgetのラベル.
      *  @param  in  add_tab_name 追加するタブ.
      */
-    void IPlugin::AddMenuWidget(QWidget *add_widget, const std::string &label, const std::string &add_tab_name)
+    void AddMenuWidget(QWidget *add_widget, const std::string &label, const std::string &add_tab_name)
     {
         (*m_functions.AppAddMenuWidget)(this, add_widget, label, add_tab_name);
     }
@@ -209,7 +211,7 @@ public:
      *  @param  in  add_widget 追加するWidget.
      *  @param  in  label 追加するWigetのラベル.
      */
-    void IPlugin::AddToolWidget(QWidget *add_widget, const std::string &label)
+    void AddToolWidget(QWidget *add_widget, const std::string &label)
     {
         (*m_functions.AppAddToolWidget)(this, add_widget, label);
     }
@@ -219,7 +221,7 @@ public:
      *  @author		yatagaik.
      *  @param  in	remove_widget	削除するウィジェット.
      */
-    void IPlugin::RemoveWidget(QWidget *remove_widget)
+    void RemoveWidget(QWidget *remove_widget)
     {
         (*m_functions.AppRemoveWidget)(this, remove_widget);
     }

@@ -1,7 +1,7 @@
 #ifndef META_TOOLS_TOOL_WIDGET_FORM_H
 #define META_TOOLS_TOOL_WIDGET_FORM_H
 
-#include <QWidget>
+#include <QDockWidget>
 
 namespace Ui
 {
@@ -10,11 +10,11 @@ class ToolWidgetForm;
 namespace meta_tools
 {
 class IPlugin;
-class ToolWidgetForm : public QWidget
+class ToolWidgetForm : public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit ToolWidgetForm(const IPlugin *plugin);
+    explicit ToolWidgetForm(const IPlugin *plugin, QWidget *main_view);
     ~ToolWidgetForm();
     
 public:
@@ -34,9 +34,6 @@ public:
 private:
     Ui::ToolWidgetForm *m_ui;
     QWidget* m_child;
-
-protected:
-    void resizeEvent(QResizeEvent *event);
 
 public:
     void OnClickCloseButton();

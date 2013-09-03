@@ -1,4 +1,4 @@
-﻿/**
+/**
  * プラグイン管理クラスの実装.
  * @file plugin_manager.h.
  * @author yatagai.
@@ -6,7 +6,10 @@
 
 #include "plugin_manager.h"
 
+#include <QApplication>
 #include <QTableWidget>
+#include <QMainWindow>
+#include <QLayout>
 #include "../plugin.h"
 #include "../../metatools_tooltip/metatools_tooltip.h"
 #include "../../tool_widget_form/tool_widget_form.h"
@@ -41,7 +44,7 @@ IPlugin::AppFunctions g_app_functions =
  *  @param	in	menu_tab	タブメニューウィジェット.
  *  @param	in	main_view	メインタブビュー.
  */ 
-PluginManager::PluginManager(QTabWidget *menu_tab, QTabWidget *main_view) :
+PluginManager::PluginManager(QTabWidget *menu_tab, QMainWindow *main_view) :
     m_home_menu_plugin(nullptr),
     m_log_plugin(nullptr),
     m_menu_tab(menu_tab),
@@ -102,11 +105,12 @@ bool PluginManager::LoadPlugins()
         if (QLibrary::isLibrary(file_list[i]))
         {
             std::string file_path = m_plugin_directory;
-            file_path += QDir::separator().toAscii();
+            file_path += QDir::separator().toLatin1();
             file_path += file_list[i].toStdString();
             QLibrary *dynamic_lib = new QLibrary(file_path.c_str());
             dynamic_lib->load();
             CreatePlugin create_func = reinterpret_cast<CreatePlugin>(dynamic_lib->resolve("CreatePlugin"));
+            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
             if (create_func)
             {
                 IPlugin* plugin = (*create_func)(g_app_functions);
@@ -120,6 +124,7 @@ bool PluginManager::LoadPlugins()
                 dynamic_lib->unload();
                 delete dynamic_lib;
             }
+            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
     }
 
@@ -128,6 +133,7 @@ bool PluginManager::LoadPlugins()
     {
         LogWrite("[PluginManager] load plugin " + std::string((*it)->GetName()) + "\n");        // load log print.
         SendMessage(nullptr, m_home_menu_plugin->GetName(), "LOADED_PLUGIN", *it);              // regist plugin manager widget.
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
 
     // open start up.
@@ -136,6 +142,7 @@ bool PluginManager::LoadPlugins()
         if ((*it)->IsStartUp())
         {
             OpenPlugin(*it);
+            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         }
     }
 
@@ -218,9 +225,20 @@ void PluginManager::AddMenuWidget(const IPlugin * entry_plugin, QWidget *add_wid
  */
 void PluginManager::AddToolWidget(const IPlugin * entry_plugin, QWidget* add_widget, const std::string &label)
 {
-    ToolWidgetForm *new_tool_widget = new ToolWidgetForm(entry_plugin);
+    ToolWidgetForm *new_tool_widget = new ToolWidgetForm(entry_plugin, m_main_view);
     new_tool_widget->SetChildWidget(add_widget);
-    m_main_view->addTab(new_tool_widget, label.c_str());
+
+    new_tool_widget->setWindowTitle(label.c_str());
+
+    if (std::strcmp(entry_plugin->GetName(), "Log") == 0)
+    {
+        m_main_view->addDockWidget(Qt::BottomDockWidgetArea, new_tool_widget, Qt::Horizontal);
+    }
+    else
+    {
+        m_main_view->addDockWidget(Qt::TopDockWidgetArea, new_tool_widget, Qt::Horizontal);
+    }
+    m_tool_windows.push_back(new_tool_widget);
 }
 
 /**
@@ -231,9 +249,10 @@ void PluginManager::AddToolWidget(const IPlugin * entry_plugin, QWidget* add_wid
 void PluginManager::RemoveWidget(const IPlugin * /*entry_plugin*/, QWidget *remove_widget)
 {
     // ツールウィジェットから検索.
-    for (int i = 0; i < m_main_view->count(); ++i)
+    std::vector<QWidget*>::iterator it = m_tool_windows.begin();
+    for (; it != m_tool_windows.end(); ++it)
     {
-        ToolWidgetForm *form = dynamic_cast<ToolWidgetForm*>(m_main_view->widget(i));
+        ToolWidgetForm *form = dynamic_cast<ToolWidgetForm*>(*it);
         if (!form)
         {
             continue;
@@ -241,8 +260,8 @@ void PluginManager::RemoveWidget(const IPlugin * /*entry_plugin*/, QWidget *remo
         if (form && form->GetChildWidget() == remove_widget)
         {
             // ToolTipの削除.
+            it = m_tool_windows.erase(it);
             form->SetChildWidget(nullptr);
-            m_main_view->removeTab(m_main_view->indexOf(form));
             delete form;
             return;
         }

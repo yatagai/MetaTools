@@ -1,0 +1,402 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"is",
+				"isystem"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "MetaTools.sublime-project",
+			"settings":
+			{
+				"buffer_size": 965,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "FontCreator-MSVC/Makefile",
+			"settings":
+			{
+				"buffer_size": 12369,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "/* TOOL TIP */\n\nQToolTip\n{\n     border: 1px solid black;\n     background-color: #ffa02f;\n     padding: 1px;\n     border-radius: 3px;\n     opacity: 100;\n}\n\n/* WIDGET */\n\nQWidget\n{\n    color: #b1b1b1;\n    background-color: #323232;\n}\n\nQWidget:disabled\n{\n    color: #606060;\n    background-color: #323232;\n}\n\nQWidget:item:hover\n{\n    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #ca0619);\n    color: #000000;\n}\n\nQWidget:item:selected\n{\n    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);\n}\n\n/* MENUBAR */\n\nQMenuBar::item\n{\n    background: transparent;\n}\n\nQMenuBar::item:selected\n{\n    background: transparent;\n    border: 1px solid #ffaa00;\n}\n\nQMenuBar::item:pressed\n{\n    background: #444;\n    border: 1px solid #000;\n    background-color: QLinearGradient(\n        x1:0, y1:0,\n        x2:0, y2:1,\n        stop:1 #212121,\n        stop:0.4 #343434/*,\n        stop:0.2 #343434,\n        stop:0.1 #ffaa00*/\n    );\n    margin-bottom:-1px;\n    padding-bottom:1px;\n}\n\n/* MENU */\n\nQMenu\n{\n    border: 1px solid #000;\n}\n\nQMenu::item\n{\n    padding: 2px 20px 2px 20px;\n}\n\nQMenu::item:selected\n{\n    color: #000000;\n}\n\n/* LINE EDIT */\nQLineEdit {\n	border: 2px solid gray;\n	border-radius: 5px;\n}\n\n/* PUSH BUTTON */\n\nQPushButton {\n    /* Margins so that we get a little space on the left and right. */\n    margin: 0 1px 0 1px;\n    /* The font color */ \n    /*color: #b1b1b1; */\n    /* Here's the background gradient with start point, end point, \n       stop \"percentage\" and color, stop percentage and color. */\n    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2198c0, stop: 1 #0d5ca6);\n    /* We'll round the borders. */\n    border-style: outset;\n    /* Round radius will be 3px */\n    border-radius: 3px;\n    /* Border is only one pixel */\n    border-width: 1px;\n    /* Border color is now set */\n    border-color: #0c457e;\n}\n\nQPushButton:pressed\n{\n    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);\n}\n\nQPushButton::disabled{\n	color : #ffffff\n}n",
+			"file": "MetaTools/stylesheet/black-blue_plastique.qss",
+			"file_size": 2271,
+			"file_write_time": 130123347008421051,
+			"settings":
+			{
+				"buffer_size": 2157,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "FontCreator/src/fontcreator_plugin.cpp",
+			"settings":
+			{
+				"buffer_size": 829,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "FontCreator/src/fontloader.cpp",
+			"settings":
+			{
+				"buffer_size": 4186,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 335.0,
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			],
+			[
+				"Insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install	",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 386.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/MetaTools/MetaTools/src/main/mainwindow.ui",
+		"/C/Users/yatagai/AppData/Local/Temp/Temp1_07Yasashisa.zip/07Yasashisa/mplus-TESTFLIGHT-043/LICENSE_J",
+		"/D/MetaTools/FontCreator/src/fontcreator_widget.cpp",
+		"/D/MetaTools/FontCreator/src/fontloader.cpp",
+		"/D/MetaTools/MetaTools/src/metatools_tooltip/metatools_tooltip.h",
+		"/D/MetaTools/MetaTools/src/plugin/plugin_manager/plugin_manager.cpp",
+		"/D/MetaTools/MetaTools.sublime-project",
+		"/D/MetaTools/FontCreator/src/fontloader.h",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/intrin.h",
+		"/C/Users/yatagai/AppData/Roaming/Sublime Text 2/Packages/SublimeClang/clang/include/mm3dnow.h",
+		"/C/Users/yatagai/AppData/Roaming/Sublime Text 2/Packages/User/SublimeClang.sublime-settings",
+		"/C/Users/yatagai/AppData/Roaming/Sublime Text 2/Packages/SublimeClang/SublimeClang.sublime-settings",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/cliext/iterator",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/cliext/xutility",
+		"/D/MetaTools/MetaTools/src/plugin/plugin_manager/plugin_manager.h",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/exception",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/functional",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/cstdlib",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/memory",
+		"/C/Qt/4.8.4/src/gui/painting/qpaintengine.h",
+		"/C/Qt/4.8.4/src/gui/widgets/qdockwidget.h",
+		"/C/Qt/4.8.4/src/gui/painting/qpainter.h",
+		"/D/MetaTools/MetaTools/src/plugin/plugin.h",
+		"/C/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include/string.h",
+		"/C/Qt/4.8.4/src/corelib/global/qglobal.h",
+		"/C/Qt/4.8.4/src/gui/widgets/qtextedit.h",
+		"/C/Qt/4.8.4/src/gui/dialogs/qpagesetupdialog.h",
+		"/C/Qt/4.8.4/src/corelib/io/qdebug.h",
+		"/C/Users/yatagai/AppData/Roaming/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/C/Qt/4.8.4/src/gui/itemviews/qtablewidget.h",
+		"/C/Users/yatagai/AppData/Roaming/Sublime Text 2/Packages/Package Control/Package Control.sublime-settings",
+		"/C/Users/yatagai/AppData/Roaming/Sublime Text 2/Packages/Color Scheme -　User/Monokai.tmTheme",
+		"/C/Users/yatagai/vimfiles/colors/original_color.vim",
+		"/C/Users/yatagai/vimfiles/gvimrc_local.vim",
+		"/C/Users/yatagai/_gvimrc",
+		"/C/vim/gvimrc"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"<palette>",
+			"\\\\",
+			"dllimport",
+			"dllinpirt",
+			"macro",
+			"macros",
+			"-isystem"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "MetaTools.sublime-project",
+					"settings":
+					{
+						"buffer_size": 965,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								688,
+								690
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "FontCreator-MSVC/Makefile",
+					"settings":
+					{
+						"buffer_size": 12369,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Makefile/Makefile.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 2340.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "MetaTools/stylesheet/black-blue_plastique.qss",
+					"settings":
+					{
+						"buffer_size": 2157,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2157,
+								2157
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 780.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "FontCreator/src/fontcreator_plugin.cpp",
+					"settings":
+					{
+						"buffer_size": 829,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								684,
+								684
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8 with BOM",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "FontCreator/src/fontloader.cpp",
+					"settings":
+					{
+						"buffer_size": 4186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2814,
+								2814
+							]
+						],
+						"settings":
+						{
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1677.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 29.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.clang":
+	{
+		"height": 186.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 261.0,
+	"status_bar_visible": true
+}

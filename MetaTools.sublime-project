@@ -1,0 +1,35 @@
+{
+	"folders":
+	[
+		{
+			"path": "/D/MetaTools"
+		}
+	],
+    // settings..
+    "settings":{
+        "sublimeclang_enabled": true,
+        "sublimeclang_show_output_panel": true,
+        "sublimeclang_additional_language_options": {
+            "c++" : ["-std=c++11"],
+            "c": [],
+            "objc": [],
+            "objc++": []
+        },
+        "sublimeclang_options":
+        [
+            "-Wno-microsoft",
+            "-Wno-implicit-int",
+            "-ferror-limit=0",
+            "-IC:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\include",
+            "-IC:\\Qt\\Qt5.0.2\\5.0.2\\msvc2010_opengl\\include",
+            "-IC:\\Qt\\4Qt5.0.2\\5.0.2\\msvc2010_opengl\\include\\*",
+            "-ID:\\MetaTools\\ontCreator\\lib\\freetype\\include",
+            "-D__STDC__=1",
+            "-D_CPPRTTI",
+            "-D_WIN32",
+            "-D_DO_NOT_USE_NULLPTR_IN_STL",
+            "-Ddllexport=",
+            "-Ddllimport="
+        ]
+    }
+}

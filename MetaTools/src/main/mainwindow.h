@@ -12,7 +12,7 @@
 namespace Ui {
 class MainWindow;
 }
-
+class QMainWindow;
 namespace meta_tools {
 class PluginManager;
 }
@@ -41,6 +41,10 @@ public:
 private:
     static MainWindow *sm_this;
 
+    // メインビュー.
+private:
+    QMainWindow *m_main_view;
+
     // メニュー最小化スイッチ関係.
 public slots:
     void OnMinimizationSwitch();
@@ -58,8 +62,6 @@ private:
     void FinalizePlugins();
 private:
     meta_tools::PluginManager* m_plugin_manager;
-private slots:
-    void OnClickToolWidgetCloseButton(int index);
 };
 
 #endif // MAINWINDOW_H

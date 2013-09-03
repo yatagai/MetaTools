@@ -22,11 +22,6 @@ HomeMenuPluginWidget::HomeMenuPluginWidget(meta_tools::HomeMenuPlugin* plugin) :
     m_plugin_manager_widget(new PluginManagerWidget())
 {
     m_ui->setupUi(this);
-    m_plugin_manager_widget->setWindowFlags(Qt::Tool |
-                                     Qt::FramelessWindowHint |
-                                     Qt::WindowSystemMenuHint |
-                                     Qt::WindowStaysOnTopHint);
-
     InitMenuButton();
 }
 

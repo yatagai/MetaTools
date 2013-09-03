@@ -4,11 +4,12 @@
 #include "FontCreator_global.h"
 #include "../../MetaTools/src/plugin/plugin.h"
 
+class FontCreatorWidget;
 class FONTCREATORSHARED_EXPORT FontCreatorPlugin : public meta_tools::IPlugin
 {
 public:
     explicit FontCreatorPlugin(const meta_tools::IPlugin::AppFunctions &app_functions);
-    ~FontCreatorPlugin(){};
+    ~FontCreatorPlugin();
 public:
     virtual const char* GetName() const
     {
@@ -34,16 +35,11 @@ public:
     }
 
 protected:
-    virtual bool OnStart()
-    {
-        LogWrite("OnStart FontCreator.");
-        return true;
-    }
+    virtual bool OnStart();
+    virtual bool OnClose();
 
-    virtual bool OnClose()
-    {
-        return false;
-    }
+private:
+    FontCreatorWidget *m_window;
 };
 
 extern "C" FONTCREATORSHARED_EXPORT meta_tools::IPlugin* CreatePlugin(const meta_tools::IPlugin::AppFunctions &app_functions)

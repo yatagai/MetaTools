@@ -7,6 +7,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QToolButton>
+#include <QMainWindow>
+#include <QDockWidget>
 
 #include "../plugin/plugin_manager/plugin_manager.h"
 #include "../tool_widget_form/tool_widget_form.h"
@@ -15,8 +17,8 @@ namespace
 {
 
 const float MENU_MINIZATION_SWITCH_SIZE(15.0f);
-const float MENU_MINIMUM_HEIGHT(22.0f);
-const float MENU_MAXIMUM_HEIGHT(80.0f);
+const float MENU_MINIMUM_HEIGHT(27.0f);
+const float MENU_MAXIMUM_HEIGHT(85.0f);
 
 const int MENU_ANIMATE_DELTA(10);                   // animate delta
 const float MENU_ANIMATE_SPEED(10.0);               // animate speed MENU_ANIMATE_DELTA/ms.
@@ -32,11 +34,17 @@ MainWindow* MainWindow::sm_this = NULL;
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MainWindow),
+    m_main_view(nullptr),
     m_is_menu_minization(false),
     m_plugin_manager(nullptr)
 {
     sm_this = this;
     ui->setupUi(this);
+
+    m_main_view = new QMainWindow(this);
+    m_main_view->setWindowFlags(Qt::Widget);
+    layout()->addWidget(m_main_view);
+    m_main_view->setDockNestingEnabled(true);
 
     // add menu_minimization_switch.
     CreateMenuMinimizationSwitch();
@@ -138,8 +146,7 @@ void MainWindow::MenuMinimizationSwitchAnimation()
  */
 void MainWindow::InitializePlugins()
 {
-    connect(ui->main_view, SIGNAL(tabCloseRequested(int)), this, SLOT(OnClickToolWidgetCloseButton(int)));
-    m_plugin_manager = new meta_tools::PluginManager(ui->menu, ui->main_view);
+    m_plugin_manager = new meta_tools::PluginManager(ui->menu, m_main_view);
     m_plugin_manager->Init();
 }
 
@@ -154,19 +161,5 @@ void MainWindow::FinalizePlugins()
         m_plugin_manager->Final();
         delete m_plugin_manager;
         m_plugin_manager = nullptr;
-    }
-}
-
-/**
- *  @brief      ツールウィジェットの閉じるボタンが押された.
- *  @author		yatagaik.
- *  @param  in  index クリックされたウィジェットのインデックス.
- */
-void MainWindow::OnClickToolWidgetCloseButton(int index)
-{
-    meta_tools::ToolWidgetForm *tool_widget_form = dynamic_cast<meta_tools::ToolWidgetForm*>(ui->main_view->widget(index));
-    if (tool_widget_form)
-    {
-        tool_widget_form->OnClickCloseButton();
     }
 }

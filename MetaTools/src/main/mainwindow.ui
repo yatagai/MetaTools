@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -130,27 +130,27 @@
      <colorrole role="Shadow">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
+        <red>135</red>
+        <green>135</green>
+        <blue>135</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="Highlight">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>180</red>
-        <green>180</green>
-        <blue>180</blue>
+        <red>51</red>
+        <green>153</green>
+        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="HighlightedText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
@@ -294,27 +294,27 @@
      <colorrole role="Shadow">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
+        <red>135</red>
+        <green>135</green>
+        <blue>135</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="Highlight">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>180</red>
-        <green>180</green>
-        <blue>180</blue>
+        <red>51</red>
+        <green>153</green>
+        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="HighlightedText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
@@ -458,27 +458,27 @@
      <colorrole role="Shadow">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>255</red>
-        <green>255</green>
-        <blue>255</blue>
+        <red>135</red>
+        <green>135</green>
+        <blue>135</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="Highlight">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>198</red>
-        <green>198</green>
-        <blue>198</blue>
+        <red>51</red>
+        <green>153</green>
+        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
      <colorrole role="HighlightedText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>200</red>
-        <green>200</green>
-        <blue>200</blue>
+        <red>255</red>
+        <green>255</green>
+        <blue>255</blue>
        </color>
       </brush>
      </colorrole>
@@ -524,6 +524,10 @@
   <property name="windowTitle">
    <string>MetaTools</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../MetaToolsResource.qrc">
+    <normaloff>:/metatools_resource/img/meta_tools_icon_small.png</normaloff>:/metatools_resource/img/meta_tools_icon_small.png</iconset>
+  </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
   </property>
@@ -534,7 +538,16 @@
    <property name="sizeConstraint">
     <enum>QLayout::SetDefaultConstraint</enum>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -551,7 +564,7 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>80</height>
+       <height>87</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -568,6 +581,9 @@
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
      </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
@@ -576,8 +592,8 @@
      </property>
      <property name="iconSize">
       <size>
-       <width>20</width>
-       <height>20</height>
+       <width>15</width>
+       <height>15</height>
       </size>
      </property>
      <property name="elideMode">
@@ -619,6 +635,9 @@
       <property name="contextMenuPolicy">
        <enum>Qt::DefaultContextMenu</enum>
       </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <attribute name="icon">
        <iconset resource="../../MetaToolsResource.qrc">
         <normaloff>:/metatools_resource/img/home.png</normaloff>:/metatools_resource/img/home.png</iconset>
@@ -627,31 +646,6 @@
        <string>ホーム</string>
       </attribute>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTabWidget" name="main_view">
-     <property name="focusPolicy">
-      <enum>Qt::NoFocus</enum>
-     </property>
-     <property name="tabShape">
-      <enum>QTabWidget::Triangular</enum>
-     </property>
-     <property name="currentIndex">
-      <number>-1</number>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>20</width>
-       <height>20</height>
-      </size>
-     </property>
-     <property name="tabsClosable">
-      <bool>true</bool>
-     </property>
-     <property name="movable">
-      <bool>true</bool>
-     </property>
     </widget>
    </item>
   </layout>
