@@ -14,3 +14,13 @@
 /MetaToolsPlugin/MetaToolsPlugin.pro.user.windows
 /FontCreator/FontCreator.pro.user
 /FontCreator-MSVC
+/bin/win32d/plugins/FontCreator.dll.embed.manifest
+/bin/win32d/plugins/FontCreator.dll_manifest.rc
+/bin/win32d/plugins/FontCreator.dll_manifest.res
+/bin/win32d/plugins/FontCreator.exp
+/bin/win32d/plugins/FontCreator.ilk
+/bin/win32d/plugins/FontCreator.lib
+/bin/win32d/plugins/FontCreator.pdb
+/bin/win32d/MetaTools.ilk
+/bin/win32d/MetaTools.pdb
+/bin/win32/plugins/FontCreator.lib
