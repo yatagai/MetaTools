@@ -22,15 +22,17 @@ int main(int argc, char *argv[])
     // style設定.
     QApplication::setStyle(QStyleFactory::create("Fusion"));
 
-    // show main window.
-    SplashScreen *splash_screen = new SplashScreen();
+    // main window.
+    MainWindow main_window;
+
+    // show splash screen.
+    SplashScreen *splash_screen = new SplashScreen(&main_window);
     splash_screen->show();
-    splash_screen->setWindowOpacity(0.0f);
 
     QApplication::flush();
 
     // show main window.
-    MainWindow main_window;
+    main_window.Initilize();
     main_window.show();
 
     // finish splash screen.

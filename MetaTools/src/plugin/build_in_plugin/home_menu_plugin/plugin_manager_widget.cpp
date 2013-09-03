@@ -60,11 +60,9 @@ void PluginManagerWidget::Show()
 {
     ChangePluginExplanationText("プラグインの概要:");
 
-    setWindowOpacity(1.0f);
+    setWindowOpacity(0.9f);
 
     show();
-
-    setWindowOpacity(0.9f);
 
     // メインウインドウのあるモニタに最大化表示.
     setGeometry(MainWindow::Order()->geometry());

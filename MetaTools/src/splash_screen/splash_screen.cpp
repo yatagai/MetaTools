@@ -4,7 +4,7 @@
 #include <QPainter>
 
 SplashScreen::SplashScreen(QWidget *parent) :
-    QWidget(parent, Qt::SplashScreen | Qt::WindowStaysOnTopHint),
+    QWidget(parent, Qt::SplashScreen),
     m_animate_status(STATE_SHOW),
     ui(new Ui::SplashScreen()),
     m_splash_screen_image(":/metatools_resource/img/meta_tools_splash.png"),
@@ -15,6 +15,8 @@ SplashScreen::SplashScreen(QWidget *parent) :
 
     connect(&m_animate_timer, SIGNAL(timeout()), SLOT(Animation()));
     m_animate_timer.start(10);
+
+    setWindowOpacity(0.0f);
 
     repaint();
 }

@@ -45,12 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_main_view->setWindowFlags(Qt::Widget);
     layout()->addWidget(m_main_view);
     m_main_view->setDockNestingEnabled(true);
-
-    // add menu_minimization_switch.
-    CreateMenuMinimizationSwitch();
-
-    // initialize plugins.
-    InitializePlugins();
 }
 
 /**
@@ -65,6 +59,19 @@ MainWindow::~MainWindow()
     // delete ui.
     sm_this = nullptr;
     delete ui;
+}
+
+/**
+ *  @brief      初期化.
+ *  @author		yatagaik.
+ */
+void MainWindow::Initilize()
+{
+    // add menu_minimization_switch.
+    CreateMenuMinimizationSwitch();
+
+    // initialize plugins.
+    InitializePlugins();
 }
 
 /**
