@@ -1,0 +1,32 @@
+/*
+    MetaToolsのスタイルシート.
+ */
+/* TOOL TIP */
+QToolTip
+{
+     color: #ffffff;
+     background-color: #007acc;
+     padding: 0px;
+     border-radius: 0px;
+     opacity: 100;
+}
+
+/* WIDGET */
+QWidget
+{
+    color: #ffffff;
+    background-color: #323232;
+}
+QWidget:disabled
+{
+    color: #606060;
+    background-color: #323232;
+}
+QWidget:item:hover
+{
+    background-color: #007acc;
+}
+QWidget:item:selected
+{
+    background-color: #007acc;
+}

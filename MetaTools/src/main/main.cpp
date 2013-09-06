@@ -20,6 +20,10 @@ int main(int argc, char *argv[])
     QApplication application(argc, argv);
 
     // style設定.
+    QFile stylesheet(":/metatools_resource/style/metatools_style.qss");
+    stylesheet.open(QFile::ReadOnly);
+    QString setSheet = QLatin1String(stylesheet.readAll());
+    application.setStyleSheet(setSheet);
     QApplication::setStyle(QStyleFactory::create("Fusion"));
 
     // main window.

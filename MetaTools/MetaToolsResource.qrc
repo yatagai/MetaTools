@@ -10,5 +10,6 @@
         <file>img/log_icon.png</file>
         <file>img/meta_tools_icon_small.png</file>
         <file>img/meta_tools_splash.png</file>
+        <file>style/metatools_style.qss</file>
     </qresource>
 </RCC>
