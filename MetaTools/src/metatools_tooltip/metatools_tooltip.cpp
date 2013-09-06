@@ -26,6 +26,8 @@ MetaToolsToolTip::MetaToolsToolTip(QWidget *parent, const IPlugin *plugin) :
 {
     m_ui->setupUi(this);
     connect(m_ui->close_button, SIGNAL(clicked()), this, SLOT(OnClickCloseButton()));
+
+    // m_ui->caption_bar->setObjectName("metatools_tool_tip_caption_bar");
 }
 
 /**
@@ -78,6 +80,14 @@ void MetaToolsToolTip::OnClickCloseButton()
 {
     assert(m_plugin);
     const_cast<IPlugin*>(m_plugin)->OnClickCloseButton(m_child);
+}
+
+void MetaToolsToolTip::paintEvent(QPaintEvent */*event*/)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 }   // end namespace meta_tools.

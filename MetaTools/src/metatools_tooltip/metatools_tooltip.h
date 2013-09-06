@@ -49,6 +49,9 @@ private:
 
 private slots:
     void OnClickCloseButton();
+
+protected:
+    void paintEvent(QPaintEvent *event);
 };
 
 }       // end namespace meta_tools.

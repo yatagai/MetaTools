@@ -11,5 +11,7 @@
         <file>img/meta_tools_icon_small.png</file>
         <file>img/meta_tools_splash.png</file>
         <file>style/metatools_style.qss</file>
+        <file>img/close_16.png</file>
+        <file>img/app_window_16.png</file>
     </qresource>
 </RCC>

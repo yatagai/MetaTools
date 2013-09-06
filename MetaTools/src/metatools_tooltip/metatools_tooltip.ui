@@ -40,6 +40,12 @@
        <height>10</height>
       </size>
      </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
@@ -102,8 +108,29 @@
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
+        <property name="styleSheet">
+         <string notr="true">/* PushButton */
+QPushButton
+{
+    border-radius: 0px;
+}
+QPushButton:hover
+{
+    background-color: #555555;
+}</string>
+        </property>
         <property name="text">
-         <string>×</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../MetaToolsResource.qrc">
+          <normaloff>:/metatools_resource/img/close_16.png</normaloff>:/metatools_resource/img/close_16.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>10</width>
+          <height>10</height>
+         </size>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -130,6 +157,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../MetaToolsResource.qrc"/>
+ </resources>
  <connections/>
 </ui>
