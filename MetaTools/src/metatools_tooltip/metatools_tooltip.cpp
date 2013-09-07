@@ -82,7 +82,7 @@ void MetaToolsToolTip::OnClickCloseButton()
     const_cast<IPlugin*>(m_plugin)->OnClickCloseButton(m_child);
 }
 
-void MetaToolsToolTip::paintEvent(QPaintEvent */*event*/)
+void MetaToolsToolTip::paintEvent(QPaintEvent * /*event*/)
 {
     QStyleOption opt;
     opt.init(this);

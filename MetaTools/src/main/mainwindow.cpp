@@ -16,9 +16,9 @@
 namespace
 {
 
-const float MENU_MINIZATION_SWITCH_SIZE(15.0f);
-const float MENU_MINIMUM_HEIGHT(27.0f);
-const float MENU_MAXIMUM_HEIGHT(85.0f);
+const float MENU_MINIZATION_SWITCH_SIZE(16.0f);
+const float MENU_MINIMUM_HEIGHT(17.0f);
+const float MENU_MAXIMUM_HEIGHT(80.0f);
 
 const int MENU_ANIMATE_DELTA(10);                   // animate delta
 const float MENU_ANIMATE_SPEED(10.0);               // animate speed MENU_ANIMATE_DELTA/ms.
@@ -99,7 +99,6 @@ void MainWindow::CreateMenuMinimizationSwitch()
 void MainWindow::OnMinimizationSwitch()
 {
     m_is_menu_minization = !m_is_menu_minization;
-    ui->menu->setDocumentMode(m_is_menu_minization);
 
     if (!m_menu_animate_timer.isActive())
     {
