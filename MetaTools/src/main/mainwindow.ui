@@ -25,6 +25,13 @@
     <height>420</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Meiryo UI</family>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MetaTools</string>
   </property>
@@ -84,6 +91,9 @@
      </property>
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
      </property>
      <property name="iconSize">
       <size>

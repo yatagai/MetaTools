@@ -75,21 +75,21 @@ QMainWindow::separator
 /* QTabWidget */
 QTabWidget::pane
 {
-    border-top: 1px solid #fffff;
+   border-top: 2px solid #007acc;
 }
- /* Style the tab using the tab sub-control. Note that
-     it reads QTabBar _not_ QTabWidget */
+/* Style the tab using the tab sub-control. Note that
+   it reads QTabBar _not_ QTabWidget */
 QTabBar::tab
 {
-    border: 1px solid #ffffff;
-    border-bottom-color: #ffffff;
+    border: 0px solid #ffffff;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     min-width: 8ex;
-    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 QTabBar::tab:hover {
- background-color: #555555;
+    background-color: #555555;
 }
 QTabBar::tab:selected
 {
