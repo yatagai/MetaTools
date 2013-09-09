@@ -18,7 +18,7 @@ namespace
 
 const float MENU_MINIZATION_SWITCH_SIZE(16.0f);
 const float MENU_MINIMUM_HEIGHT(17.0f);
-const float MENU_MAXIMUM_HEIGHT(80.0f);
+const float MENU_MAXIMUM_HEIGHT(73.0f);
 
 const int MENU_ANIMATE_DELTA(10);                   // animate delta
 const float MENU_ANIMATE_SPEED(10.0);               // animate speed MENU_ANIMATE_DELTA/ms.
@@ -40,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     sm_this = this;
     ui->setupUi(this);
+    ui->menu->setMinimumHeight(MENU_MAXIMUM_HEIGHT);
+    ui->menu->setMaximumHeight(MENU_MAXIMUM_HEIGHT);
 
     m_main_view = new QMainWindow(this);
     m_main_view->setWindowFlags(Qt::Widget);

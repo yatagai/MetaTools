@@ -1,11 +1,17 @@
 /*
     MetaToolsのスタイルシート.
  */
-/* common control */
+/* common rule */
+/* #f1f1f1 base text color */
+/* #3f3f46 base outline color */
+/* #252526 base background color */
+/* #3e3e42 base light color */
+/* #555555 base highlight color */
+
 /* TOOL TIP */
 QToolTip
 {
-     color: #ffffff;
+     color: #f1f1f1;
      background-color: #007acc;
      padding: 0px;
      border-radius: 0px;
@@ -15,13 +21,13 @@ QToolTip
 /* WIDGET */
 QWidget
 {
-    color: #ffffff;
-    background-color: #323232;
+    color: #f1f1f1;
+    background-color: #252526;
 }
 QWidget:disabled
 {
     color: #606060;
-    background-color: #323232;
+    background-color: #252526;
 }
 QWidget:item:hover
 {
@@ -30,6 +36,21 @@ QWidget:item:hover
 QWidget:item:selected
 {
     background-color: #555555;
+}
+
+/* ToolButton */
+QPushButton
+{
+    border-style: solid;
+    border-width:1px;
+    border-radius:0px;
+    border-color:#999999;
+    background:#3e3e42;
+    padding:5px;
+}
+QPushButton::hover
+{
+    background:#555555;
 }
 
 /* ToolButton */
@@ -52,12 +73,14 @@ QDockWidget::title
 {
     text-align: left;
     padding: 0px;
+    padding-top: 2px;
     border-radius: 0px;
-    background: #282828;
+    background: #323232;
 }
 QDockWidget::close-button, QDockWidget::float-button
 {
     padding: 0px;
+    padding-top: 2px;
     border-radius: 0px;
 }
 QDockWidget::close-button:hover, QDockWidget::float-button:hover
@@ -81,9 +104,7 @@ QTabWidget::pane
    it reads QTabBar _not_ QTabWidget */
 QTabBar::tab
 {
-    border: 0px solid #ffffff;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
+    border: none;
     min-width: 8ex;
     padding-left: 5px;
     padding-right: 5px;
@@ -94,7 +115,6 @@ QTabBar::tab:hover {
 QTabBar::tab:selected
 {
     background-color: #007acc;
-    border-color: #007acc;
 }
 QTabBar::tab:!selected
 {
