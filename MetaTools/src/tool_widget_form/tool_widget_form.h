@@ -36,7 +36,7 @@ private:
     QWidget* m_child;
 
 public:
-    void OnClickCloseButton();
+    virtual void closeEvent(QCloseEvent *close_event);
 
 };
 }       // end namespace meta_tools.

@@ -84,11 +84,11 @@ void PluginManagerWidget::ChangePluginExplanationText(const std::string &explana
  * @author		yatagaik.
  * @param  in	event   マウスイベント.
  */ 
-void PluginManagerWidget::mousePressEvent(QMouseEvent *event)
+void PluginManagerWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() & Qt::LeftButton)
 	{
-		close();
+        close();
 	}
 }
 

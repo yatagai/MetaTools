@@ -29,9 +29,9 @@ public:
     }
 
 public:
-    virtual void OnClickCloseButton(QWidget * /*clicked_widget*/)
+    virtual void OnClickCloseButton(QWidget * /*clicked_widget*/,  bool &cancel)
     {
-
+        cancel = !Close();
     }
 
 protected:

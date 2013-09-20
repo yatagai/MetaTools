@@ -46,7 +46,7 @@ public:
     }
 
 public:
-    virtual void OnClickCloseButton(QWidget *clicked_widget);
+    virtual void OnClickCloseButton(QWidget *clicked_widget, bool &/*cancel*/);
 protected:
     virtual bool OnStart();
     virtual bool OnClose();

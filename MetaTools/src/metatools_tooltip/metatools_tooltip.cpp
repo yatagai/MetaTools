@@ -7,6 +7,7 @@
 #include "metatools_tooltip.h"
 #include "ui_metatools_tooltip.h"
 #include "../plugin/plugin.h"
+#include "../plugin/plugin_manager/plugin_manager.h"
 #include <assert.h>
 
 namespace meta_tools
@@ -79,7 +80,12 @@ void MetaToolsToolTip::SetLabel(const char* label)
 void MetaToolsToolTip::OnClickCloseButton()
 {
     assert(m_plugin);
-    const_cast<IPlugin*>(m_plugin)->OnClickCloseButton(m_child);
+    bool cancel = false;
+    const_cast<IPlugin*>(m_plugin)->OnClickCloseButton(m_child, cancel);
+    if (!cancel)
+    {
+        PluginManager::Order()->RemoveWidget(m_plugin, m_child);
+    }
 }
 
 void MetaToolsToolTip::paintEvent(QPaintEvent * /*event*/)

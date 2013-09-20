@@ -1,6 +1,7 @@
 ﻿#include "tool_widget_form.h"
 #include "ui_tool_widget_form.h"
 #include "../plugin/plugin.h"
+#include "../plugin/plugin_manager/plugin_manager.h"
 #include <assert.h>
 
 namespace meta_tools
@@ -56,10 +57,17 @@ void ToolWidgetForm::SetChildWidget(QWidget *child)
  *  @brief      閉じるボタンが押された.
  *  @author		yatagaik.
  */
-void ToolWidgetForm::OnClickCloseButton()
+void ToolWidgetForm::closeEvent(QCloseEvent * close_event)
 {
+    close_event->ignore();
     assert(m_plugin);
-    const_cast<IPlugin*>(m_plugin)->OnClickCloseButton(m_child);
+    bool cancel = false;
+    const_cast<IPlugin*>(m_plugin)->OnClickCloseButton(m_child, cancel);
+
+    if (!cancel)
+    {
+        PluginManager::Order()->RemoveWidget(m_plugin, m_child);
+    }
 }
 
 }           // namespace meta_tools.

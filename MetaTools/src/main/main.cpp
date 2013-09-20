@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QtGui>
 #include <QtWidgets>
+#include <QTextCodec>
 #include "mainwindow.h"
 #include "../splash_screen/splash_screen.h"
 /**

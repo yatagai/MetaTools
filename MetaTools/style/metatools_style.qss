@@ -4,8 +4,10 @@
 /* common rule */
 /* #f1f1f1 base text color */
 /* #3f3f46 base outline color */
+/* #999999 base light light outline color */
 /* #252526 base background color */
-/* #3e3e42 base light color */
+/* #2d2d30 base light background color */
+/* #3e3e42 base light light background color */
 /* #555555 base highlight color */
 
 /* TOOL TIP */
@@ -52,15 +54,27 @@ QPushButton::hover
 {
     background:#555555;
 }
+QPushButton::pressed
+{
+    border-color: #3f3f46;
+}
 
 /* ToolButton */
 QToolButton
 {
+    border-style: solid;
+    border-width:1px;
     border-radius: 0px;
+    border-color:#252526;
 }
 QToolButton:hover
 {
+    border-color:#999999;
     background-color: #555555;
+}
+QToolButton::pressed
+{
+    border-color: #3f3f46;
 }
 
 /* DockWidget */
@@ -106,6 +120,7 @@ QTabBar::tab
 {
     border: none;
     min-width: 8ex;
+    padding-top: 2px;
     padding-left: 5px;
     padding-right: 5px;
 }

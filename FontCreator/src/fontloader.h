@@ -45,12 +45,19 @@ public:
         float offst_y;
         char32_t charactor;
     };
+public:
+    struct CreateParam
+    {
+        unsigned int font_size; // fontサイズ(pixel).
+        float out_line_width;   // 輪郭線太さ(pixel).
+        bool out_line;
+    };
 
 public:
     explicit FontLoader();
     ~FontLoader();
     bool Load(const char *file_name);
-    bool CreateFontInfo(const char16_t *text, unsigned int font_size);
+    bool CreateFontInfo(const char16_t *text, const CreateParam &param);
     unsigned int GetFontInfoCount() const;
     const FontInfo& GetFontInfo(unsigned int index) const;
     bool CanRenderCharactor(const char16_t text);
@@ -60,7 +67,7 @@ private:
     FT_Face m_face;
     FT_GlyphSlot m_slot;
     FT_UInt m_glyph_index;
-    unsigned int m_font_size;
+    CreateParam m_create_param;
     // フォント情報キャッシュ.
 private:
     bool CreateFontInfoCache(const char16_t *text);

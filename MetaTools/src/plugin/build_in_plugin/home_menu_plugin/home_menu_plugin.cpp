@@ -7,6 +7,7 @@
 #include "home_menu_plugin.h"
 #include "home_menu_plugin_widget.h"
 #include <QIcon>
+
 namespace meta_tools
 {
 
@@ -37,11 +38,12 @@ HomeMenuPlugin::~HomeMenuPlugin()
  *  @author		yatagaik.
  *  @param  in	clicked_widget	クリックされたウィジェット.
  */
-void HomeMenuPlugin::OnClickCloseButton(QWidget *clicked_widget)
+void HomeMenuPlugin::OnClickCloseButton(QWidget *clicked_widget, bool &cancel)
 {
     if (m_home_menu_widget == clicked_widget)
     {
         m_home_menu_widget->OnClickAppCloseButton();
+        cancel = true;
     }
 }
 

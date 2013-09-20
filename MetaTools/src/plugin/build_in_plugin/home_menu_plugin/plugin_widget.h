@@ -31,7 +31,7 @@ public:
     ~PluginWidget();
 
 protected:
-    virtual void mousePressEvent(QMouseEvent *mouse_event);
+    virtual void mouseReleaseEvent(QMouseEvent *mouse_event);
     virtual void mouseMoveEvent(QMouseEvent *mouse_event);
     virtual void leaveEvent(QEvent *event);
 

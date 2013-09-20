@@ -2,6 +2,7 @@
 #include "ui_splash_screen.h"
 #include <QApplication>
 #include <QPainter>
+#include <QDesktopWidget>
 
 SplashScreen::SplashScreen(QWidget *parent) :
     QWidget(parent, Qt::SplashScreen),
@@ -17,6 +18,17 @@ SplashScreen::SplashScreen(QWidget *parent) :
     m_animate_timer.start(10);
 
     setWindowOpacity(0.0f);
+
+    QRect geometry(geometry());
+    geometry.setWidth(0);
+    geometry.setHeight(0);
+    QDesktopWidget *desk_top = QApplication::desktop();
+    QRect screen_geometry = desk_top->screenGeometry();
+    int screen_center_x = screen_geometry.width() / 2;
+    int screen_center_y = screen_geometry.height() / 2;
+    geometry.setLeft(screen_center_x - 1280 / 2.0f);
+    geometry.setTop(screen_center_y - 350 / 2.0f);
+    this->setGeometry(geometry);
 
     repaint();
 }

@@ -53,6 +53,11 @@ private:
 private slots:
     void OnFontSizeChanged(int font_size);
 
+    // 輪郭線変更.
+private slots:
+    void OnChangeOutlineEnable(bool checked);
+    void OnChangeOutlineWidth(double outline_width);
+
     // テキスト変更.
 private slots:
     void OnTextChanged();
@@ -62,6 +67,22 @@ private slots:
     void OnClickASCII();
     void OnClickKana();
     void OnClickKanji();
+
+    // スケール変更.
+private slots:
+    void OnScaleChenged(int value);
+private:
+    void UpdateScale();
+
+    // カラー変更.
+protected:
+    virtual bool eventFilter(QObject *object, QEvent *event);
+private:
+    void OnClickFontColor();
+    void OnClickBGColor();
+private:
+    QColor m_font_color;
+    QColor m_bg_color;
 };
 
 #endif // FONTCREATOR_WIDGET_H

@@ -82,13 +82,12 @@ bool LogPlugin::OnReceiveLogShow(const IPlugin * /*sender*/, void * /*param*/)
  *  @author		yatagaik.
  *  @param  in	clicked_widget	クリックされたウィジェット.
  */
-void LogPlugin::OnClickCloseButton(QWidget *clicked_widget)
+void LogPlugin::OnClickCloseButton(QWidget *clicked_widget, bool &cancel)
 {
     if (m_log_window == clicked_widget)
     {
         if (!m_ishide)
         {
-            RemoveWidget(m_log_window);
             m_ishide = true;
         }
     }

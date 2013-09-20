@@ -2,12 +2,15 @@
 #include "ui_main_form.h"
 #include "fontloader.h"
 #include <QGraphicsPixmapItem>
+#include <QTransform>
+#include <QColorDialog>
 
 namespace
 {
 const int CHARACTOR_MARGIN(3);
 const int TEXTURE_MARGIN(25);
 }
+
 /**
  *  @brief		コンストラクタ.
  */
@@ -18,6 +21,8 @@ FontCreatorWidget::FontCreatorWidget() :
   , m_font_loader(new font_creator::FontLoader())
   , m_texture_count(0)
   , m_texture_size(256)
+  , m_font_color(0xFF, 0xFF, 0xFF)
+  , m_bg_color(0x00, 0x00, 0x00)
 {
     m_ui->setupUi(this);
     setAcceptDrops(true);
@@ -37,6 +42,11 @@ FontCreatorWidget::FontCreatorWidget() :
     // font size box.
     connect(m_ui->font_size, SIGNAL(valueChanged(int)),
             this, SLOT(OnFontSizeChanged(int)));
+    // outline.
+    connect(m_ui->outline_enable, SIGNAL(toggled(bool)),
+            this, SLOT(OnChangeOutlineEnable(bool)));
+    connect(m_ui->outline_width, SIGNAL(valueChanged(double)),
+            this, SLOT(OnChangeOutlineWidth(double)));
     // text box.
     connect(m_ui->create_text, SIGNAL(textChanged()),
             this, SLOT(OnTextChanged()));
@@ -49,6 +59,18 @@ FontCreatorWidget::FontCreatorWidget() :
             this, SLOT(OnClickKanji()));
     // QTransform scale_matrix = QTransform::fromScale(2, 2);
     // m_ui->graphicsView->setTransform(scale_matrix);
+    // スケールスライダー
+    connect(m_ui->scale_slider, SIGNAL(valueChanged(int)),
+            this, SLOT(OnScaleChenged(int)));
+
+
+    // default color.
+    QString style = "QWidget {background-color: " + m_font_color.name() + ";}";
+    m_ui->font_color->setStyleSheet(style);
+    style = "QWidget {background-color: " + m_bg_color.name() + ";}";
+    m_ui->bg_color->setStyleSheet(style);
+    m_ui->font_color->installEventFilter(this);
+    m_ui->bg_color->installEventFilter(this);
 }
 
 /**
@@ -151,7 +173,11 @@ void FontCreatorWidget::CreateFontCache()
     char16_t *create_text16 = new char16_t[create_text.length() + 1];
     create_text.toWCharArray(reinterpret_cast<wchar_t*>(create_text16));
     create_text16[create_text.length()] = 0;
-    m_font_loader->CreateFontInfo(create_text16, m_ui->font_size->value());
+    font_creator::FontLoader::CreateParam create_param;
+    create_param.font_size = m_ui->font_size->value();
+    create_param.out_line_width = static_cast<float>(m_ui->outline_width->value());
+    create_param.out_line = m_ui->outline_enable->isChecked();
+    m_font_loader->CreateFontInfo(create_text16, create_param);
     delete[] create_text16;
 }
 
@@ -170,7 +196,7 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
     }
 
     QImage invalidate_image(tex_width, tex_height, QImage::Format_RGB888);
-    invalidate_image.fill(QColor(0, 0, 0));
+    invalidate_image.fill(m_bg_color);
     QImage new_image;
     QPoint offset(CHARACTOR_MARGIN, CHARACTOR_MARGIN);
     QImage *current_texture = nullptr;
@@ -180,7 +206,12 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
         if (offset.x() + (int)info.width + CHARACTOR_MARGIN >= m_texture_size)
         {
             offset.setX(CHARACTOR_MARGIN);
-            offset.setY(offset.y() + m_ui->font_size->value() + CHARACTOR_MARGIN);
+            float font_height_max = m_ui->font_size->value();
+            if (m_ui->outline_enable)
+            {
+                font_height_max += static_cast<float>(m_ui->outline_width->value() * 2.0);
+            }
+            offset.setY(offset.y() + font_height_max + CHARACTOR_MARGIN);
             if (offset.y() + m_ui->font_size->value() + CHARACTOR_MARGIN >= m_texture_size)
             {
                 if (current_texture)
@@ -203,9 +234,13 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
             for (int j = 0; j < (int)info.width; ++j)
             {
                 unsigned char color = reinterpret_cast<unsigned char*>(info.bitmap)[(i - (int)info.offst_y) * (int)info.width + j];
-                current_texture->bits()[((i + offset.y()) * m_texture_size + (j + offset.x())) * 3 + 0] = color;
-                current_texture->bits()[((i + offset.y()) * m_texture_size + (j + offset.x())) * 3 + 1] = color;
-                current_texture->bits()[((i + offset.y()) * m_texture_size + (j + offset.x())) * 3 + 2] = color;
+                float colorf = color / 255.0f;
+                unsigned char red = m_font_color.redF() * 255 * colorf + m_bg_color.redF() * 255 * (1.0f - colorf);
+                unsigned char green = m_font_color.greenF() * 255 * colorf + m_bg_color.greenF() * 255 * (1.0f - colorf);
+                unsigned char blue = m_font_color.blueF() * 255 * colorf + m_bg_color.blueF() * 255 * (1.0f - colorf);
+                current_texture->bits()[((i + offset.y()) * m_texture_size + (j + offset.x())) * 3 + 0] = red;
+                current_texture->bits()[((i + offset.y()) * m_texture_size + (j + offset.x())) * 3 + 1] = green;
+                current_texture->bits()[((i + offset.y()) * m_texture_size + (j + offset.x())) * 3 + 2] = blue;
             }
         }
         offset.setX(offset.x() + (int)info.width + CHARACTOR_MARGIN);
@@ -216,8 +251,7 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
         new_item->setOffset(0.0f, m_texture_count * (TEXTURE_MARGIN + m_texture_size));
         ++m_texture_count;
     }
-    m_graphics_scene->setSceneRect(0.0f, 0.0f,
-                                  m_texture_size, m_texture_count * (TEXTURE_MARGIN + m_texture_size));
+    UpdateScale();
 }
 
 /**
@@ -244,6 +278,32 @@ void FontCreatorWidget::OnTextureSizeChenged(int index)
  *  @param  in  font_size フォントサイズ.
  */
 void FontCreatorWidget::OnFontSizeChanged(int /*font_size*/)
+{
+    OnTextChanged();
+}
+
+/**
+ *  @breif      アウトライン有効/無効変更.
+ *  @param  in  checked check状態.
+ */
+void FontCreatorWidget::OnChangeOutlineEnable(bool /*checked*/)
+{
+    if (m_ui->outline_enable->isChecked())
+    {
+        m_ui->outline_width->setEnabled(true);
+    }
+    else
+    {
+        m_ui->outline_width->setEnabled(false);
+    }
+    OnTextChanged();
+}
+
+/**
+ *  @breif      アウトライン太さ変更.
+ *  @param  in  outline_width アウトライン太さ.
+ */
+void FontCreatorWidget::OnChangeOutlineWidth(double /*outline_width*/)
 {
     OnTextChanged();
 }
@@ -303,4 +363,98 @@ void FontCreatorWidget::OnClickKanji()
         }
     }
     m_ui->create_text->appendPlainText(add);
+}
+
+/**
+ *  @breif      スケール変更.
+ *  @param  in  value 値.
+ */
+void FontCreatorWidget::OnScaleChenged(int value)
+{
+    QString text;
+    text.setNum(value);
+    text += "%";
+    m_ui->scale_label->setText(text);
+
+    UpdateScale();
+}
+
+/**
+ *  @breif      スケール更新.
+ */
+void FontCreatorWidget::UpdateScale()
+{
+    float scale = m_ui->scale_slider->value() / 100.0f;
+    for (int i = 0; i < m_graphics_scene->items().size(); ++i)
+    {
+        m_graphics_scene->items().at(i)->setTransform(QTransform::fromScale(scale, scale));
+    }
+
+    m_graphics_scene->setSceneRect(0.0f, 0.0f,
+                                  m_texture_size * scale, m_texture_count * (TEXTURE_MARGIN + m_texture_size) * scale);
+}
+
+/**
+ *  @breif      イベントフィルタ.
+ *  @param  in  object オブジェクト.
+ *  @param  in  event イベント.
+ *  @return trueで処理した falseで何もしなかった.
+ */
+bool FontCreatorWidget::eventFilter(QObject *object, QEvent *event)
+{
+    if (event->type() == QEvent::MouseButtonRelease)
+    {
+        if (object == m_ui->font_color)
+        {
+            OnClickFontColor();
+            return true;
+        }
+        else if (object == m_ui->bg_color)
+        {
+            OnClickBGColor();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ *  @breif      フォントカラー変更.
+ */
+void FontCreatorWidget::OnClickFontColor()
+{
+    QColor temp = m_font_color;
+    temp = QColorDialog::getColor(temp,
+                                  this,
+                                  "select Font Color",
+                                  QColorDialog::DontUseNativeDialog);
+    if (temp.isValid())
+    {
+        m_font_color = temp;
+        QString style = "QWidget {background-color: " + m_font_color.name() + ";}";
+        m_ui->font_color->setStyleSheet(style);
+
+        UpdateImage(m_texture_size, m_texture_size);
+    }
+}
+
+/**
+ *  @breif      BGカラー変更.
+ */
+void FontCreatorWidget::OnClickBGColor()
+{
+    QColor temp = m_bg_color;
+    temp = QColorDialog::getColor(temp,
+                                  this,
+                                  "select BG Color",
+                                  QColorDialog::DontUseNativeDialog);
+    if (temp.isValid())
+    {
+        m_bg_color = temp;
+        QString style = "QWidget {background-color: " + m_bg_color.name() + ";}";
+        m_ui->bg_color->setStyleSheet(style);
+
+        UpdateImage(m_texture_size, m_texture_size);
+    }
 }

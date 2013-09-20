@@ -9,6 +9,8 @@
 #include <QToolButton>
 #include <QMainWindow>
 #include <QDockWidget>
+#include <QMessageBox>
+#include <qevent.h>
 
 #include "../plugin/plugin_manager/plugin_manager.h"
 #include "../tool_widget_form/tool_widget_form.h"
@@ -16,9 +18,9 @@
 namespace
 {
 
-const float MENU_MINIZATION_SWITCH_SIZE(16.0f);
-const float MENU_MINIMUM_HEIGHT(17.0f);
-const float MENU_MAXIMUM_HEIGHT(73.0f);
+const float MENU_MINIZATION_SWITCH_SIZE(12.0f);
+const float MENU_MINIMUM_HEIGHT(23.0f);
+const float MENU_MAXIMUM_HEIGHT(80.0f);
 
 const int MENU_ANIMATE_DELTA(10);                   // animate delta
 const float MENU_ANIMATE_SPEED(10.0);               // animate speed MENU_ANIMATE_DELTA/ms.
@@ -169,5 +171,21 @@ void MainWindow::FinalizePlugins()
         m_plugin_manager->Final();
         delete m_plugin_manager;
         m_plugin_manager = nullptr;
+    }
+}
+
+/**
+ *  @brief      閉じるイベント.
+ *  @author		yatagaik.
+ */
+void MainWindow::closeEvent(QCloseEvent *close_event)
+{
+    QMessageBox::StandardButton ret = QMessageBox::question(
+        this,
+        QString::fromLocal8Bit("MetaTools"),
+        QString::fromLocal8Bit("MetaToolsを終了しますか?"), QMessageBox::Yes | QMessageBox::No);
+    if (ret != QMessageBox::Yes)
+    {
+        close_event->ignore();
     }
 }

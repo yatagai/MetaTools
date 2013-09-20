@@ -65,6 +65,10 @@ private:
     void FinalizePlugins();
 private:
     meta_tools::PluginManager* m_plugin_manager;
+
+    // 閉じる.
+private:
+    virtual void closeEvent(QCloseEvent *event);
 };
 
 #endif // MAINWINDOW_H

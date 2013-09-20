@@ -287,9 +287,10 @@ public:
     /**
      *  @brief		メニューウィジェットとツールウィジェットの閉じるボタンが押されたら呼ばれる.
      *  @author		yatagaik.
-     *  @param  in	clicked_widget	閉じるボタンが押されたウィジェット.
+     *  @param  in	clicked_widget	閉じるボタンが押されたウィジェット.]
+     *  @param  in  cancel trueを入れるとcancelされる.
      */
-    virtual void OnClickCloseButton(QWidget * /*clicked_widget*/)
+    virtual void OnClickCloseButton(QWidget * /*clicked_widget*/, bool &/*cancel*/)
     {
     }
 protected:

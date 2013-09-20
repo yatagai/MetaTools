@@ -43,7 +43,7 @@ PluginWidget::~PluginWidget()
  * @author		yatagaik.
  * @param	in	mouse_event	マウスイベント.
  */
-void PluginWidget::mousePressEvent(QMouseEvent * /*mouse_event*/)
+void PluginWidget::mouseReleaseEvent(QMouseEvent * /*mouse_event*/)
 {
     if (!m_plugin->IsExecute())
     {

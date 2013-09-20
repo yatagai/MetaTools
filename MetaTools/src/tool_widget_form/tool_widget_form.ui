@@ -10,6 +10,9 @@
     <height>281</height>
    </rect>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::DefaultContextMenu</enum>
+  </property>
   <property name="floating">
    <bool>false</bool>
   </property>

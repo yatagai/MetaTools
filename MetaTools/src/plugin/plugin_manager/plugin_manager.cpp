@@ -238,7 +238,6 @@ void PluginManager::AddToolWidget(const IPlugin * entry_plugin, QWidget* add_wid
     {
         m_main_view->addDockWidget(Qt::TopDockWidgetArea, new_tool_widget, Qt::Horizontal);
     }
-    add_widget->activateWindow();
     m_tool_windows.push_back(new_tool_widget);
 }
 

@@ -13,6 +13,18 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QFrame
+{
+    border-style: solid;
+	border-width: 1px;
+    border-color: #999999;
+}
+QLabel
+{
+    border-width: 0px;
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -73,7 +85,7 @@
          <string>TextLabel</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         <set>Qt::AlignHCenter|Qt::AlignTop</set>
         </property>
         <property name="indent">
          <number>0</number>
@@ -112,10 +124,12 @@
          <string notr="true">/* PushButton */
 QPushButton
 {
+	border-width: 0px;
     border-radius: 0px;
 }
 QPushButton:hover
 {
+	border-width: 0px;
     background-color: #555555;
 }</string>
         </property>
@@ -123,7 +137,7 @@ QPushButton:hover
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../../MetaToolsResource.qrc">
+         <iconset>
           <normaloff>:/metatools_resource/img/close_16.png</normaloff>:/metatools_resource/img/close_16.png</iconset>
         </property>
         <property name="iconSize">
@@ -157,8 +171,6 @@ QPushButton:hover
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../MetaToolsResource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

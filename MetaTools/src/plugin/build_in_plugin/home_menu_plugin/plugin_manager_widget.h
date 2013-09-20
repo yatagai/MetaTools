@@ -33,7 +33,7 @@ public:
     void ChangePluginExplanationText(const std::string &explanation);
 
 protected:
-    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
 
 private:
