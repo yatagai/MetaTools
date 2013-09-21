@@ -193,7 +193,7 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
 
             info.width = static_cast<float>(ft_bitmap_glyph->bitmap.width);
             info.height = static_cast<float>(ft_bitmap_glyph->bitmap.rows);
-            info.offst_y = static_cast<float>(ft_bitmap_glyph->top);
+            info.offst_y = base_line_height + m_create_param.out_line_width - static_cast<float>(ft_bitmap_glyph->top);
             info.bitmap = new unsigned char[static_cast<size_t>(info.width * info.height)];
             assert(info.offst_y >= 0.0f);
             memcpy(info.bitmap, ft_bitmap_glyph->bitmap.buffer, static_cast<size_t>(info.width * info.height));

@@ -65,6 +65,7 @@ SOURCES += \
     lib/freetype/src/base/ftutil.c \
     lib/freetype/src/base/ftwinfnt.c \
     lib/freetype/src/base/ftxf86.c \
+    lib/freetype/src/base/md5.c \
     lib/freetype/src/bdf/bdf.c \
     lib/freetype/src/bdf/bdfdrivr.c \
     lib/freetype/src/bdf/bdflib.c \
@@ -78,6 +79,15 @@ SOURCES += \
     lib/freetype/src/cache/ftcmanag.c \
     lib/freetype/src/cache/ftcmru.c \
     lib/freetype/src/cache/ftcsbits.c \
+    lib/freetype/src/cff/cf2arrst.c \
+    lib/freetype/src/cff/cf2blues.c \
+    lib/freetype/src/cff/cf2error.c \
+    lib/freetype/src/cff/cf2font.c \
+    lib/freetype/src/cff/cf2ft.c \
+    lib/freetype/src/cff/cf2hints.c \
+    lib/freetype/src/cff/cf2intrp.c \
+    lib/freetype/src/cff/cf2read.c \
+    lib/freetype/src/cff/cf2stack.c \
     lib/freetype/src/cff/cff.c \
     lib/freetype/src/cff/cffcmap.c \
     lib/freetype/src/cff/cffdrivr.c \
@@ -92,30 +102,6 @@ SOURCES += \
     lib/freetype/src/cid/cidparse.c \
     lib/freetype/src/cid/cidriver.c \
     lib/freetype/src/cid/type1cid.c \
-    lib/freetype/src/gxvalid/gxvalid.c \
-    lib/freetype/src/gxvalid/gxvbsln.c \
-    lib/freetype/src/gxvalid/gxvcommn.c \
-    lib/freetype/src/gxvalid/gxvfeat.c \
-    lib/freetype/src/gxvalid/gxvfgen.c \
-    lib/freetype/src/gxvalid/gxvjust.c \
-    lib/freetype/src/gxvalid/gxvkern.c \
-    lib/freetype/src/gxvalid/gxvlcar.c \
-    lib/freetype/src/gxvalid/gxvmod.c \
-    lib/freetype/src/gxvalid/gxvmort.c \
-    lib/freetype/src/gxvalid/gxvmort0.c \
-    lib/freetype/src/gxvalid/gxvmort1.c \
-    lib/freetype/src/gxvalid/gxvmort2.c \
-    lib/freetype/src/gxvalid/gxvmort4.c \
-    lib/freetype/src/gxvalid/gxvmort5.c \
-    lib/freetype/src/gxvalid/gxvmorx.c \
-    lib/freetype/src/gxvalid/gxvmorx0.c \
-    lib/freetype/src/gxvalid/gxvmorx1.c \
-    lib/freetype/src/gxvalid/gxvmorx2.c \
-    lib/freetype/src/gxvalid/gxvmorx4.c \
-    lib/freetype/src/gxvalid/gxvmorx5.c \
-    lib/freetype/src/gxvalid/gxvopbd.c \
-    lib/freetype/src/gxvalid/gxvprop.c \
-    lib/freetype/src/gxvalid/gxvtrak.c \
     lib/freetype/src/gzip/adler32.c \
     lib/freetype/src/gzip/ftgzip.c \
     lib/freetype/src/gzip/infblock.c \
@@ -166,6 +152,7 @@ SOURCES += \
     lib/freetype/src/raster/ftrend1.c \
     lib/freetype/src/raster/raster.c \
     lib/freetype/src/raster/rastpic.c \
+    lib/freetype/src/sfnt/pngshim.c \
     lib/freetype/src/sfnt/sfdriver.c \
     lib/freetype/src/sfnt/sfnt.c \
     lib/freetype/src/sfnt/sfntpic.c \
@@ -177,16 +164,10 @@ SOURCES += \
     lib/freetype/src/sfnt/ttmtx.c \
     lib/freetype/src/sfnt/ttpost.c \
     lib/freetype/src/sfnt/ttsbit.c \
-    lib/freetype/src/sfnt/ttsbit0.c \
     lib/freetype/src/smooth/ftgrays.c \
     lib/freetype/src/smooth/ftsmooth.c \
     lib/freetype/src/smooth/ftspic.c \
     lib/freetype/src/smooth/smooth.c \
-    lib/freetype/src/tools/apinames.c \
-    lib/freetype/src/tools/test_afm.c \
-    lib/freetype/src/tools/test_bbox.c \
-    lib/freetype/src/tools/test_trig.c \
-    lib/freetype/src/tools/ftrandom/ftrandom.c \
     lib/freetype/src/truetype/truetype.c \
     lib/freetype/src/truetype/ttdriver.c \
     lib/freetype/src/truetype/ttgload.c \
@@ -195,6 +176,7 @@ SOURCES += \
     lib/freetype/src/truetype/ttobjs.c \
     lib/freetype/src/truetype/ttpic.c \
     lib/freetype/src/truetype/ttpload.c \
+    lib/freetype/src/truetype/ttsubpix.c \
     lib/freetype/src/type1/t1afm.c \
     lib/freetype/src/type1/t1driver.c \
     lib/freetype/src/type1/t1gload.c \
