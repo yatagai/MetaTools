@@ -10,6 +10,7 @@ namespace
 {
 const int CHARACTOR_MARGIN(2);
 const int TEXTURE_MARGIN(25);
+const int MAX_RENDER_ONE_TIME(50);
 struct TextureSizeInfo
 {
     const char* const text;
@@ -86,11 +87,11 @@ void DrawFontToQImage(QImage *render_target,
 FontCreatorWidget::FontCreatorWidget() :
     QWidget()
   , m_ui(new Ui::MainForm())
-  , m_graphics_scene(nullptr)
+  , m_view_area(new QWidget())
+  , m_timer(nullptr)
   , m_font_loader(new font_creator::FontLoader())
-  , m_texture_count(0)
-  , m_texture_width(256)
-  , m_texture_height(256)
+  , m_texture_width(512)
+  , m_texture_height(512)
   , m_font_color(0xFF, 0xFF, 0xFF)
   , m_outline_color(0x00, 0x00, 0xFF)
   , m_bg_color(0x88, 0x88, 0x88)
@@ -98,8 +99,10 @@ FontCreatorWidget::FontCreatorWidget() :
     m_ui->setupUi(this);
     setAcceptDrops(true);
 
-    m_graphics_scene = new QGraphicsScene(0);
-    m_ui->graphicsView->setScene(m_graphics_scene);
+    m_view_area->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_view_area->installEventFilter(this);
+    m_view_area->setParent(m_ui->scroll_area);
+    m_ui->scroll_area->setWidget(m_view_area);
 
     // texture size combo box.
     for (int i = 0; i < sizeof(TEXTURE_SIZE_LIST) / sizeof(TextureSizeInfo); ++i)
@@ -151,6 +154,16 @@ FontCreatorWidget::FontCreatorWidget() :
  */
 FontCreatorWidget::~FontCreatorWidget()
 {
+    ClearImage(false);
+
+    if (m_view_area)
+    {
+        m_view_area->setParent(nullptr);
+        m_ui->scroll_area->setWidget(nullptr);
+        delete m_view_area;
+        m_view_area = nullptr;
+    }
+
     if (m_ui)
     {
         delete m_ui;
@@ -161,14 +174,6 @@ FontCreatorWidget::~FontCreatorWidget()
     {
         delete m_font_loader;
         m_font_loader = nullptr;
-    }
-
-    if (m_graphics_scene)
-    {
-        ClearImage();
-
-        delete m_graphics_scene;
-        m_graphics_scene = nullptr;
     }
 }
 
@@ -184,6 +189,42 @@ void FontCreatorWidget::OnStart()
  */
 void  FontCreatorWidget::OnClose()
 {
+}
+
+/**
+ *  @breif      描画処理.
+ */
+void FontCreatorWidget::paintEvent(QPaintEvent * /*event*/)
+{
+    if (m_render_info.render_count < m_font_loader->GetFontInfoCount())
+    {
+        if (m_timer && !m_timer->isActive())
+        {
+            m_timer->start(0);
+        }
+    }
+    else if (m_timer != nullptr)
+    {
+        delete m_timer;
+        m_timer = nullptr;
+    }
+}
+
+/**
+ *  @breif      テクスチャ描画処理.
+ */
+void FontCreatorWidget::viewPaintEvent()
+{
+    float scale = m_ui->scale_slider->value() / 100.0f;
+    QPainter painter(m_view_area);
+    painter.scale(scale, scale);
+    for (size_t i = 0; i < m_texture_list.size(); ++i)
+    {
+        painter.drawImage(TEXTURE_MARGIN,
+                          TEXTURE_MARGIN + (m_texture_height + TEXTURE_MARGIN) * static_cast<int>(i),
+                          *m_texture_list[i]);
+    }
+    painter.end();
 }
 
 /**
@@ -225,7 +266,7 @@ void FontCreatorWidget::dropEvent(QDropEvent *event)
                 {
                     m_ui->create_text->setPlainText("");
                     CreateFontCache();
-                    UpdateImage(m_texture_width, m_texture_height);
+                    ClearImage();
                 }
                 break;
             }
@@ -255,6 +296,15 @@ void FontCreatorWidget::CreateFontCache()
     delete[] create_text16;
 }
 
+void FontCreatorWidget::UpdateImageEvent()
+{
+    if (m_timer)
+    {
+        m_timer->stop();
+    }
+    UpdateImage(m_texture_width, m_texture_height);
+}
+
 /**
  *  @breif      update image.
  *  @param  in  tex_width テクスチャ幅.
@@ -262,59 +312,55 @@ void FontCreatorWidget::CreateFontCache()
  */
 void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
 {
-    ClearImage();
-
     if (!m_font_loader->HasFace())
     {
         return;
     }
-
-    QImage invalidate_image(tex_width, tex_height, QImage::Format_RGB888);
-    invalidate_image.fill(m_bg_color);
-    QImage new_image;
-    QPoint offset(CHARACTOR_MARGIN, CHARACTOR_MARGIN);
-    QImage *current_texture = nullptr;
+    bool resize = m_texture_list.size() == 0;
 
     float outline_width = m_ui->outline_enable->isChecked() ? m_ui->outline_width->value() : 0.0f;
     float font_height = m_font_loader->GetMaxFontHeight() + outline_width * 2.0f;
 
-    for (unsigned int chara_index = 0; chara_index < m_font_loader->GetFontInfoCount(); ++chara_index)
+    int render_times = 0;
+    for (;
+         m_render_info.render_count < m_font_loader->GetFontInfoCount() && render_times < MAX_RENDER_ONE_TIME
+         ; ++m_render_info.render_count, ++render_times)
     {       
-        const font_creator::FontLoader::FontInfo &info = m_font_loader->GetFontInfo(chara_index);
+        const font_creator::FontLoader::FontInfo &info = m_font_loader->GetFontInfo(m_render_info.render_count);
         float font_width = info.width + outline_width * 2.0f;
-        bool next_line = (offset.x() + font_width + CHARACTOR_MARGIN) >
+        bool next_line = (m_render_info.offset.x() + font_width + CHARACTOR_MARGIN) >
                 tex_width;
         if (next_line)
         {
-            offset.setX(CHARACTOR_MARGIN);
-            offset.setY(offset.y() + font_height + CHARACTOR_MARGIN);
-            if (offset.y() + font_height + CHARACTOR_MARGIN > tex_height)
+            m_render_info.offset.setX(CHARACTOR_MARGIN);
+            m_render_info.offset.setY(m_render_info.offset.y() + font_height + CHARACTOR_MARGIN);
+            if (m_render_info.offset.y() + font_height + CHARACTOR_MARGIN > tex_height)
             {
-                if (current_texture)
+                if (m_render_info.current_texture)
                 {
-                    QGraphicsPixmapItem *new_item = m_graphics_scene->addPixmap(QPixmap::fromImage(*current_texture));
-                    new_item->setOffset(0.0f, m_texture_count * (TEXTURE_MARGIN + m_texture_height));
-                    ++m_texture_count;
-                    current_texture = nullptr;
+                    m_render_info.current_texture = nullptr;
                 }
             }
         }
-        if (current_texture == nullptr)
+        if (m_render_info.current_texture == nullptr)
         {
-            new_image = invalidate_image.copy();
-            offset = QPoint(CHARACTOR_MARGIN, CHARACTOR_MARGIN);
-            current_texture = &new_image;
+            QImage *new_image = new QImage();
+            *new_image = m_render_info.invalid_image.copy();
+            m_render_info.offset = QPoint(CHARACTOR_MARGIN, CHARACTOR_MARGIN);
+            m_render_info.current_texture = new_image;
+            m_texture_list.push_back(new_image);
+            resize = true;
         }
 
         // 文字描画.
-        QPainter painter(current_texture);
+        QPainter painter(m_render_info.current_texture);
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
         painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
 
         QTransform matrix;
-        matrix.translate(offset.x() + outline_width - info.bearing_x,
-                         offset.y() + m_font_loader->GetMaxAscend() + outline_width);
+        matrix.translate(m_render_info.offset.x() + outline_width - info.bearing_x,
+                         m_render_info.offset.y() + m_font_loader->GetMaxAscend() + outline_width);
         matrix.rotate(0.0f);
         matrix.scale(1.0f, 1.0f);
         painter.setTransform(matrix);
@@ -343,8 +389,8 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
         }
         else
         {
-            DrawFontToQImage(current_texture, &info.fill,
-                             offset.x(), offset.y(), m_font_color);
+            DrawFontToQImage(m_render_info.current_texture, &info.fill,
+                             m_render_info.offset.x(), m_render_info.offset.y(), m_font_color);
         }
 
         // 境界表示.
@@ -368,29 +414,69 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
                 painter.setPen(QPen(QBrush(Qt::white), 1.0f));
             }
             painter.setBrush(transparent_brush);
-            painter.drawRect(offset.x(), offset.y(), font_width, font_height);
+            painter.drawRect(m_render_info.offset.x(), m_render_info.offset.y(), font_width, font_height);
         }
         painter.end();
-        offset.setX(offset.x() + font_width + CHARACTOR_MARGIN);
+        m_render_info.offset.setX(m_render_info.offset.x() + font_width + CHARACTOR_MARGIN);
     }
-    if (current_texture)
+    if (resize)
     {
-        QGraphicsPixmapItem *new_item = m_graphics_scene->addPixmap(QPixmap::fromImage(*current_texture));
-        new_item->setOffset(0.0f, m_texture_count * (TEXTURE_MARGIN + tex_height));
-        ++m_texture_count;
-
-        current_texture->save("test.bmp", "BMP");
+        UpdateScale();
     }
-    UpdateScale();
+
+    // UpdateInfomation.
+    QString text = "TextureCount ";
+    QString temp;
+    temp.setNum((int)m_texture_list.size());
+    text += temp;
+    if (m_render_info.render_count < m_font_loader->GetFontInfoCount())
+    {
+        text += " Rendering ";
+        temp.setNum(m_render_info.render_count);
+        text += temp;
+        text += "/";
+        temp.setNum(m_font_loader->GetFontInfoCount());
+        text += temp;
+    }
+    else
+    {
+        text += " CharactorCount ";
+        temp.setNum(m_render_info.render_count);
+        text += temp;
+    }
+    m_ui->infomation->setText(text);
+
+    update();
 }
 
 /**
  *  @breif      clear image.
  */
-void FontCreatorWidget::ClearImage()
+void FontCreatorWidget::ClearImage(bool with_update)
 {
-    m_graphics_scene->clear();
-    m_texture_count = 0;
+    for (size_t i = 0; i < m_texture_list.size(); ++i)
+    {
+        delete m_texture_list[i];
+    }
+    m_texture_list.clear();
+    m_render_info.offset = QPointF(CHARACTOR_MARGIN, CHARACTOR_MARGIN);
+    m_render_info.render_count = 0;
+    m_render_info.current_texture = nullptr;
+    m_render_info.invalid_image = QImage(m_texture_width,
+                             m_texture_height,
+                             QImage::Format_RGB888);
+    m_render_info.invalid_image.fill(m_bg_color);
+
+    if (with_update)
+    {
+        if (m_timer == nullptr)
+        {
+            UpdateImageEvent();
+            m_timer = new QTimer(this);
+            connect(m_timer, SIGNAL(timeout()), this, SLOT(UpdateImageEvent()));
+            m_timer->start(0);
+        }
+    }
 }
 
 /**
@@ -402,7 +488,7 @@ void FontCreatorWidget::OnTextureSizeChenged(int index)
     int table_index = m_ui->texture_size_list->itemData(index).toInt();
     m_texture_width = TEXTURE_SIZE_LIST[table_index].width;
     m_texture_height = TEXTURE_SIZE_LIST[table_index].height;
-    UpdateImage(m_texture_width, m_texture_height);
+    ClearImage();
 }
 
 /**
@@ -412,7 +498,7 @@ void FontCreatorWidget::OnTextureSizeChenged(int index)
 void FontCreatorWidget::OnFontSizeChanged(int /*font_size*/)
 {
     CreateFontCache();
-    UpdateImage(m_texture_width, m_texture_height);
+    ClearImage();
 }
 
 /**
@@ -429,8 +515,7 @@ void FontCreatorWidget::OnChangeOutlineEnable(bool /*checked*/)
     {
         m_ui->outline_width->setEnabled(false);
     }
-    CreateFontCache();
-    UpdateImage(m_texture_width, m_texture_height);
+    ClearImage();
 }
 
 /**
@@ -439,8 +524,7 @@ void FontCreatorWidget::OnChangeOutlineEnable(bool /*checked*/)
  */
 void FontCreatorWidget::OnChangeOutlineWidth(double /*outline_width*/)
 {
-    CreateFontCache();
-    UpdateImage(m_texture_width, m_texture_height);
+    ClearImage();
 }
 
 /**
@@ -449,7 +533,7 @@ void FontCreatorWidget::OnChangeOutlineWidth(double /*outline_width*/)
 void FontCreatorWidget::OnTextChanged()
 {
     CreateFontCache();
-    UpdateImage(m_texture_width, m_texture_height);
+    ClearImage();
 }
 
 /**
@@ -519,6 +603,7 @@ void FontCreatorWidget::OnScaleChenged(int value)
     m_ui->scale_label->setText(text);
 
     UpdateScale();
+    update();
 }
 
 /**
@@ -527,13 +612,14 @@ void FontCreatorWidget::OnScaleChenged(int value)
 void FontCreatorWidget::UpdateScale()
 {
     float scale = m_ui->scale_slider->value() / 100.0f;
-    for (int i = 0; i < m_graphics_scene->items().size(); ++i)
-    {
-        m_graphics_scene->items().at(i)->setTransform(QTransform::fromScale(scale, scale));
-    }
+    int width = TEXTURE_MARGIN + TEXTURE_MARGIN + m_texture_width;
+    int height = TEXTURE_MARGIN + (m_texture_height + TEXTURE_MARGIN) * static_cast<int>(m_texture_list.size());
 
-    m_graphics_scene->setSceneRect(0.0f, 0.0f,
-                                  m_texture_width * scale, m_texture_count * (TEXTURE_MARGIN + m_texture_height) * scale);
+    m_view_area->setGeometry(0,
+                             0,
+                             width * scale,
+                             height * scale);
+    m_view_area->setFixedSize(QSize(width * scale, height * scale));
 }
 
 /**
@@ -563,6 +649,12 @@ bool FontCreatorWidget::eventFilter(QObject *object, QEvent *event)
         }
     }
 
+    if(object == m_view_area && event->type() == QEvent::Paint )
+    {
+        viewPaintEvent();
+        return true;
+    }
+
     return false;
 }
 
@@ -582,7 +674,7 @@ void FontCreatorWidget::OnClickFontColor()
         QString style = "QWidget {background-color: " + m_font_color.name() + ";}";
         m_ui->font_color->setStyleSheet(style);
 
-        UpdateImage(m_texture_width, m_texture_height);
+        ClearImage();
     }
 }
 
@@ -602,7 +694,7 @@ void FontCreatorWidget::OnClickOutlineColor()
         QString style = "QWidget {background-color: " + m_outline_color.name() + ";}";
         m_ui->outline_color->setStyleSheet(style);
 
-        UpdateImage(m_texture_width, m_texture_height);
+        ClearImage();
     }
 }
 
@@ -622,6 +714,6 @@ void FontCreatorWidget::OnClickBGColor()
         QString style = "QWidget {background-color: " + m_bg_color.name() + ";}";
         m_ui->bg_color->setStyleSheet(style);
 
-        UpdateImage(m_texture_width, m_texture_height);
+        ClearImage();
     }
 }

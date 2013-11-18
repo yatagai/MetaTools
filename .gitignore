@@ -24,3 +24,5 @@
 /bin/win32d/MetaTools.ilk
 /bin/win32d/MetaTools.pdb
 /bin/win32/plugins/FontCreator.lib
+/build-MetaTools-MSVC2010
+/build-FontCreator-MSVC2010

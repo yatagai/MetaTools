@@ -28,20 +28,37 @@ public:
     void OnStart();
     void OnClose();
 
+    // 描画.
+private:
+    void paintEvent(QPaintEvent * /*event*/);
+    void viewPaintEvent();
+
+private:
+    QWidget *m_view_area;
+    std::vector<QImage *> m_texture_list;
+    struct RenderInfo
+    {
+        unsigned int render_count;
+        QPointF offset;
+        QImage *current_texture;
+        QImage invalid_image;
+    } m_render_info;
+    QTimer *m_timer;
+
 private:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
 
+private slots:
+    void UpdateImageEvent();
+
 private:
     void CreateFontCache();
     void UpdateImage(int tex_width, int tex_height);
-    void ClearImage();
-private:
-    QGraphicsScene *m_graphics_scene;
+    void ClearImage(bool with_update = true);
 
 private:
     font_creator::FontLoader *m_font_loader;
-    int m_texture_count;
 
     // テクスチャサイズ変更.
 private slots:
@@ -86,11 +103,6 @@ private:
     QColor m_font_color;
     QColor m_outline_color;
     QColor m_bg_color;
-
-private:
-    void paintEvent(QPaintEvent * event);
-private:
-    std::vector<QImage *> m_texture_list;
 };
 
 #endif // FONTCREATOR_WIDGET_H

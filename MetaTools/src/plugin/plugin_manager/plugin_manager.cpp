@@ -165,6 +165,7 @@ bool PluginManager::ReleasePlugins()
         }
         QLibrary *library = m_library_list[*it];
         delete (*it);
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         if (library)
         {
             library->unload();
