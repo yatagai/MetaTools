@@ -6,6 +6,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <vector>
+#include <QPainterPath>
 
 namespace font_creator
 {
@@ -17,15 +18,14 @@ namespace font_creator
 class FontLoader
 {
 public:
-    struct FontInfo {
-        FontInfo()
+    struct FontBitmap {
+        FontBitmap()
             : bitmap(nullptr)
             , width(0.0f)
             , height(0.0f)
-            , offst_y(0.0f)
-            , charactor(0)
+            , offset_y(0.0f)
         {}
-        ~FontInfo()
+        ~FontBitmap()
         {
             if (bitmap)
             {
@@ -34,16 +34,36 @@ public:
             }
         }
 
-        bool operator <(const FontInfo &cmp)
-        {
-          return charactor < cmp.charactor;
-        }
-
         void *bitmap;
         float width;
         float height;
-        float offst_y;
+        float offset_y;
+    };
+
+    struct FontInfo {
+        FontInfo()
+            : charactor(0)
+            , has_outline(false)
+            , width(0.0f)
+            , bearing_x(0.0f)
+            , fill()
+        {}
+        ~FontInfo()
+        {}
+
+        bool operator <(const FontInfo &cmp)
+        {
+            return charactor < cmp.charactor;
+        }
+
         char32_t charactor;
+
+        bool has_outline;
+        float width;
+        float bearing_x;
+        QPainterPath path;
+
+        FontBitmap fill;
     };
 public:
     struct CreateParam
@@ -68,12 +88,27 @@ private:
     FT_GlyphSlot m_slot;
     FT_UInt m_glyph_index;
     CreateParam m_create_param;
-    // フォント情報キャッシュ.
+    // フォント情報.
+public:
+    float GetMaxFontHeight() const
+    {
+        return m_max_ascend + m_max_dscend + 1.0f;
+    }
+    float GetMaxAscend() const
+    {
+        return m_max_ascend;
+    }
+    float GetMaxDscend() const
+    {
+        return m_max_dscend;
+    }
 private:
     bool CreateFontInfoCache(const char16_t *text);
     void DestroyFontInfoCache();
     void DoneFace();
 private:
     std::vector<FontInfo> m_font_info_cache;
+    float m_max_ascend;
+    float m_max_dscend;
 };
 }   // namespace font_creator.

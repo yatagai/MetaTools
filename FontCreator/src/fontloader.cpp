@@ -28,6 +28,46 @@ bool is_eqals_for_unique(const FontLoader::FontInfo &left,
   return (left.charactor == right.charactor);
 }
 
+int MoveTo(const FT_Vector *to, void *user)
+{
+    QPainterPath *path = reinterpret_cast<QPainterPath *>(user);
+    path->moveTo(to->x / 64.0f, -to->y / 64.0f);
+    return 0;
+}
+
+int LineTo(const FT_Vector *to, void *user)
+{
+    QPainterPath *path = reinterpret_cast<QPainterPath *>(user);
+    path->lineTo(to->x / 64.0f, -to->y / 64.0f);
+    return 0;
+}
+
+int ConicTo(const FT_Vector *control, const FT_Vector *to, void *user)
+{
+    QPainterPath *path = reinterpret_cast<QPainterPath *>(user);
+    path->quadTo(control->x / 64.0f, -control->y / 64.0f,
+                    to->x / 64.0f, -to->y / 64.0f);
+    return 0;
+}
+
+int CubicTo(const FT_Vector *control1, const FT_Vector *control2, const FT_Vector *to, void *user)
+{
+    QPainterPath *path = reinterpret_cast<QPainterPath *>(user);
+    path->cubicTo(control1->x / 64.0f, -control1->y / 64.0f,
+                    control2->x / 64.0f, -control2->y / 64.0f,
+                    to->x / 64.0f, -to->y / 64.0f);
+    return 0;
+}
+
+FT_Outline_Funcs g_ft_outline_funcs =
+{
+    MoveTo,
+    LineTo,
+    ConicTo,
+    CubicTo,
+    0,
+    0
+};
 }   // namespace.
 
 /**
@@ -37,6 +77,8 @@ FontLoader::FontLoader() :
   m_library(nullptr)
 , m_face(nullptr)
 , m_font_info_cache()
+, m_max_ascend(0.0f)
+, m_max_dscend(0.0f)
 {
     std::memset(&m_create_param, 0, sizeof(m_create_param));
     FT_Init_FreeType(&m_library);
@@ -166,51 +208,54 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
     m_font_info_cache.erase(new_end, m_font_info_cache.end());
 
     std::vector<FontInfo>::iterator it = m_font_info_cache.begin();
-    float base_line_height_f = m_face->size->metrics.ascender / 64.0f;
-    FT_Int base_line_height = static_cast<int>(base_line_height_f);
-    if (base_line_height_f - static_cast<int>(m_face->size->metrics.ascender / 64) > 0.0f)
-    {
-        base_line_height += 1;
-    }
-    for (; it != m_font_info_cache.end(); ++it)
+    size_t bitmap_size = 0;
+    float base_line_height = m_face->size->metrics.ascender / 64.0f;
+    m_max_ascend = 0.0f;
+    m_max_dscend = 0.0f;
+    for (; it != m_font_info_cache.end();)
     {
         FontInfo &info = (*it);
         FT_Load_Char(m_face, static_cast<FT_ULong>(info.charactor), FT_LOAD_DEFAULT);
-        if (m_create_param.out_line && m_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE) {
-            // create outline bitmap.
+        // 輪郭線が生成可能ならパスを生成.
+        if (m_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE) {
+            info.has_outline = true;
             FT_Glyph ft_glyph;
-            FT_Stroker stroker;
-            FT_Stroker_New(m_library, &stroker);
-            FT_Stroker_Set(stroker,
-                           static_cast<FT_Fixed>(m_create_param.out_line_width * 64),
-                           FT_STROKER_LINECAP_ROUND,
-                           FT_STROKER_LINEJOIN_ROUND,
-                           0);
             FT_Get_Glyph(m_face->glyph, &ft_glyph);
-            FT_Glyph_Stroke(&ft_glyph, stroker, true);
-            FT_Glyph_To_Bitmap(&ft_glyph, FT_RENDER_MODE_NORMAL, nullptr, true);
-            FT_BitmapGlyph ft_bitmap_glyph = reinterpret_cast<FT_BitmapGlyph>(ft_glyph);
-
-            info.width = static_cast<float>(ft_bitmap_glyph->bitmap.width);
-            info.height = static_cast<float>(ft_bitmap_glyph->bitmap.rows);
-            info.offst_y = base_line_height + m_create_param.out_line_width - static_cast<float>(ft_bitmap_glyph->top);
-            info.bitmap = new unsigned char[static_cast<size_t>(info.width * info.height)];
-            assert(info.offst_y >= 0.0f);
-            memcpy(info.bitmap, ft_bitmap_glyph->bitmap.buffer, static_cast<size_t>(info.width * info.height));
-            FT_Stroker_Done(stroker);
+            FT_Outline_Decompose(&m_slot->outline, &g_ft_outline_funcs, &info.path);
             FT_Done_Glyph(ft_glyph);
         }
         else
         {
+            // ビットマップフォント作成.
             FT_Load_Char(m_face, static_cast<FT_ULong>(info.charactor), FT_LOAD_RENDER);
-            info.width = static_cast<float>(m_slot->metrics.width) / 64;
-            info.height = static_cast<float>(m_slot->metrics.height) / 64;
-            info.offst_y = base_line_height - static_cast<float>(m_slot->bitmap_top);
-            info.bitmap = new unsigned char[static_cast<size_t>(info.width * info.height)];
-            assert(info.offst_y >= 0.0f);
-            memcpy(info.bitmap, m_slot->bitmap.buffer, static_cast<size_t>(info.width * info.height));
+            info.fill.width = static_cast<float>(m_slot->bitmap.width);
+            info.fill.height = static_cast<float>(m_slot->bitmap.rows);
+            info.fill.offset_y = std::ceilf(base_line_height - static_cast<float>(m_slot->bitmap_top));
+            assert(info.fill.offset_y >= -1.0f);
+            if (info.fill.offset_y <= 0.0f)
+            {
+                info.fill.offset_y = 0.0f;
+            }
+            bitmap_size = static_cast<size_t>(info.fill.width * info.fill.height);
+            info.fill.bitmap = new unsigned char[bitmap_size];
+            memcpy(info.fill.bitmap, m_slot->bitmap.buffer, bitmap_size);
         }
+
+        // サイズ代入.
+        info.width = m_slot->metrics.width / 64.0f;
+        info.bearing_x = m_slot->metrics.horiBearingX / 64.0f;
+        if (m_slot->metrics.horiBearingY > m_max_ascend)
+        {
+           m_max_ascend = m_slot->metrics.horiBearingY;
+        }
+        if (m_slot->metrics.height - m_slot->metrics.horiBearingY - 1.0f >= m_max_dscend)
+        {
+            m_max_dscend = m_slot->metrics.height - m_slot->metrics.horiBearingY - 1.0f;
+        }
+        ++it;
     }
+    m_max_ascend /= 64.0f;
+    m_max_dscend /= 64.0f;
 
     return true;
 }

@@ -47,7 +47,8 @@ private:
 private slots:
     void OnTextureSizeChenged(int index);
 private:
-    int m_texture_size;
+    int m_texture_width;
+    int m_texture_height;
 
     // フォントサイズ変更.
 private slots:
@@ -79,10 +80,17 @@ protected:
     virtual bool eventFilter(QObject *object, QEvent *event);
 private:
     void OnClickFontColor();
+    void OnClickOutlineColor();
     void OnClickBGColor();
 private:
     QColor m_font_color;
+    QColor m_outline_color;
     QColor m_bg_color;
+
+private:
+    void paintEvent(QPaintEvent * event);
+private:
+    std::vector<QImage *> m_texture_list;
 };
 
 #endif // FONTCREATOR_WIDGET_H

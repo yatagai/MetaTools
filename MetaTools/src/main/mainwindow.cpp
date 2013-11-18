@@ -26,7 +26,7 @@ const int MENU_ANIMATE_DELTA(10);                   // animate delta
 const float MENU_ANIMATE_SPEED(10.0);               // animate speed MENU_ANIMATE_DELTA/ms.
 
 }
-MainWindow* MainWindow::sm_this = NULL;
+MainWindow* MainWindow::sm_this = nullptr;
 
 /**
  *  @brief      コンストラクタ.

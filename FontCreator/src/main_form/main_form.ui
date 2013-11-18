@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1139</width>
-    <height>268</height>
+    <height>278</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -145,6 +145,29 @@
           </widget>
          </item>
          <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>OutlineColor</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="outline_color" native="true">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>15</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="label_2">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -173,13 +196,23 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QCheckBox" name="bound">
+           <property name="text">
+            <string>BOUND</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
       <item>
        <widget class="QGraphicsView" name="graphicsView">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -188,6 +221,12 @@
          <size>
           <width>0</width>
           <height>1</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>10</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="acceptDrops">
@@ -420,7 +459,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>30</width>
              <height>25</height>
             </size>
            </property>
@@ -446,19 +485,20 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>120</width>
              <height>25</height>
             </size>
            </property>
            <property name="font">
             <font>
-             <pointsize>12</pointsize>
+             <family>MS UI Gothic</family>
+             <pointsize>10</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>
            </property>
            <property name="text">
-            <string>かな</string>
+            <string>かな/全角英数字</string>
            </property>
           </widget>
          </item>
@@ -472,7 +512,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
+             <width>30</width>
              <height>25</height>
             </size>
            </property>

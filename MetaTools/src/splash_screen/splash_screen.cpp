@@ -14,7 +14,7 @@ SplashScreen::SplashScreen(QWidget *parent) :
     ui->setupUi(this);
     setAttribute(Qt::WA_QuitOnClose);
 
-    connect(&m_animate_timer, SIGNAL(timeout()), SLOT(Animation()));
+    // connect(&m_animate_timer, SIGNAL(timeout()), SLOT(Animation()));
     m_animate_timer.start(10);
 
     setWindowOpacity(0.0f);

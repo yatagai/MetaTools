@@ -1,0 +1,26 @@
+{
+  "AnalyzeDirectory": "D:\\MetaTools\\MetaTools\\src\\",
+  "Profiles": [
+    {
+      "Name": "Windows-Release-64bit",
+      "Options": [
+        "-triple=x86_64-pc-win32",
+        "-Wno-microsoft",
+        "-Wno-implicit-int",
+        "-IC:/Program Files (x86)/Microsoft Visual Studio 10.0/VC/include",
+        "-IC:/Qt/Qt5.1.1/qtbase/include",
+        "-IC:/Qt/Qt5.1.1/qtbase/include/*",
+        "-ID:/MetaTools/MetaTools-MSVC2010",
+        "-ID:/MetaTools/FontCreator-MSVC2010",
+        "-ID:/MetaTools/FontCreator/lib/freetype/include",
+        "-D__STDC__=1",
+        "-D_CPPRTTI",
+        "-D_MSC_FULL_VER=140050215",
+        "-D_DO_NOT_USE_NULLPTR_IN_STL",
+        "-D__wchar_t=wchar_t",
+        "-Ddllexport=",
+        "-Ddllimport="
+      ]
+    }
+  ]
+}
