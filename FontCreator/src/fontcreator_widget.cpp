@@ -104,6 +104,9 @@ FontCreatorWidget::FontCreatorWidget() :
     m_view_area->setParent(m_ui->scroll_area);
     m_ui->scroll_area->setWidget(m_view_area);
 
+    // font combo box.
+    connect(m_ui->font_combo_box, SIGNAL(currentFontChanged(const QFont&)), this, SLOT(OnFontComboBoxChanged(const QFont&)));
+
     // texture size combo box.
     for (int i = 0; i < sizeof(TEXTURE_SIZE_LIST) / sizeof(TextureSizeInfo); ++i)
     {
@@ -196,18 +199,6 @@ void  FontCreatorWidget::OnClose()
  */
 void FontCreatorWidget::paintEvent(QPaintEvent * /*event*/)
 {
-    if (m_render_info.render_count < m_font_loader->GetFontInfoCount())
-    {
-        if (m_timer && !m_timer->isActive())
-        {
-            m_timer->start(0);
-        }
-    }
-    else if (m_timer != nullptr)
-    {
-        delete m_timer;
-        m_timer = nullptr;
-    }
 }
 
 /**
@@ -434,10 +425,12 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
     }
 
     // UpdateInfomation.
+    // texture count.
     QString text = "TEXTURE COUNT ";
     QString temp;
     temp.setNum((int)m_texture_list.size());
     text += temp;
+    // chara count.
     if (m_render_info.render_count < m_font_loader->GetFontInfoCount())
     {
         text += " RENDERING ";
@@ -453,9 +446,35 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
         temp.setNum(m_render_info.render_count);
         text += temp;
     }
+    // data size.
+    text += " DATA SIZE ";
+    float data_size = m_texture_width * m_texture_height * static_cast<int>(m_texture_list.size());
+    if (m_ui->outline_enable->isChecked())
+    {
+        data_size *= 2.0f;
+    }
+    data_size /= 1024.0f * 1024.0f;
+    temp.setNum(data_size);
+    text += temp;
+    text += "MB";
+
     m_ui->infomation->setText(text);
 
     update();
+
+    // タイマー再設定.
+    if (m_render_info.render_count < m_font_loader->GetFontInfoCount())
+    {
+        if (m_timer && !m_timer->isActive())
+        {
+            m_timer->start(1);
+        }
+    }
+    else if (m_timer != nullptr)
+    {
+        delete m_timer;
+        m_timer = nullptr;
+    }
 }
 
 /**
@@ -500,7 +519,39 @@ void FontCreatorWidget::ClearImage(bool with_update)
         {
             m_timer = new QTimer(this);
             connect(m_timer, SIGNAL(timeout()), this, SLOT(UpdateImageEvent()));
-            m_timer->start(0);
+        }
+        m_timer->start(0);
+    }
+}
+
+/**
+ *  @breif      フォントコンボボックス変更.
+ *  @param  in  font 選択されたフォント.
+ */
+void FontCreatorWidget::OnFontComboBoxChanged(const QFont &font)
+{
+    QString font_path = QStandardPaths::standardLocations(QStandardPaths::FontsLocation)[0];
+    QDir font_dir(font_path);
+    if (font_dir.exists())
+    {
+        QStringList file_list = font_dir.entryList();
+        for (int i = 0; i < file_list.size(); ++i)
+        {
+            QString file_name = font_path + "/" + file_list[i];
+            QString family_name = font.family();
+            int face_index = m_font_loader->HasFamily(file_name.toStdString().c_str(),
+                family_name);
+            if (face_index != -1)
+            {
+                m_ui->font_path->setText(QFileInfo(file_name).fileName());
+                if (m_font_loader->Load(file_name.toStdString().c_str(), face_index))
+                {
+                    m_ui->create_text->setPlainText("");
+                    CreateFontCache();
+                    ClearImage();
+                }
+                return;
+            }
         }
     }
 }

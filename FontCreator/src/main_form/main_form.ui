@@ -292,6 +292,23 @@
        </widget>
       </item>
       <item>
+       <widget class="QFontComboBox" name="font_combo_box">
+        <property name="locale">
+         <locale language="English" country="UnitedStates"/>
+        </property>
+        <property name="writingSystem">
+         <enum>QFontDatabase::Any</enum>
+        </property>
+        <property name="currentFont">
+         <font>
+          <family>MS UI Gothic</family>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLineEdit" name="font_path">
         <property name="readOnly">
          <bool>true</bool>

@@ -8,6 +8,7 @@
 #include FT_BITMAP_H
 #include FT_STROKER_H
 #include "freetype/internal/ftmemory.h"
+#include "freetype/ftsnames.h"
 #include <algorithm>
 #include <functional>
 #include <assert.h>
@@ -100,14 +101,15 @@ FontLoader::~FontLoader()
 /**
  * @brief 読み込み.
  * @param file_name フォントファイル名.
+ * @param face_index フェイスインデックス.
  * @return trueで読み込み成功 falseで読み込み失敗.
  */
-bool FontLoader::Load(const char *file_name)
+bool FontLoader::Load(const char *file_name, int face_index)
 {
     DoneFace();
 
     // init face.
-    FT_Error error = FT_New_Face(m_library, file_name, 0, &m_face);
+    FT_Error error = FT_New_Face(m_library, file_name, face_index, &m_face);
     if (error)
     {
         return false;
@@ -279,4 +281,71 @@ void FontLoader::DoneFace()
         m_face = nullptr;
     }
 }
+
+/**
+ * @brief ファミリーを持っているか.
+ * @param file_name ファイル名.
+ * @param family_name ファミリー名.
+ * @return Faceインデックス.
+ */
+int FontLoader::HasFamily(const char *file_name, QString &family_name)
+{
+    FT_Face serach_face;
+    int face_index = 0;
+    while (FT_New_Face(m_library, file_name, face_index, &serach_face) == 0)
+    {
+        QString face_family_name = serach_face->family_name;
+        bool find = family_name == face_family_name;
+        if (!find)
+        {
+            int name_count = FT_Get_Sfnt_Name_Count(serach_face);
+            char temp[256] = {0};
+            char16_t temp16[256] = {0};
+            FT_SfntName name;
+            for (int i = 0; i < name_count && !find; ++i)
+            {
+                if (FT_Get_Sfnt_Name(serach_face, i, &name) != 0)
+                {
+                    break;
+                }
+                // ファミリ名以外は飛ばす.
+                if (name.name_id != 4)
+                {
+                    continue;
+                }
+                if (name.encoding_id == 0)
+                {
+                    assert(name.string_len < 256);
+                    std::memcpy(temp, name.string, name.string_len);
+                    temp[name.string_len] = '\0';
+                    face_family_name = temp;
+                }
+                else if (name.encoding_id == 1)
+                {
+                    assert(name.string_len < 256 * 2);
+                    std::memcpy(&temp16, name.string, name.string_len);
+                    temp16[name.string_len / 2] = '\0';
+                    // ビッグエンディアンで格納されている.
+                    for (unsigned int j = 0; j < name.string_len / 2; ++j)
+                    {
+                        char *bit8 = reinterpret_cast<char *>(&temp16[j]);
+                        char bit8_temp = bit8[1];
+                        bit8[1] = bit8[0];
+                        bit8[0] = bit8_temp;
+                    }
+                    face_family_name.setUtf16(temp16, name.string_len / 2);
+                }
+                find |= family_name == face_family_name;
+            }
+        }
+        FT_Done_Face(serach_face);
+        if (find)
+        {
+            return face_index;
+        }
+        ++face_index;
+    }
+    return -1;
+}
+
 }   // namespace font_crator.

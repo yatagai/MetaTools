@@ -63,6 +63,10 @@ private:
 private:
     font_creator::FontLoader *m_font_loader;
 
+    // フォントコンボボックス変更.
+private slots:
+    void OnFontComboBoxChanged(const QFont&);
+
     // テクスチャサイズ変更.
 private slots:
     void OnTextureSizeChenged(int index);

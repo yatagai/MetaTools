@@ -76,12 +76,14 @@ public:
 public:
     explicit FontLoader();
     ~FontLoader();
-    bool Load(const char *file_name);
+    bool Load(const char *file_name, int face_index = 0);
     bool CreateFontInfo(const char16_t *text, const CreateParam &param);
     unsigned int GetFontInfoCount() const;
     const FontInfo& GetFontInfo(unsigned int index) const;
     bool CanRenderCharactor(const char16_t text);
     bool HasFace() const;
+
+    int HasFamily(const char *file_name, QString &family_name);
 private:
     FT_Library m_library;
     FT_Face m_face;
