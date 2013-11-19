@@ -36,12 +36,15 @@ private:
 private:
     QWidget *m_view_area;
     std::vector<QImage *> m_texture_list;
+    std::vector<QImage *> m_bound_list;
     struct RenderInfo
     {
         unsigned int render_count;
         QPointF offset;
         QImage *current_texture;
+        QImage *bound_texture;
         QImage invalid_image;
+        QImage bound_invalid_image;
     } m_render_info;
     QTimer *m_timer;
 
@@ -103,6 +106,11 @@ private:
     QColor m_font_color;
     QColor m_outline_color;
     QColor m_bg_color;
+
+    // 境界チェック変更.
+private slots:
+    void OnChangeBoundEnable(bool checked);
+
 };
 
 #endif // FONTCREATOR_WIDGET_H
