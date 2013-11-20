@@ -130,7 +130,7 @@ bool FontLoader::CreateFontInfo(const char16_t *text, const CreateParam &create_
     FT_Error error = FT_Set_Pixel_Sizes(m_face, 0, create_param.font_size);
     if (error)
     {
-        return false;
+        // return false;
     }
     std::memcpy(&m_create_param, &create_param, sizeof(create_param));
     return CreateFontInfoCache(text);
@@ -211,13 +211,13 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
 
     std::vector<FontInfo>::iterator it = m_font_info_cache.begin();
     size_t bitmap_size = 0;
-    float base_line_height = m_face->size->metrics.ascender / 64.0f;
+    // float base_line_height = m_face->size->metrics.ascender / 64.0f;
     m_max_ascend = 0.0f;
     m_max_dscend = 0.0f;
     for (; it != m_font_info_cache.end();)
     {
         FontInfo &info = (*it);
-        FT_Load_Char(m_face, static_cast<FT_ULong>(info.charactor), FT_LOAD_DEFAULT);
+        FT_Load_Char(m_face, static_cast<FT_ULong>(info.charactor), FT_LOAD_NO_BITMAP);
         // 輪郭線が生成可能ならパスを生成.
         if (m_face->glyph->format == FT_GLYPH_FORMAT_OUTLINE) {
             info.has_outline = true;
@@ -229,18 +229,46 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
         else
         {
             // ビットマップフォント作成.
-            FT_Load_Char(m_face, static_cast<FT_ULong>(info.charactor), FT_LOAD_RENDER);
+            if (m_slot->format == FT_GLYPH_FORMAT_OUTLINE)
+            {
+                FT_Outline_Embolden(&m_slot->outline, 0);
+            }
+            FT_Render_Glyph(m_slot, FT_RENDER_MODE_NORMAL);
             info.fill.width = static_cast<float>(m_slot->bitmap.width);
             info.fill.height = static_cast<float>(m_slot->bitmap.rows);
-            info.fill.offset_y = std::ceilf(base_line_height - static_cast<float>(m_slot->bitmap_top));
-            assert(info.fill.offset_y >= -1.0f);
-            if (info.fill.offset_y <= 0.0f)
-            {
-                info.fill.offset_y = 0.0f;
-            }
+            // info.fill.offset_y = std::ceilf(base_line_height - static_cast<float>(m_slot->bitmap_top));
+            info.fill.offset_y = 0; // bitmapフォントは0でいいはず.
             bitmap_size = static_cast<size_t>(info.fill.width * info.fill.height);
             info.fill.bitmap = new unsigned char[bitmap_size];
-            memcpy(info.fill.bitmap, m_slot->bitmap.buffer, bitmap_size);
+            if (m_slot->bitmap.pixel_mode == FT_PIXEL_MODE_GRAY)
+            {
+                memcpy(info.fill.bitmap, m_slot->bitmap.buffer, bitmap_size);
+            }
+            else if (m_slot->bitmap.pixel_mode == FT_PIXEL_MODE_MONO)
+            {
+                if (bitmap_size > 0)
+                {
+                    int temp = 0;
+                    for (int index_dest = 0, index_src = 0;;)
+                    {
+                        for (int bit = 0; bit < 8; ++bit)
+                        {
+                            ((unsigned char *)info.fill.bitmap)[index_dest++] = (((unsigned char *)m_slot->bitmap.buffer)[index_src + temp] & (0x80) >> bit) ? 255 : 0;
+                            if (index_dest % (int)info.fill.width == 0)
+                            {
+                                temp = -1;
+                                index_src += m_slot->bitmap.pitch;
+                                break;
+                            }
+                        }
+                        if (index_dest >= info.fill.width * info.fill.height)
+                        {
+                            break;
+                        }
+                        ++temp;
+                    }
+                }
+            }
         }
 
         // サイズ代入.

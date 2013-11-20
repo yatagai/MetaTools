@@ -65,9 +65,9 @@ void DrawFontToQImage(QImage *render_target,
     matrix.scale(1.0, 1.0);
     QPainter painter(render_target);
     painter.setTransform(matrix);
-    painter.setRenderHint(QPainter::Antialiasing, false);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
-    painter.setRenderHint(QPainter::HighQualityAntialiasing, false);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
     QImage font(
         temp,
         draw_bitmap->width,
@@ -76,6 +76,7 @@ void DrawFontToQImage(QImage *render_target,
     );
     QPointF position(0.0f, 0.0f);
     painter.drawImage(position, font);
+    painter.end();
     delete temp;
 }
 
@@ -330,7 +331,7 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
         if (next_line)
         {
             m_render_info.offset.setX(CHARACTOR_MARGIN);
-            m_render_info.offset.setY(m_render_info.offset.y() + font_height + CHARACTOR_MARGIN);
+            m_render_info.offset.setY(std::floorf(m_render_info.offset.y() + font_height + CHARACTOR_MARGIN));
             if (m_render_info.offset.y() + font_height + CHARACTOR_MARGIN > tex_height)
             {
                 if (m_render_info.current_texture)
@@ -354,18 +355,6 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
         }
 
         // 文字描画.
-        QPainter painter(m_render_info.current_texture);
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
-
-        QTransform matrix;
-        matrix.translate(m_render_info.offset.x() + outline_width - info.bearing_x,
-                         m_render_info.offset.y() + m_font_loader->GetMaxAscend() + outline_width);
-        matrix.rotate(0.0f);
-        matrix.scale(1.0f, 1.0f);
-        painter.setTransform(matrix);
-
         // ペンとブラシ.
         QPen transparent_pen(QColor(0, 0, 0, 0));
         QPen out_line_pen(m_outline_color);
@@ -377,6 +366,17 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
         // 輪郭線描画.
         if (info.has_outline)
         {
+            QPainter painter(m_render_info.current_texture);
+            painter.setRenderHint(QPainter::Antialiasing, true);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+            painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
+            QTransform matrix;
+            matrix.translate(m_render_info.offset.x() + outline_width - info.bearing_x,
+                             m_render_info.offset.y() + m_font_loader->GetMaxAscend() + outline_width);
+            matrix.rotate(0.0f);
+            matrix.scale(1.0f, 1.0f);
+            painter.setTransform(matrix);
+
             if (m_ui->outline_enable->isChecked())
             {
                 painter.setPen(out_line_pen);
@@ -387,36 +387,32 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
             painter.setPen(transparent_pen);
             painter.setBrush(fill_brush);
             painter.drawPath(info.path);
+
+            painter.end();
         }
         else
         {
             DrawFontToQImage(m_render_info.current_texture, &info.fill,
-                             m_render_info.offset.x(), m_render_info.offset.y(), m_font_color);
+                             m_render_info.offset.x(),
+                             m_render_info.offset.y() + info.fill.offset_y, m_font_color);
         }
-        painter.end();
 
         // 境界表示.
-        painter.begin(m_render_info.bound_texture);
-        painter.setRenderHint(QPainter::Antialiasing, false);
-        painter.setRenderHint(QPainter::HighQualityAntialiasing, false);
-        matrix = QTransform();
-        matrix.translate(0.0f, 0.0f);
-        matrix.rotate(0.0f);
-        matrix.scale(1.0f, 1.0f);
-        painter.setTransform(matrix);
-
+        QPainter bound_painter(m_render_info.bound_texture);
+        bound_painter.setRenderHint(QPainter::Antialiasing, false);
+        bound_painter.setRenderHint(QPainter::HighQualityAntialiasing, false);
         if (m_bg_color.red() * 0.3f + m_bg_color.green() * 0.59f + m_bg_color.blue() * 0.11f >=
             0x80)
         {
-            painter.setPen(QPen(QBrush(Qt::black), 1.0f));
+            bound_painter.setPen(QPen(QBrush(Qt::black), 1.0f));
         }
         else
         {
-            painter.setPen(QPen(QBrush(Qt::white), 1.0f));
+            bound_painter.setPen(QPen(QBrush(Qt::white), 1.0f));
         }
-        painter.setBrush(transparent_brush);
-        painter.drawRect(m_render_info.offset.x(), m_render_info.offset.y(), font_width, font_height);
-        painter.end();
+        bound_painter.setBrush(transparent_brush);
+        bound_painter.drawRect(m_render_info.offset.x(), m_render_info.offset.y(), font_width, font_height);
+        bound_painter.end();
         m_render_info.offset.setX(m_render_info.offset.x() + font_width + CHARACTOR_MARGIN);
     }
     if (resize)
