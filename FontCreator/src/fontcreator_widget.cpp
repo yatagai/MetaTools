@@ -549,6 +549,10 @@ void FontCreatorWidget::OnFontComboBoxChanged(const QFont &font)
                 return;
             }
         }
+        m_font_loader->Unload();
+        m_ui->create_text->setPlainText("");
+        m_ui->font_path->setText("");
+        m_ui->infomation->setText("Unsupported Font");
     }
 }
 
@@ -631,6 +635,7 @@ void FontCreatorWidget::OnClickASCII()
 void FontCreatorWidget::OnClickKana()
 {
     QString add = "";
+    // かな
     for (char16_t i = 0x3040; i < 0x30ff; ++i)
     {
         if (m_font_loader->CanRenderCharactor(i))
@@ -638,7 +643,8 @@ void FontCreatorWidget::OnClickKana()
             add.append(i);
         }
     }
-    for (char16_t i = 0xff10; i < 0xff5a; ++i)
+    // 全角英数　半角カナ.
+    for (char16_t i = 0xff10; i < 0xff9f; ++i)
     {
         if (m_font_loader->CanRenderCharactor(i))
         {

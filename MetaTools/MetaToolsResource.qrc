@@ -14,5 +14,9 @@
         <file>img/close_16.png</file>
         <file>img/app_window_16.png</file>
         <file>style/vs_dark.qss</file>
+        <file>img/checkbox_checked.png</file>
+        <file>img/checkbox_unchecked.png</file>
+        <file>img/checkbox_checked_hover.png</file>
+        <file>img/checkbox_unchecked_hover.png</file>
     </qresource>
 </RCC>

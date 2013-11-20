@@ -168,8 +168,8 @@ bool PluginManager::ReleasePlugins()
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
         if (library)
         {
-            library->unload();
-            delete library;
+            // library->unload();
+            // delete library;
         }
     }
     m_plugins.empty();

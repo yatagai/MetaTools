@@ -77,6 +77,7 @@ public:
     explicit FontLoader();
     ~FontLoader();
     bool Load(const char *file_name, int face_index = 0);
+    void Unload();
     bool CreateFontInfo(const char16_t *text, const CreateParam &param);
     unsigned int GetFontInfoCount() const;
     const FontInfo& GetFontInfo(unsigned int index) const;

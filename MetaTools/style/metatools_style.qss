@@ -147,3 +147,31 @@ QTabBar::tab:only-one
 {
     margin: 0;
 }
+
+/* QCheckBox */
+QCheckBox
+{
+    spacing: 5px;
+}
+QCheckBox::indicator
+{
+    width: 16px;
+    height: 16px;
+}
+QCheckBox::indicator:unchecked
+{
+    image: url(:/metatools_resource/img/checkbox_unchecked.png);
+}
+QCheckBox::indicator:unchecked:hover
+{
+    image: url(:/metatools_resource/img/checkbox_unchecked_hover.png);
+}
+QCheckBox::indicator:checked
+{
+    image: url(:/metatools_resource/img/checkbox_checked.png);
+}
+QCheckBox::indicator:checked:hover
+{
+    image: url(:/metatools_resource/img/checkbox_checked_hover.png);
+}
+

@@ -119,6 +119,15 @@ bool FontLoader::Load(const char *file_name, int face_index)
 }
 
 /**
+ * @brief アンロード.
+ */
+void FontLoader::Unload()
+{
+    DestroyFontInfoCache();
+    DoneFace();
+}
+
+/**
  * @brief フォント情報作成.
  * @param text 作成するテキスト.
  * @param create_param フォント生成情報.
