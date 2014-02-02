@@ -66,7 +66,7 @@ void DrawFontToQImage(QImage *render_target,
     QPainter painter(render_target);
     painter.setTransform(matrix);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
     painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
     QImage font(
         temp,
@@ -236,7 +236,9 @@ void FontCreatorWidget::dragEnterEvent(QDragEnterEvent *event)
         foreach (QUrl url, event->mimeData()->urls())
         {
             if (QFileInfo(url.toLocalFile()).suffix().toLower() == "ttc" ||
-                QFileInfo(url.toLocalFile()).suffix().toLower() == "ttf")
+                QFileInfo(url.toLocalFile()).suffix().toLower() == "ttf" ||
+                QFileInfo(url.toLocalFile()).suffix().toLower() == "otf" ||
+                QFileInfo(url.toLocalFile()).suffix().toLower() == "fon")
             {
                 event->accept();
                 break;
@@ -256,7 +258,9 @@ void FontCreatorWidget::dropEvent(QDropEvent *event)
         foreach (QUrl url, event->mimeData()->urls())
         {
             if (QFileInfo(url.toLocalFile()).suffix().toLower() == "ttc" ||
-                QFileInfo(url.toLocalFile()).suffix().toLower() == "ttf")
+                QFileInfo(url.toLocalFile()).suffix().toLower() == "ttf" ||
+                QFileInfo(url.toLocalFile()).suffix().toLower() == "otf" ||
+                QFileInfo(url.toLocalFile()).suffix().toLower() == "fon")
             {
                 QString file_name = QFileInfo(url.toLocalFile()).filePath();
                 m_ui->font_path->setText(QFileInfo(url.toLocalFile()).fileName());
@@ -356,19 +360,20 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
 
         // 文字描画.
         // ペンとブラシ.
-        QPen transparent_pen(QColor(0, 0, 0, 0));
         QPen out_line_pen(m_outline_color);
         out_line_pen.setWidthF(outline_width * 2.0f);
+        out_line_pen.setCapStyle(Qt::FlatCap);
+        out_line_pen.setJoinStyle(Qt::SvgMiterJoin);
+        // out_line_pen.setMiterLimit(0);
         QBrush transparent_brush(QColor(0, 0, 0, 0));
-        QBrush outline_brush(m_outline_color);
         QBrush fill_brush(m_font_color);
 
-        // 輪郭線描画.
         if (info.has_outline)
         {
+            // パス描画.
             QPainter painter(m_render_info.current_texture);
             painter.setRenderHint(QPainter::Antialiasing, true);
-            painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+            painter.setRenderHint(QPainter::SmoothPixmapTransform, false);
             painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
             QTransform matrix;
             matrix.translate(m_render_info.offset.x() + outline_width - info.bearing_x,
@@ -379,19 +384,19 @@ void FontCreatorWidget::UpdateImage(int tex_width, int tex_height)
 
             if (m_ui->outline_enable->isChecked())
             {
-                painter.setPen(out_line_pen);
-                painter.setBrush(outline_brush);
-                painter.drawPath(info.path);
+                // painter.setPen(out_line_pen);
+                painter.strokePath(info.path, out_line_pen);
             }
             // 塗描画.
-            painter.setPen(transparent_pen);
-            painter.setBrush(fill_brush);
-            painter.drawPath(info.path);
+            // painter.setPen(transparent_pen);
+            // painter.setBrush(fill_brush);
+            painter.fillPath(info.path, fill_brush);
 
             painter.end();
         }
         else
         {
+            // ビットマップ描画.
             DrawFontToQImage(m_render_info.current_texture, &info.fill,
                              m_render_info.offset.x(),
                              m_render_info.offset.y() + info.fill.offset_y, m_font_color);

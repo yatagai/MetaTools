@@ -220,7 +220,7 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
 
     std::vector<FontInfo>::iterator it = m_font_info_cache.begin();
     size_t bitmap_size = 0;
-    // float base_line_height = m_face->size->metrics.ascender / 64.0f;
+    float base_line_height = m_face->size->metrics.ascender / 64.0f;
     m_max_ascend = 0.0f;
     m_max_dscend = 0.0f;
     for (; it != m_font_info_cache.end();)
@@ -234,6 +234,7 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
             FT_Get_Glyph(m_face->glyph, &ft_glyph);
             FT_Outline_Decompose(&m_slot->outline, &g_ft_outline_funcs, &info.path);
             FT_Done_Glyph(ft_glyph);
+            info.path.setFillRule(Qt::WindingFill);
         }
         else
         {
@@ -245,8 +246,7 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
             FT_Render_Glyph(m_slot, FT_RENDER_MODE_NORMAL);
             info.fill.width = static_cast<float>(m_slot->bitmap.width);
             info.fill.height = static_cast<float>(m_slot->bitmap.rows);
-            // info.fill.offset_y = std::ceilf(base_line_height - static_cast<float>(m_slot->bitmap_top));
-            info.fill.offset_y = 0; // bitmapフォントは0でいいはず.
+            info.fill.offset_y = std::ceilf(base_line_height - static_cast<float>(m_slot->bitmap_top));
             bitmap_size = static_cast<size_t>(info.fill.width * info.fill.height);
             info.fill.bitmap = new unsigned char[bitmap_size];
             if (m_slot->bitmap.pixel_mode == FT_PIXEL_MODE_GRAY)
@@ -255,6 +255,7 @@ bool FontLoader::CreateFontInfoCache(const char16_t *text)
             }
             else if (m_slot->bitmap.pixel_mode == FT_PIXEL_MODE_MONO)
             {
+                info.fill.offset_y = 0; // bitmapフォントは0でいいはず.
                 if (bitmap_size > 0)
                 {
                     int temp = 0;

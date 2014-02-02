@@ -18,6 +18,25 @@
 				"buffer_size": 4183,
 				"line_ending": "Windows"
 			}
+		},
+		{
+			"contents": "",
+			"file": "/C/Program Files (x86)/Steam/steamapps/common/Tomb Raider/tombraider_748_crash_2014_1_25T14_48_40C0.mdmp",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Program Files (x86)/Steam/steamapps/common/Super Street Fighter IV - Arcade Edition/archive/shader/PsBgShader.emz",
+			"settings":
+			{
+				"buffer_size": 23797,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "Packages/User/shell.sublime-build",
@@ -178,7 +197,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -206,6 +225,58 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 1138.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Program Files (x86)/Steam/steamapps/common/Tomb Raider/tombraider_748_crash_2014_1_25T14_48_40C0.mdmp",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Program Files (x86)/Steam/steamapps/common/Super Street Fighter IV - Arcade Edition/archive/shader/PsBgShader.emz",
+					"settings":
+					{
+						"buffer_size": 23797,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								759,
+								759
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 960.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
