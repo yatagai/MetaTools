@@ -34,6 +34,8 @@ public:
         void (*AppAddMenuWidget)(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
         void (*AppAddToolWidget)(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label);
         void (*AppRemoveWidget)(const IPlugin *entry_plugin, QWidget *add_widget);
+        const QJsonValue (*AppGetSaveData)(const IPlugin *entry_plugin, const std::string param_name);
+        void (*AppSetSaveData)(const IPlugin *entry_plugin, const std::string param_name, const QJsonValue &set_value);
     };
 
 public:
@@ -129,7 +131,7 @@ protected:
     }
 private:
     /**
-     *  @brief		ログプラグイン.
+     *  @brief		メッセージ受信.
      *  @author		yatagaik.
      *  @param  in  sender 送り主プラグイン.
      *  @param  in  message_type メッセージタイプ.
@@ -280,6 +282,7 @@ public:
     {
         return m_widget_icon;
     }
+
 protected:
     QIcon *m_widget_icon;
 
@@ -320,6 +323,16 @@ protected:
     }
 private:
     bool m_is_execute;
+
+public:
+    const QJsonValue GetSaveData(const std::string param_name)
+    {
+        return (*m_functions.AppGetSaveData)(this, param_name);
+    }
+    void SetSaveData(const std::string param_name, const QJsonValue &set_value)
+    {
+        (*m_functions.AppSetSaveData)(this, param_name, set_value);
+    }
 
 private:
     const AppFunctions m_functions;

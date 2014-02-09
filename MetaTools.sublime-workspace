@@ -37,6 +37,65 @@
 				"buffer_size": 23797,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/btThreadSupportInterface.cpp",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/btParallelConstraintSolver.cpp",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/btThreadSupportInterface.h",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/PosixThreadSupport.cpp",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/SequentialThreadSupport.cpp",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "",
+			"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/btBulletCollisionCommon.h",
+			"file_size": -1,
+			"file_write_time": -1,
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "bin/win32d/meta_tools_save.json",
+			"settings":
+			{
+				"buffer_size": 174,
+				"line_ending": "Windows"
+			}
 		}
 	],
 	"build_system": "Packages/User/shell.sublime-build",
@@ -95,6 +154,10 @@
 	},
 	"file_history":
 	[
+		"/C/Users/yatagai/Desktop/rapidjson/example/condense/condense.cpp",
+		"/C/Users/yatagai/Desktop/rapidjson/example/tutorial/tutorial.cpp",
+		"/C/Users/yatagai/Desktop/rapidjson/example/serialize/serialize.cpp",
+		"/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/PlatformDefinitions.h",
 		"/D/MetaTools/MetaTools/src/plugin/plugin_connect_func.cpp",
 		"/D/MetaTools/MetaTools/src/main/mainwindow.cpp",
 		"/D/MetaTools/MetaTools/src/main/main.cpp",
@@ -197,7 +260,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -277,6 +340,192 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 960.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/btThreadSupportInterface.cpp",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/btParallelConstraintSolver.cpp",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 8352.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/btThreadSupportInterface.h",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 960.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/PosixThreadSupport.cpp",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6096.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/BulletMultiThreaded/SequentialThreadSupport.cpp",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2592.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/C/Users/yatagai/Desktop/bullet-2.82-r2704/src/btBulletCollisionCommon.h",
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "bin/win32d/meta_tools_save.json",
+					"settings":
+					{
+						"buffer_size": 174,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

@@ -4,6 +4,7 @@
  * @author yatagai.
  */
 
+#include "../save_load/save_load.h"
 #include "plugin_manager/plugin_manager.h"
 #include "plugin.h"
 #include <QtGui>
@@ -89,6 +90,30 @@ void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget, const st
 void AppRemoveWidget(const IPlugin *entry_plugin, QWidget *remove_widget)
 {
     PluginManager::Order()->RemoveWidget(entry_plugin, remove_widget);
+}
+
+/**
+ *  @brief		セーブデータの取得.
+ *  @author     yatagaik.
+ *  @param  in  entry_plugin 登録したプラグイン.
+ *  @param  in  param_name パラメータ名.
+ *  @return 保存値 idUndefinedで無効.
+ */
+const QJsonValue AppGetSaveData(const IPlugin *entry_plugin, const std::string param_name)
+{
+    return SaveLoad::Order()->GetSaveData(entry_plugin, param_name);
+}
+
+/**
+ *  @brief		セーブデータのセット.
+ *  @author     yatagaik.
+ *  @param  in  entry_plugin 登録したプラグイン.
+ *  @param  in  param_name パラメータ名.
+ * 　@param  in  set_value セットする値.
+ */
+void AppSetSaveData(const IPlugin *entry_plugin, const std::string param_name, const QJsonValue &set_value)
+{
+    SaveLoad::Order()->SetSaveData(entry_plugin, param_name, set_value);
 }
 
 }   // end namespace meta_tools

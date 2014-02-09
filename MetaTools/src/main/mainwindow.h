@@ -15,6 +15,7 @@ class MainWindow;
 class QMainWindow;
 namespace meta_tools {
 class PluginManager;
+class SaveLoad;
 }
 
 /**
@@ -31,6 +32,9 @@ public:
 
 public:
     void Initilize();
+
+public:
+    void Show();
 
 private:
     Ui::MainWindow *ui;
@@ -57,14 +61,21 @@ private slots:
     void MenuMinimizationSwitchAnimation();
 private:
     QTimer m_menu_animate_timer;
-    float m_is_menu_minization;
+    bool m_is_menu_minization;
+
+    // SaveLoad.
+private:
+    void InitializeSaveLoad();
+    void FinalizeSaveLoad();
+private:
+    meta_tools::SaveLoad *m_save_load;
 
     // プラグイン関係.
 private:
     void InitializePlugins();
     void FinalizePlugins();
 private:
-    meta_tools::PluginManager* m_plugin_manager;
+    meta_tools::PluginManager *m_plugin_manager;
 
     // 閉じる.
 private:

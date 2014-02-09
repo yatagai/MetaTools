@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
     // show main window.
     main_window.Initilize();
-    main_window.show();
+    main_window.Show();
 
     // finish splash screen.
     splash_screen->FinishMainWindowShow();

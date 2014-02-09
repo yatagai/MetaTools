@@ -15,6 +15,7 @@
 #include "../../tool_widget_form/tool_widget_form.h"
 #include "../build_in_plugin/home_menu_plugin/home_menu_plugin.h"
 #include "../build_in_plugin/log_plugin/log_plugin.h"
+#include "../../save_load/save_load.h"
 
 #include <assert.h>
 
@@ -28,6 +29,8 @@ extern void AppDebugLogWrite(const IPlugin *writer, const std::string &message);
 extern void AppAddMenuWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label, const std::string &add_tab_name);
 extern void AppAddToolWidget(const IPlugin *entry_plugin, QWidget *add_widget, const std::string &label);
 extern void AppRemoveWidget(const IPlugin *entry_plugin, QWidget *remove_widget);
+extern const QJsonValue AppGetSaveData(const IPlugin *entry_plugin, const std::string param_name);
+extern void AppSetSaveData(const IPlugin *entry_plugin, const std::string param_name, const QJsonValue &set_value);
 IPlugin::AppFunctions g_app_functions =
 {
     &AppSendMessage,
@@ -35,7 +38,9 @@ IPlugin::AppFunctions g_app_functions =
     &AppDebugLogWrite,
     &AppAddMenuWidget,
     &AppAddToolWidget,
-    &AppRemoveWidget
+    &AppRemoveWidget,
+    &AppGetSaveData,
+    &AppSetSaveData
 };
 
 /**
@@ -81,7 +86,7 @@ bool PluginManager::Init()
  */
 bool PluginManager::Final()
 {
-    ReleasePlugins();
+    ReleasePlugins();    
     return true;
 }
 
@@ -91,7 +96,7 @@ bool PluginManager::Final()
  *  @return     trueで読み込み完了 falseで失敗.
  */
 bool PluginManager::LoadPlugins()
-{
+{    
     // build in pluygin.
     m_plugins.push_back(m_home_menu_plugin = new HomeMenuPlugin(g_app_functions));
     m_plugins.push_back(m_log_plugin = new LogPlugin(g_app_functions));
@@ -146,6 +151,19 @@ bool PluginManager::LoadPlugins()
         }
     }
 
+    // open last execute plugins.
+    for(auto it = m_plugins.begin(); it != m_plugins.end(); ++it)
+    {
+        if (!(*it)->IsExecute())
+        {
+            if (SaveLoad::Order()->IsLastExecute(*it))
+            {
+                OpenPlugin(*it);
+                QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+            }
+        }
+    }
+
     return true;
 }
 
@@ -161,7 +179,12 @@ bool PluginManager::ReleasePlugins()
     {
         if ((*it)->IsExecute())
         {
+            SaveLoad::Order()->SetLastExecute(*it, true);
             ClosePlugin(*it);
+        }
+        else
+        {
+            SaveLoad::Order()->SetLastExecute(*it, false);
         }
         QLibrary *library = m_library_list[*it];
         delete (*it);

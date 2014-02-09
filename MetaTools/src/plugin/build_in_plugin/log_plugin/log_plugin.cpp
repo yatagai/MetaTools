@@ -100,10 +100,14 @@ void LogPlugin::OnClickCloseButton(QWidget *clicked_widget, bool &/*cancel*/)
  */ 
 bool LogPlugin::OnStart()
 {
+    const QJsonValue save_ishide(GetSaveData("ishide"));
     if (m_ishide)
     {
-        AddToolWidget(m_log_window, "Log");
-        m_ishide = false;
+        if (save_ishide.isUndefined() || (save_ishide.isBool() && !save_ishide.toBool()))
+        {
+            AddToolWidget(m_log_window, "Log");
+            m_ishide = false;
+        }
     }
     return true;
 }
@@ -115,6 +119,9 @@ bool LogPlugin::OnStart()
  */
 bool LogPlugin::OnClose()
 {
+    // 表示状態の保存.
+    SetSaveData("ishide", QJsonValue(m_ishide));
+
     if (!m_ishide)
     {
         RemoveWidget(m_log_window);

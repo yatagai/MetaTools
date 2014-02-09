@@ -23,7 +23,8 @@ SOURCES += src/main/main.cpp \
     src/plugin/build_in_plugin/home_menu_plugin/home_menu_plugin_widget.cpp \
     src/plugin/build_in_plugin/home_menu_plugin/plugin_manager_widget.cpp \
     src/plugin/build_in_plugin/home_menu_plugin/plugin_widget.cpp \
-    src/splash_screen/splash_screen.cpp
+    src/splash_screen/splash_screen.cpp \
+    src/save_load/save_load.cpp
 
 HEADERS  += src/main/mainwindow.h \
     src/metatools_tooltip/metatools_tooltip.h \
@@ -35,7 +36,8 @@ HEADERS  += src/main/mainwindow.h \
     src/plugin/build_in_plugin/home_menu_plugin/home_menu_plugin_widget.h \
     src/plugin/build_in_plugin/home_menu_plugin/plugin_manager_widget.h \
     src/plugin/build_in_plugin/home_menu_plugin/plugin_widget.h \
-    src/splash_screen/splash_screen.h
+    src/splash_screen/splash_screen.h \
+    src/save_load/save_load.h
 
 FORMS    += src/main/mainwindow.ui \
     src/metatools_tooltip/metatools_tooltip.ui \

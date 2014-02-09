@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <qevent.h>
 
+#include "../save_load/save_load.h"
 #include "../plugin/plugin_manager/plugin_manager.h"
 #include "../tool_widget_form/tool_widget_form.h"
 
@@ -38,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_main_view(nullptr),
     m_is_menu_minization(false),
+    m_save_load(nullptr),
     m_plugin_manager(nullptr)
 {
     sm_this = this;
@@ -60,6 +62,13 @@ MainWindow::~MainWindow()
     // finalize plugins.
     FinalizePlugins();
 
+    // save windows info.
+    meta_tools::SaveLoad::Order()->SetAppSaveData("main_window_is_maximized", QJsonValue(isMaximized()));
+    meta_tools::SaveLoad::Order()->SetAppSaveData("main_window_is_menu_minization", QJsonValue(m_is_menu_minization));
+
+    // finalize saveload.
+    FinalizeSaveLoad();
+
     // delete ui.
     sm_this = nullptr;
     delete ui;
@@ -71,11 +80,40 @@ MainWindow::~MainWindow()
  */
 void MainWindow::Initilize()
 {
+    // initialize saveload.
+    InitializeSaveLoad();
+
     // add menu_minimization_switch.
     CreateMenuMinimizationSwitch();
 
     // initialize plugins.
     InitializePlugins();
+
+    // load window info.
+    QJsonValue main_window_is_menu_minization = meta_tools::SaveLoad::Order()->GetAppSaveData("main_window_is_menu_minization");
+    if (main_window_is_menu_minization.isBool() && main_window_is_menu_minization.toBool())
+    {
+        m_is_menu_minization = true;
+        ui->menu->setMinimumHeight(MENU_MINIMUM_HEIGHT);
+        ui->menu->setMaximumHeight(MENU_MINIMUM_HEIGHT);
+    }
+}
+
+/**
+ *  @brief      表示.
+ *  @author		yatagaik.
+ */
+void MainWindow::Show()
+{
+    QJsonValue main_window_is_maximized = meta_tools::SaveLoad::Order()->GetAppSaveData("main_window_is_maximized");
+    if (main_window_is_maximized.isBool() && main_window_is_maximized.toBool())
+    {
+        showMaximized();
+    }
+    else
+    {
+        show();
+    }
 }
 
 /**
@@ -147,6 +185,28 @@ void MainWindow::MenuMinimizationSwitchAnimation()
     {
         // アニメーション終了.
         m_menu_animate_timer.stop();
+    }
+}
+
+/**
+ *  @brief      SaveLoadの初期化.
+ *  @author		yatagaik.
+ */
+void MainWindow::InitializeSaveLoad()
+{
+    m_save_load = new meta_tools::SaveLoad();
+}
+
+/**
+ *  @brief      SaveLoadの破棄.
+ *  @author		yatagaik.
+ */
+void MainWindow::FinalizeSaveLoad()
+{
+    if (m_save_load)
+    {
+        delete m_save_load;
+        m_save_load = nullptr;
     }
 }
 
